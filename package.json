@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon -r esm ./src/app.js",
-    "start": "node -r esm ./src/app.js"
+    "start": "node -r esm ./src/app.js",
+    "doc": "node ./generateDoc.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -21,7 +22,7 @@
     "mongoose": "^5.11.18"
   },
   "devDependencies": {
-    "apidoc": "^0.26.0",
+    "apidoc": "^0.27.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7"
   },

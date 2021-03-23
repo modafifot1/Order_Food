@@ -1,2 +1,2 @@
-import { registerCustomer } from "./authController";
-export { registerCustomer };
+import { authController } from "./authController";
+export { authController };
