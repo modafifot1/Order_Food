@@ -1,0 +1,18 @@
+import createHttpError from "http-errors";
+import { UserPermission, RolePermission, Role } from "../models";
+const isAdminRole = async (req, res, next) => {
+  const user = req.user;
+  try {
+    const adminRole = await Role.findOne({ roleName: "admin" });
+    if (user.roleId != adminRole.id) {
+      throw createHttpError(401, "you are not admin account!");
+    }
+    next();
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+export const validatePermission = {
+  isAdminRole,
+};

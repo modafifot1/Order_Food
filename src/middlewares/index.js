@@ -1,4 +1,10 @@
 import { defaultMiddleware } from "./defaultMiddleware";
 import { errorHandleMiddleware } from "./errorHandleMiddleware";
 import { validateRequestBody } from "./validateDataMiddleware";
-export { defaultMiddleware, errorHandleMiddleware, validateRequestBody };
+import { validatePermission } from "./validatePermissionMiddleware";
+export {
+  defaultMiddleware,
+  errorHandleMiddleware,
+  validateRequestBody,
+  validatePermission,
+};

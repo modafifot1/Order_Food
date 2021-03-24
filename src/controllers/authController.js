@@ -4,8 +4,8 @@ import createHttpError from "http-errors";
 import { encodeToken } from "../utils";
 
 /**
- * @api {post} /api/v1/auth/register-customer register company
- * @apiName Register company
+ * @api {post} /api/v1/auth/register-customer register for customer
+ * @apiName Register for customer
  * @apiGroup Auth
  * @apiParam {String} email email's customer account
  * @apiParam {String} password password's customer account
@@ -61,6 +61,28 @@ const registerCustomer = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/auth/login login for all users
+ * @apiName Login for all users
+ * @apiGroup Auth
+ * @apiParam {String} email email's user account
+ * @apiParam {String} password password's user account
+ * @apiSuccess {String} msg <code>Login success</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Login is success",
+ *         roleId: 1,
+ *         token: "xxx.xxx.xxx"
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg":  userName or password is incorrect!"
+ *     }
+ */
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -86,7 +108,10 @@ const login = async (req, res, next) => {
       roleId: userExisted.roleId,
       token,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 };
 export const authController = {
   registerCustomer,

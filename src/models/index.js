@@ -2,6 +2,6 @@ import { User } from "./UserModel";
 import { UserDetail } from "./UserDetailModel";
 import { Role } from "./RoleModel";
 import { Permission } from "./PermissionModel";
-import { RolePermission } from "./Role_permissionModel";
-import { UserPermission } from "./User_permissionModel";
+import { RolePermission } from "./RolePermissionModel";
+import { UserPermission } from "./UserPermissionModel";
 export { User, UserDetail, Role, Permission, RolePermission, UserPermission };
