@@ -119,6 +119,19 @@ define({ "api": [
     "title": "Delete an employee by id",
     "name": "Delete_an_employee",
     "group": "Admin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "employeeId",
+            "description": "<p>id's employee</p>"
+          }
+        ]
+      }
+    },
     "header": {
       "fields": {
         "Header": [
@@ -162,6 +175,79 @@ define({ "api": [
         {
           "title": "Success-Example",
           "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/admin/roles",
+    "title": "Get all role of system",
+    "name": "Get_all_role",
+    "group": "Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get all role successfully</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "listRoles",
+            "description": "<p><code> An array role </code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n    listRoles: [\n     {\n       \"_id\": \"605be446ddf39f2daf48b701\",\n       \"id\": 1,\n       \"roleName\": \"customer\"\n      },\n      {\n       \"_id\": \"605be482ddf39f2daf48b702\",\n       \"id\": 0,\n       \"roleName\": \"admin\"\n       }\n     ]\n}",
           "type": "json"
         }
       ]
@@ -234,7 +320,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n    employee: {\n         _id: \"6020bd895d7a6b07b0b0eef9\",\n         email: \"nqp260699@gmail.com\",\n         password: \"sds54545602sdsd0bd8sds95d7a6b07b0b0eef9\",\n         roleId: 1,\n         fullName: \"Nguyen Quang Phieu\",\n         phoneNumber: \"0364782445\",\n         birthday: 26/06/1999\n    }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n    employee: {\n         _id: \"6020bd895d7a6b07b0b0eef9\",\n         email: \"nqp260699@gmail.com\",\n         password: \"sds54545602sdsd0bd8sds95d7a6b07b0b0eef9\",\n         roleId: 1,\n         \"userDetail\": [\n             {\n                 \"_id\": \"6062d14bf3541b39146c0206\",\n                  \"userId\": \"6062d14bf3541b39146c0205\",\n                 \"fullName\": \"Nguyen van A\",\n                 \"phoneNumber\": \"0325656596\",\n                  \"birthday\": \"1999-02-04T17:00:00.000Z\",\n                  \"__v\": 0\n              }\n          ]\n    }\n}",
           "type": "json"
         }
       ]
@@ -326,6 +412,92 @@ define({ "api": [
     "groupTitle": "Admin"
   },
   {
+    "type": "get",
+    "url": "/api/v1/admin/permissions/:roleId",
+    "title": "Get permission by roleId",
+    "name": "Get_permissions",
+    "group": "Admin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "roleId",
+            "description": "<p>id's role</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get permissions successfully</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "listPermissions",
+            "description": "<p><code> An array permissions </code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by roleId successfully!\",\n    listPermissions: [\n     {\n      \"_id\": \"606318bbae23812268265ef0\",\n      \"name\": \"EMPLOYEE\",\n      \"action\": \"Edit\",\n      \"__v\": 0,\n      \"license\": 0 // 0 -is not allowed\n     },\n     {\n      \"_id\": \"606318bbae23812268265f03\",\n      \"name\": \"USER_PROFILE\",\n      \"action\": \"Edit\",\n      \"__v\": 0,\n      \"license\": 1 // 1-is allowed\n     },\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
     "type": "put",
     "url": "/api/v1/admin/employees/:employeeId",
     "title": "Update a employee",
@@ -338,15 +510,22 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "employeeId",
+            "description": "<p>id's employee</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "email",
-            "description": "<p>email's employee account</p>"
+            "description": "<p>email's employee</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "password",
-            "description": "<p>password's employee account</p>"
+            "description": "<p>password's employee</p>"
           },
           {
             "group": "Parameter",
@@ -440,6 +619,92 @@ define({ "api": [
     "groupTitle": "Admin"
   },
   {
+    "type": "put",
+    "url": "/api/v1/admin/permissions/:roleId",
+    "title": "Update permission by roleId",
+    "name": "Update_permissions",
+    "group": "Admin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "roleId",
+            "description": "<p>id's role</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "permissions",
+            "description": "<p>an array of permissionId which is checked</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>update permissions successfully</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Update permissions by roleId successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
     "type": "post",
     "url": "/api/v1/auth/login",
     "title": "login for all users",
@@ -470,17 +735,59 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200</code></p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
             "description": "<p><code>Login success</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p><code>Token of user </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array[Int]",
+            "optional": false,
+            "field": "roleId",
+            "description": "<p><code> An array role of user </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "userId",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "imageUrl",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "fullName",
+            "description": ""
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Login is success\",\n    roleId: 1,\n    token: \"xxx.xxx.xxx\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Login is success\",\n    roleId: [1],\n    token: \"xxx.xxx.xxx\",\n    userId:\"605a06776c02022ab46cc160\",\n    imageUrl:\"211d2s12c3fsf3s2df\",\n    fullNamr: \"Nguyen Quang Phieu\"\n}",
           "type": "json"
         }
       ]

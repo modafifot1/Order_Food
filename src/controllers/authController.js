@@ -67,14 +67,23 @@ const registerCustomer = async (req, res, next) => {
  * @apiGroup Auth
  * @apiParam {String} email email's user account
  * @apiParam {String} password password's user account
+ * @apiSuccess {Int} status <code> 200</code>
  * @apiSuccess {String} msg <code>Login success</code> if everything went fine.
+ * @apiSuccess {String} token <code>Token of user </code>
+ * @apiSuccess {Array[Int]} roleId <code> An array role of user </code>
+ * @apiSuccess {ObjectId} userId
+ * @apiSuccess {String} imageUrl
+ * @apiSuccess {String} fullName
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *     {
  *         status: 200,
  *         msg: "Login is success",
- *         roleId: 1,
- *         token: "xxx.xxx.xxx"
+ *         roleId: [1],
+ *         token: "xxx.xxx.xxx",
+ *         userId:"605a06776c02022ab46cc160",
+ *         imageUrl:"211d2s12c3fsf3s2df",
+ *         fullNamr: "Nguyen Quang Phieu"
  *     }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -101,12 +110,18 @@ const login = async (req, res, next) => {
     };
 
     const token = encodeToken(userData);
-
+    const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
+      "imageUrl",
+      "fullName",
+    ]);
     res.status(200).json({
       status: 200,
       msg: "success!",
       roleId: userExisted.roleId,
       token,
+      userId: userExisted._id,
+      imageUrl: userDetail.imageUrl,
+      fullName: userDetail.fullName,
     });
   } catch (error) {
     console.log(error);

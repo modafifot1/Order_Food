@@ -1,2 +1,3 @@
 import { authController } from "./authController";
-export { authController };
+import { adminController } from "./adminController";
+export { authController, adminController };

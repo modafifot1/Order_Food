@@ -15,5 +15,8 @@ const userDetailSchema = new Schema({
   birthday: {
     type: Date,
   },
+  imageUrl: {
+    type: String,
+  },
 });
 export const UserDetail = model("UserDetail", userDetailSchema, "UserDetail");

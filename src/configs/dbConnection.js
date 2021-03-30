@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-export const dbConnection = (uri) => {
+import { Permission } from "../models";
+export const dbConnection = async (uri) => {
   try {
     console.log(uri);
     mongoose.connect(uri, {
@@ -11,7 +12,18 @@ export const dbConnection = (uri) => {
     db.once("open", () => {
       console.log("Connected to database");
     });
+    const numDoc = await Permission.estimatedDocumentCount();
+    if (numDoc == 0) {
+      addDefaultPermission();
+    }
   } catch (error) {
     console.log(error);
   }
+};
+const addDefaultPermission = async () => {
+  const csv = require("csvtojson/v2");
+
+  const data = await csv().fromFile("permissions.csv");
+  console.log(data);
+  await Permission.insertMany(data);
 };
