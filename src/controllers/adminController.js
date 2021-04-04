@@ -1,7 +1,20 @@
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
-import { User, Permission, Role, RolePermission, UserDetail } from "../models";
+import {
+  User,
+  Permission,
+  Role,
+  RolePermission,
+  UserDetail,
+  UserPermission,
+} from "../models";
 import Mongoose from "mongoose";
+import { modifyPermissionsEffected } from "../utils";
+const {
+  initPermissions,
+  addPermissionsForUserEffected,
+  delPermissionsForUserEffected,
+} = modifyPermissionsEffected;
 //--------------------Managing employees---------------------------//
 
 /**
@@ -46,7 +59,6 @@ const getListEmployees = async (req, res, next) => {
         },
       },
     ]);
-    // const listEmployees = await User.find({ roleId: employeeRole.id });
     res.status(200).json({
       status: 200,
       msg: "Get list employee successfully!",
@@ -63,7 +75,7 @@ const getListEmployees = async (req, res, next) => {
  * @apiGroup Admin
  * @apiParam {String} email email's employee account
  * @apiParam {String} password password's employee account
- * @apiParam {Int} role role's employee require "employee"
+ * @apiParam {Int} role role's employee required value = 2
  * @apiParam {String} fullName name's employee
  * @apiParam {String} phoneNumber phone's employee
  * @apiParam {Date} birthday birthday's employee
@@ -92,11 +104,10 @@ const createNewEmployee = async (req, res, next) => {
     if (userExisted) {
       throw createHttpError(400, "This email is used by others!");
     }
-    // Check role
-    // const checkRole = Role.findOne({ id: roleId });
-    // if (!checkRole||checkRole.id != roleemployee.id) {
-    //   throw createHttpError(401,"Role is invalid");
-    // }
+    const checkRole = await Role.findOne({ id: roleId });
+    if (!checkRole || checkRole.roleName != "employee") {
+      throw createHttpError(401, "Role is invalid");
+    }
     const hashPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       email,
@@ -110,6 +121,7 @@ const createNewEmployee = async (req, res, next) => {
       phoneNumber,
       birthday: new Date(birthday),
     });
+    await initPermissions(roleId, newUser._id);
     res.status(201).json({
       status: 201,
       msg: "Create a new employee successfully!",
@@ -196,7 +208,7 @@ const getEmpployeeById = async (req, res, next) => {
  * @apiParam {String} employeeId id's employee
  * @apiParam {String} email email's employee
  * @apiParam {String} password password's employee
- * @apiParam {Int} role role's employee require "employee"
+ * @apiParam {Int} role role's employee require value = 2
  * @apiParam {String} fullName name's employee
  * @apiParam {String} phoneNumber phone's employee
  * @apiParam {Date} birthday birthday's employee
@@ -466,10 +478,9 @@ const updatePermissionsByRoleId = async (req, res, next) => {
     });
     const applying = req.query.applying;
     if (applying == 1) {
-      console.log("true");
-    } else {
-      console.log("false");
+      addPermissionsForUserEffected(addPermissions, roleId);
     }
+    delPermissionsForUserEffected(delPermissions, roleId);
     res.status(200).json({
       status: 200,
       msg: "Update permissions of role successfully!",
@@ -477,6 +488,274 @@ const updatePermissionsByRoleId = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+};
+/**
+ * @api {get} /api/v1/admin/users Get all users
+ * @apiName Get all user
+ * @apiGroup Admin
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>update permissions successfully</code>
+ * @apiSuccess {Array} listUsers <code> An array of users </code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Update permissions by roleId successfully!",
+ *         listUsers: [
+ *             {
+ *                 "_id": "6062e0988b0140276c76269e",
+ *                 "roleId": [
+ *                     2
+ *                 ],
+ *                 "email": "employee2@gmail.com",
+ *                 "password": "$2a$12$zitmHHPzp/LYBwGnfgRqVOGn7Amp/8zphXLAN0/TCSgtexCl6TlLG",
+ *                 "userDetail": [
+ *                     {
+ *                         "_id": "6062e0988b0140276c76269f",
+ *                         "userId": "6062e0988b0140276c76269e",
+ *                         "fullName": "Nguyen van B",
+ *                         "phoneNumber": "0325656596",
+ *                         "birthday": "1999-02-04T17:00:00.000Z",
+ *                         "__v": 0
+ *                     }
+ *                 ]
+ *             },
+ *         ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getAllUsers = async (req, res, next) => {
+  try {
+    const listUsers = await User.aggregate([
+      {
+        $lookup: {
+          from: "UserDetail",
+          localField: "_id",
+          foreignField: "userId",
+          as: "userDetail",
+        },
+      },
+      {
+        $match: {
+          roleId: {
+            $ne: [0],
+          },
+        },
+      },
+      {
+        $project: { __v: 0, createAt: 0, updateAt: 0 },
+      },
+    ]);
+    res.status(200).json({
+      status: 200,
+      msg: "Get List users successfully",
+      listUsers,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {get} /api/v1/admin/users/:userId/permissions Get permissions by userId
+ * @apiName Get permission by userId
+ * @apiGroup Admin
+ * @apiParam {string} userId id of user
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Get permissions successfully</code>
+ * @apiSuccess {Array} listPermissions <code> An array permissions of user </code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Get permissions by userId successfully!",
+ *         listPermissions: [
+ *           {
+ *               "_id": "60632c5b72d5dd3d60e65e6f",
+ *               "roleId": 1,
+ *               "permissionId": "606318bbae23812268265f03",
+ *               "__v": 0,
+ *               "permissionDetail": [
+ *                   {
+ *                       "_id": "606318bbae23812268265f03",
+ *                       "name": "USER_PROFILE",
+ *                       "action": "Edit",
+ *                       "__v": 0
+ *                   }
+ *               ],
+ *               "license": 0 //0- is not allowed
+ *           },
+ *           {
+ *               "_id": "60632c5b72d5dd3d60e65e71",
+ *               "roleId": 1,
+ *               "permissionId": "606318bbae23812268265f05",
+ *               "__v": 0,
+ *               "permissionDetail": [
+ *                   {
+ *                       "_id": "606318bbae23812268265f05",
+ *                       "name": "CHANGE_PASSWORD",
+ *                       "action": "Edit",
+ *                       "__v": 0
+ *                   }
+ *               ],
+ *               "license": 1 //1- is allowed
+ *           },
+ *         ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getPermissionsByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    let user = await User.findOne({ _id: userId });
+    if (!user) {
+      throw createHttpError(404, "User is not existed!");
+    }
+    const roleId = user.roleId;
+    let permissionsByRoleId = await Promise.all(
+      roleId.map((x) =>
+        RolePermission.aggregate([
+          {
+            $lookup: {
+              from: "Permission",
+              localField: "permissionId",
+              foreignField: "_id",
+              as: "permissionDetail",
+            },
+          },
+          {
+            $match: {
+              roleId: x,
+            },
+          },
+        ])
+      )
+    );
+    permissionsByRoleId = permissionsByRoleId[0];
+    let permissionsByUserId = await UserPermission.find({ userId });
+    permissionsByUserId = permissionsByUserId.map((x) =>
+      String(x.permissionId)
+    );
+    permissionsByRoleId = permissionsByRoleId.map((x) => {
+      let license = 0;
+      if (permissionsByUserId.includes(String(x.permissionId))) {
+        license = 1;
+      }
+      return {
+        ...x,
+        license,
+      };
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Get list permissions by userId successfully!",
+      listPermissons: permissionsByRoleId,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {pat} /api/v1/admin/users/:userId/permissions Update permissions by userId
+ * @apiName Update permission by userId
+ * @apiGroup Admin
+ * @apiParam {string} userId id of user
+ * @apiParam {array} permissions this is permissions is checked
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Update permissions successfully</code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Update permissions by userId successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const updatePermissionsByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    let user = await User.findOne({ _id: userId });
+    if (!user) {
+      throw createHttpError(404, "User is not existed!");
+    }
+    const roleId = user.roleId;
+    let listPermissions = await UserPermission.find({ userId }, [
+      "permissionId",
+    ]);
+    listPermissions = listPermissions.map((x) => String(x.permissionId));
+    let listUpdatePermissions = req.body.permissions;
+    let listDelPermissions = listPermissions.filter(
+      (x) => !listUpdatePermissions.includes(x)
+    );
+    let listAddPermissions = listUpdatePermissions.filter(
+      (x) => !listPermissions.includes(x)
+    );
+    listDelPermissions = await validatePermissionInRole(
+      roleId,
+      listDelPermissions
+    );
+    listAddPermissions = await validatePermissionInRole(
+      roleId,
+      listAddPermissions
+    );
+    console.log("List del: " + JSON.stringify(listDelPermissions));
+    console.log("List add: " + JSON.stringify(listAddPermissions));
+    await UserPermission.insertMany(
+      listAddPermissions.map((x) => {
+        return {
+          userId,
+          permissionId: x,
+        };
+      })
+    );
+    await UserPermission.deleteMany({
+      permissionId: listDelPermissions,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Update permissions for user successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const validatePermissionInRole = async (roleId, listPermissions) => {
+  try {
+    let permissionsByRoleId = await RolePermission.find({ roleId });
+    permissionsByRoleId = permissionsByRoleId.map((x) =>
+      String(x.permissionId)
+    );
+    console.log("permissionInrole: " + permissionsByRoleId);
+    return listPermissions.filter((x) => permissionsByRoleId.includes(x));
+  } catch (error) {
+    console.log(error);
   }
 };
 export const adminController = {
@@ -488,4 +767,7 @@ export const adminController = {
   getAllRoles,
   getPermissionsByRoleId,
   updatePermissionsByRoleId,
+  getAllUsers,
+  getPermissionsByUserId,
+  updatePermissionsByUserId,
 };

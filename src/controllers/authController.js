@@ -1,8 +1,8 @@
 import { Role, User, UserDetail } from "../models";
 import bcrypt from "bcryptjs";
 import createHttpError from "http-errors";
-import { encodeToken } from "../utils";
-
+import { encodeToken, destroyToken, modifyPermissionsEffected } from "../utils";
+const { initPermissions } = modifyPermissionsEffected;
 /**
  * @api {post} /api/v1/auth/register-customer register for customer
  * @apiName Register for customer
@@ -35,10 +35,10 @@ const registerCustomer = async (req, res, next) => {
       throw createHttpError(400, "This email is used by others!");
     }
     // Check role
-    // const checkRole = Role.findOne({ id: roleId });
-    // if (!checkRole||checkRole.roleName != "customer") {
-    //   throw createHttpError(400,"Role is invalid");
-    // }
+    const checkRole = await Role.findOne({ id: roleId });
+    if (!checkRole || checkRole.roleName != "customer") {
+      throw createHttpError(400, "Role is invalid");
+    }
     const hashPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       email,
@@ -52,6 +52,7 @@ const registerCustomer = async (req, res, next) => {
       phoneNumber,
       birthday: new Date(birthday),
     });
+    await initPermissions(roleId, newUser._id);
     res.status(200).json({
       status: 200,
       msg: "Register is success!",
@@ -109,7 +110,7 @@ const login = async (req, res, next) => {
       roleId: userExisted.roleId,
     };
 
-    const token = encodeToken(userData);
+    const token = await encodeToken(userData);
     const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
       "imageUrl",
       "fullName",
@@ -128,7 +129,49 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/auth/logout Logout for all user
+ * @apiName Logout for all user
+ * @apiGroup Auth
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Logoutsuccessfully</code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Logout successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ */
+const logout = async (req, res, next) => {
+  try {
+    if (
+      !req.headers.authorization ||
+      !req.headers.authorization.startsWith("Bearer")
+    ) {
+      throw createHttpError(401, "No token, authorization denied!");
+    }
+    const userId = req.params.userId;
+    await destroyToken(userId);
+    res.status(200).json({
+      status: 200,
+      msg: "Logout success!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const authController = {
   registerCustomer,
   login,
+  logout,
 };

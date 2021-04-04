@@ -4,4 +4,15 @@ import { Role } from "./RoleModel";
 import { Permission } from "./PermissionModel";
 import { RolePermission } from "./RolePermissionModel";
 import { UserPermission } from "./UserPermissionModel";
-export { User, UserDetail, Role, Permission, RolePermission, UserPermission };
+import { CodeReset } from "./CodeResetModel";
+import { Token } from "./TokenModel";
+export {
+  User,
+  UserDetail,
+  Role,
+  Permission,
+  RolePermission,
+  UserPermission,
+  CodeReset,
+  Token,
+};

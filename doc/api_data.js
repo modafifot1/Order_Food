@@ -27,7 +27,7 @@ define({ "api": [
             "type": "Int",
             "optional": false,
             "field": "role",
-            "description": "<p>role's employee require &quot;employee&quot;</p>"
+            "description": "<p>role's employee required value = 2</p>"
           },
           {
             "group": "Parameter",
@@ -267,6 +267,79 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/v1/admin/users",
+    "title": "Get all users",
+    "name": "Get_all_user",
+    "group": "Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>update permissions successfully</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "listUsers",
+            "description": "<p><code> An array of users </code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Update permissions by roleId successfully!\",\n    listUsers: [\n        {\n            \"_id\": \"6062e0988b0140276c76269e\",\n            \"roleId\": [\n                2\n            ],\n            \"email\": \"employee2@gmail.com\",\n            \"password\": \"$2a$12$zitmHHPzp/LYBwGnfgRqVOGn7Amp/8zphXLAN0/TCSgtexCl6TlLG\",\n            \"userDetail\": [\n                {\n                    \"_id\": \"6062e0988b0140276c76269f\",\n                    \"userId\": \"6062e0988b0140276c76269e\",\n                    \"fullName\": \"Nguyen van B\",\n                    \"phoneNumber\": \"0325656596\",\n                    \"birthday\": \"1999-02-04T17:00:00.000Z\",\n                    \"__v\": 0\n                }\n            ]\n        },\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
     "url": "/api/v1/admin/employees/:employeeId",
     "title": "Get an employee by id",
     "name": "Get_an_employee",
@@ -413,6 +486,92 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/v1/admin/users/:userId/permissions",
+    "title": "Get permissions by userId",
+    "name": "Get_permission_by_userId",
+    "group": "Admin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>id of user</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get permissions successfully</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "listPermissions",
+            "description": "<p><code> An array permissions of user </code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by userId successfully!\",\n    listPermissions: [\n      {\n          \"_id\": \"60632c5b72d5dd3d60e65e6f\",\n          \"roleId\": 1,\n          \"permissionId\": \"606318bbae23812268265f03\",\n          \"__v\": 0,\n          \"permissionDetail\": [\n              {\n                  \"_id\": \"606318bbae23812268265f03\",\n                  \"name\": \"USER_PROFILE\",\n                  \"action\": \"Edit\",\n                  \"__v\": 0\n              }\n          ],\n          \"license\": 0 //0- is not allowed\n      },\n      {\n          \"_id\": \"60632c5b72d5dd3d60e65e71\",\n          \"roleId\": 1,\n          \"permissionId\": \"606318bbae23812268265f05\",\n          \"__v\": 0,\n          \"permissionDetail\": [\n              {\n                  \"_id\": \"606318bbae23812268265f05\",\n                  \"name\": \"CHANGE_PASSWORD\",\n                  \"action\": \"Edit\",\n                  \"__v\": 0\n              }\n          ],\n          \"license\": 1 //1- is allowed\n      },\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
     "url": "/api/v1/admin/permissions/:roleId",
     "title": "Get permission by roleId",
     "name": "Get_permissions",
@@ -532,7 +691,7 @@ define({ "api": [
             "type": "Int",
             "optional": false,
             "field": "role",
-            "description": "<p>role's employee require &quot;employee&quot;</p>"
+            "description": "<p>role's employee require value = 2</p>"
           },
           {
             "group": "Parameter",
@@ -610,6 +769,92 @@ define({ "api": [
         {
           "title": "Response (example):",
           "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "pat",
+    "url": "/api/v1/admin/users/:userId/permissions",
+    "title": "Update permissions by userId",
+    "name": "Update_permission_by_userId",
+    "group": "Admin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>id of user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "permissions",
+            "description": "<p>this is permissions is checked</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update permissions successfully</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Update permissions by userId successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
           "type": "json"
         }
       ]
@@ -797,6 +1042,72 @@ define({ "api": [
         {
           "title": "Response (example):",
           "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\":  userName or password is incorrect!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/auth/logout",
+    "title": "Logout for all user",
+    "name": "Logout_for_all_user",
+    "group": "Auth",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Logoutsuccessfully</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Logout successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
           "type": "json"
         }
       ]

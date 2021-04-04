@@ -15,14 +15,16 @@ const {
   getAllRoles,
   getPermissionsByRoleId,
   updatePermissionsByRoleId,
+  getAllUsers,
+  getPermissionsByUserId,
+  updatePermissionsByUserId,
 } = adminController;
 const { validateEmployeeData } = validateRequestBody;
 const { isAdminRole } = validatePermission;
 
 export const adminRoute = Router();
-adminRoute.use(jwtMiddleware);
-adminRoute.use(isAdminRole);
-
+adminRoute.use(`${baseUrl}`, jwtMiddleware);
+adminRoute.use(`${baseUrl}`, isAdminRole);
 //--------------------Managing employees---------------------------//
 adminRoute.route(`${baseUrl}/employees`).get(getListEmployees);
 adminRoute.route(`${baseUrl}/employees/:employeeId`).get(getEmpployeeById);
@@ -43,9 +45,14 @@ adminRoute
   .put(updatePermissionsByRoleId);
 
 //---------------------Assigning permissions of user--------------------------//
-adminRoute.route(`${baseUrl}/users/:roleId`).get();
-adminRoute.route(`${baseUrl}/users/:userId/permissions`).get();
-adminRoute.route(`${baseUrl}/users/:userId/permissions`).put();
+
+adminRoute.route(`${baseUrl}/users`).get(getAllUsers);
+adminRoute
+  .route(`${baseUrl}/users/:userId/permissions`)
+  .get(getPermissionsByUserId);
+adminRoute
+  .route(`${baseUrl}/users/:userId/permissions`)
+  .put(updatePermissionsByUserId);
 
 //---------------------Statisticing revenue-----------------------------------//
 adminRoute.route(`${baseUrl}/revenues/days`).get();

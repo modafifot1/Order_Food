@@ -1,3 +1,10 @@
 import { validateRequest } from "./joiValidate";
-import { encodeToken, verifyToken } from "./token";
-export { validateRequest, encodeToken, verifyToken };
+import { encodeToken, verifyToken, destroyToken } from "./token";
+import { modifyPermissionsEffected } from "./modifyPermissionsEffected";
+export {
+  validateRequest,
+  encodeToken,
+  verifyToken,
+  destroyToken,
+  modifyPermissionsEffected,
+};

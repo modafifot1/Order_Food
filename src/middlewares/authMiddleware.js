@@ -10,15 +10,13 @@ export const jwtMiddleware = async (req, res, next) => {
     }
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const userData = verifyToken(token);
+      const userData = await verifyToken(token);
       req.user = userData;
       next();
     } catch (error) {
-      console.log(error);
-      throw createHttpError(400, "Token is invalid");
+      next(error);
     }
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

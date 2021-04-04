@@ -60,8 +60,22 @@ const validateEmployeeData = async (req, res, next) => {
     next(error);
   }
 };
+const validateProfileData = async (req, res, next) => {
+  try {
+    const profileSchema = joi.object({
+      fullName: joi.string().required(),
+      phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
+      birthday: joi.date().required(),
+    });
+    validateRequest(req, profileSchema, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const validateRequestBody = {
   validateRegisterData,
   validateLoginData,
   validateEmployeeData,
+  validateProfileData,
 };
