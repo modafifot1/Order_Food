@@ -14,5 +14,5 @@ export const defaultMiddleware = (app) => {
   app.use(express.json());
   app.use(upload.any());
   app.use(express.static("public"));
-  app.use(morgan("dev"));
+  morgan && app.use(morgan("dev"));
 };
