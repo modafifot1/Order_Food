@@ -28,7 +28,15 @@ const { initPermissions } = modifyPermissionsEffected;
  *     }
  */
 const registerCustomer = async (req, res, next) => {
-  const { email, password, roleId, fullName, phoneNumber, birthday } = req.body;
+  const {
+    email,
+    password,
+    roleId,
+    fullName,
+    phoneNumber,
+    birthday,
+    address,
+  } = req.body;
   try {
     const userExisted = await User.findOne({ email });
     if (userExisted) {
@@ -43,7 +51,7 @@ const registerCustomer = async (req, res, next) => {
     const newUser = await User.create({
       email,
       password: hashPassword,
-      roleId: [roleId],
+      roleId: roleId,
     });
 
     await UserDetail.create({
@@ -51,6 +59,7 @@ const registerCustomer = async (req, res, next) => {
       fullName,
       phoneNumber,
       birthday: new Date(birthday),
+      address,
     });
     await initPermissions(roleId, newUser._id);
     res.status(200).json({
@@ -84,7 +93,7 @@ const registerCustomer = async (req, res, next) => {
  *         token: "xxx.xxx.xxx",
  *         userId:"605a06776c02022ab46cc160",
  *         imageUrl:"211d2s12c3fsf3s2df",
- *         fullNamr: "Nguyen Quang Phieu"
+ *         fullName: "Nguyen Quang Phieu"
  *     }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400

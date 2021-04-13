@@ -1,4 +1,5 @@
 import { authController } from "./authController";
 import { adminController } from "./adminController";
 import { profileController } from "./profileController";
-export { authController, adminController, profileController };
+import { foodController } from "./foodController";
+export { authController, adminController, profileController, foodController };

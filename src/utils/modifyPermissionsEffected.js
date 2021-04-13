@@ -3,9 +3,7 @@ import { RolePermission, User, UserPermission } from "../models";
 
 const initPermissions = async (roleId, userId) => {
   try {
-    console.log(roleId);
     const permissions = await RolePermission.find({ roleId });
-    console.log("permissions :" + JSON.stringify(permissions));
     const userPermissions = permissions.map((x) => {
       return {
         userId,

@@ -11,7 +11,7 @@ export const validateRequest = (req, schema, next) => {
     throw createHttpError(
       400,
       `${error.details
-        .map((x) => x.message.split('"')[1] + " is invalid!")
+        .map((x) => x.message.split('"')[1] + x.message.split('"')[2])
         .join(", ")}`
     );
   } else {

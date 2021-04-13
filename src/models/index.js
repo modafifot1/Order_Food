@@ -6,6 +6,8 @@ import { RolePermission } from "./RolePermissionModel";
 import { UserPermission } from "./UserPermissionModel";
 import { CodeReset } from "./CodeResetModel";
 import { Token } from "./TokenModel";
+import { Food } from "./FoodModel";
+import { FoodType } from "./FoodTypeModel";
 export {
   User,
   UserDetail,
@@ -15,4 +17,6 @@ export {
   UserPermission,
   CodeReset,
   Token,
+  Food,
+  FoodType,
 };

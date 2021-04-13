@@ -15,6 +15,9 @@ const userDetailSchema = new Schema({
   birthday: {
     type: Date,
   },
+  address: {
+    type: String,
+  },
   imageUrl: {
     type: String,
   },

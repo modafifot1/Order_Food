@@ -9,10 +9,11 @@ export const encodeToken = async (data) => {
   const token = jwt.sign(data, jwtSecret, {
     // expiresIn: "8640000"
   });
-  await Token.create({
+  const token1 = await Token.create({
     userId: data._id,
     token,
   });
+  console.log(token1);
   return token;
 };
 

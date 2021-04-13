@@ -1,6 +1,6 @@
 import { Server, dbConnection, envVariables } from "./configs";
 import { defaultMiddleware, errorHandleMiddleware } from "./middlewares";
-import { authRoute, adminRoute, profileRote } from "./routers";
+import { authRoute, adminRoute, profileRote, foodRoute } from "./routers";
 const { port, connectString } = envVariables;
 const main = async () => {
   const server = new Server(port);
@@ -10,6 +10,7 @@ const main = async () => {
   server.registerRouter(authRoute);
   server.registerRouter(adminRoute);
   server.registerRouter(profileRote);
+  server.registerRouter(foodRoute);
   server.registerMiddleware(errorHandleMiddleware);
 };
 main();

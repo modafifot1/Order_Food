@@ -10,14 +10,10 @@ const userSchema = new Schema({
     required: true,
   },
   roleId: {
-    type: [{ type: Number }],
+    type: Number,
     required: true,
   },
   createAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updateAt: {
     type: Date,
     default: Date.now,
   },

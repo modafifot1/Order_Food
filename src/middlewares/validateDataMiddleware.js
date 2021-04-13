@@ -1,5 +1,5 @@
 import joi from "joi";
-import { Role } from "../models";
+import { FoodType, Role } from "../models";
 import { validateRequest } from "../utils";
 const validateRegisterData = async (req, res, next) => {
   try {
@@ -73,9 +73,29 @@ const validateProfileData = async (req, res, next) => {
     next(error);
   }
 };
+const validateNewFoodData = async (req, res, next) => {
+  try {
+    let foodType = await FoodType.find({});
+    foodType = foodType.map((x) => x.id);
+    const foodSchema = joi.object({
+      typeId: joi
+        .number()
+        .integer()
+        .required()
+        .valid(...foodType),
+      name: joi.string().max(256).min(1).required(),
+      unitPrice: joi.number().integer().min(1000).required(),
+    });
+    validateRequest(req, foodSchema, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const validateRequestBody = {
   validateRegisterData,
   validateLoginData,
   validateEmployeeData,
   validateProfileData,
+  validateNewFoodData,
 };

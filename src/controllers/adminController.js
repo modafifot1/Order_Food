@@ -98,7 +98,15 @@ const getListEmployees = async (req, res, next) => {
  *     }
  */
 const createNewEmployee = async (req, res, next) => {
-  const { email, password, roleId, fullName, phoneNumber, birthday } = req.body;
+  const {
+    email,
+    password,
+    roleId,
+    fullName,
+    phoneNumber,
+    birthday,
+    address,
+  } = req.body;
   try {
     const userExisted = await User.findOne({ email });
     if (userExisted) {
@@ -112,7 +120,7 @@ const createNewEmployee = async (req, res, next) => {
     const newUser = await User.create({
       email,
       password: hashPassword,
-      roleId: [roleId],
+      roleId: roleId,
     });
 
     await UserDetail.create({
@@ -120,6 +128,7 @@ const createNewEmployee = async (req, res, next) => {
       fullName,
       phoneNumber,
       birthday: new Date(birthday),
+      address,
     });
     await initPermissions(roleId, newUser._id);
     res.status(201).json({
@@ -629,26 +638,21 @@ const getPermissionsByUserId = async (req, res, next) => {
       throw createHttpError(404, "User is not existed!");
     }
     const roleId = user.roleId;
-    let permissionsByRoleId = await Promise.all(
-      roleId.map((x) =>
-        RolePermission.aggregate([
-          {
-            $lookup: {
-              from: "Permission",
-              localField: "permissionId",
-              foreignField: "_id",
-              as: "permissionDetail",
-            },
-          },
-          {
-            $match: {
-              roleId: x,
-            },
-          },
-        ])
-      )
-    );
-    permissionsByRoleId = permissionsByRoleId[0];
+    let permissionsByRoleId = await  RolePermission.aggregate([
+      {
+        $lookup: {
+          from: "Permission",
+          localField: "permissionId",
+          foreignField: "_id",
+          as: "permissionDetail",
+        },
+      },
+      {
+        $match: {
+          roleId: roleId,
+        },
+      },
+    ]);
     let permissionsByUserId = await UserPermission.find({ userId });
     permissionsByUserId = permissionsByUserId.map((x) =>
       String(x.permissionId)
@@ -724,8 +728,6 @@ const updatePermissionsByUserId = async (req, res, next) => {
       roleId,
       listAddPermissions
     );
-    console.log("List del: " + JSON.stringify(listDelPermissions));
-    console.log("List add: " + JSON.stringify(listAddPermissions));
     await UserPermission.insertMany(
       listAddPermissions.map((x) => {
         return {
