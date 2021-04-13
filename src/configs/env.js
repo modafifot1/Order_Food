@@ -14,4 +14,5 @@ export const envVariables = {
   cloud_name: process.env.CLOUD_NAME,
   api_key_cloud: process.env.API_KEY_CLOUD,
   api_secret_cloud: process.env.API_SECRET_CLOUD,
+  nodeEnv: process.env.NODE_ENV || "development",
 };

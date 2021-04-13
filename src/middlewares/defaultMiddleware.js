@@ -2,8 +2,10 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
 import express from "express";
-import morgan from "morgan";
 import { upload } from "../configs";
+import { envVariables } from "../configs";
+const { nodeEnv } = envVariables;
+const morgan = nodeEnv !== "production" && require("morgan");
 export const defaultMiddleware = (app) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
