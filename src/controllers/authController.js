@@ -163,14 +163,7 @@ const login = async (req, res, next) => {
  */
 const logout = async (req, res, next) => {
   try {
-    console.log("token: ", req.headers.authorization);
-    if (
-      !req.headers.authorization ||
-      !req.headers.authorization.startsWith("Bearer")
-    ) {
-      throw createHttpError(401, "No token, authorization denied!");
-    }
-
+    console.log(req.user._id);
     const userId = req.user._id;
     await destroyToken(userId);
     res.status(200).json({

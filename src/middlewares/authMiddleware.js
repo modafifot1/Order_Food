@@ -2,6 +2,7 @@ import createHttpError from "http-errors";
 import { verifyToken } from "../utils";
 export const jwtMiddleware = async (req, res, next) => {
   try {
+    console.log(req.headers.authorization);
     if (
       !req.headers.authorization ||
       !req.headers.authorization.startsWith("Bearer")
