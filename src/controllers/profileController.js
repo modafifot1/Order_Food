@@ -77,7 +77,7 @@ const getProfile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const { fullName, phoneNumber, birthday, address } = req.body;
-    const userId = req.params.userId;
+    const userId = req.user._id;
     const user = await User.findOne({ _id: userId });
     if (!user) {
       throw createHttpError(404, "User is not exist!");

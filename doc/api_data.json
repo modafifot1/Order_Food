@@ -1244,14 +1244,14 @@
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p><code> 201 </code></p>"
+            "description": "<p><code> 200 </code></p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
-            "description": "<p><code>Regitser success</code> if everything went fine.</p>"
+            "description": "<p><code>get food by id successfully</code> if everything went fine.</p>"
           },
           {
             "group": "Success 200",
@@ -1265,7 +1265,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 201 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
           "type": "json"
         }
       ]
@@ -1317,14 +1317,14 @@
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p><code> 201 </code></p>"
+            "description": "<p><code> 200 </code></p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
-            "description": "<p><code>Regitser success</code> if everything went fine.</p>"
+            "description": "<p><code>get list food per page successfully</code> if everything went fine.</p>"
           },
           {
             "group": "Success 200",
@@ -1338,7 +1338,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "   HTTP/1.1 201 OK\n   {\n       status: 201,\n       msg: \"get list food successfully!\",\n       foods:[\n     {\n         \"_id\": \"6076c317ebb733360805137a\",\n         \"typeId\": 1,\n         \"name\": \"Orange juice\",\n         \"unitPrice\": 40000,\n         \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n         \"createAt\": \"2021-04-14T10:25:27.376Z\",\n         \"__v\": 0\n     }\n]\n   }",
+          "content": "   HTTP/1.1 200 OK\n   {\n       status: 200,\n       msg: \"get list food successfully!\",\n       foods:[\n     {\n         \"_id\": \"6076c317ebb733360805137a\",\n         \"typeId\": 1,\n         \"name\": \"Orange juice\",\n         \"unitPrice\": 40000,\n         \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n         \"createAt\": \"2021-04-14T10:25:27.376Z\",\n         \"__v\": 0\n     }\n]\n   }",
           "type": "json"
         }
       ]

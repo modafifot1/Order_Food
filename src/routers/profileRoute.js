@@ -13,7 +13,7 @@ profileRoute
   .route(`${baseUrl}/:userId`)
   .get(checkPermission("USER_PROFILE", "View"), getProfile);
 profileRoute
-  .route(`${baseUrl}/:userId`)
+  .route(`${baseUrl}/userId`)
   .put(
     checkPermission("USER_PROFILE", "Edit"),
     validateProfileData,
