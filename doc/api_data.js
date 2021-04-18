@@ -60,7 +60,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -111,7 +111,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/employees"
+      }
+    ]
   },
   {
     "type": "delete",
@@ -139,7 +144,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -190,7 +195,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/employees/:employeeId"
+      }
+    ]
   },
   {
     "type": "get",
@@ -205,7 +215,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -263,7 +273,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/roles"
+      }
+    ]
   },
   {
     "type": "get",
@@ -278,7 +293,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -336,7 +351,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/users"
+      }
+    ]
   },
   {
     "type": "get",
@@ -351,7 +371,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -409,7 +429,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/employees/:employeeId"
+      }
+    ]
   },
   {
     "type": "get",
@@ -424,7 +449,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -482,7 +507,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/employees"
+      }
+    ]
   },
   {
     "type": "get",
@@ -510,7 +540,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -568,7 +598,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/users/:userId/permissions"
+      }
+    ]
   },
   {
     "type": "get",
@@ -596,7 +631,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -654,7 +689,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/permissions/:roleId"
+      }
+    ]
   },
   {
     "type": "put",
@@ -724,7 +764,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -775,7 +815,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/employees/:employeeId"
+      }
+    ]
   },
   {
     "type": "pat",
@@ -810,7 +855,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -861,7 +906,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/users/:userId/permissions"
+      }
+    ]
   },
   {
     "type": "put",
@@ -896,7 +946,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -947,7 +997,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
-    "groupTitle": "Admin"
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/permissions/:roleId"
+      }
+    ]
   },
   {
     "type": "post",
@@ -1048,7 +1103,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
-    "groupTitle": "Auth"
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/login"
+      }
+    ]
   },
   {
     "type": "post",
@@ -1063,7 +1123,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -1114,7 +1174,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
-    "groupTitle": "Auth"
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/logout"
+      }
+    ]
   },
   {
     "type": "post",
@@ -1208,110 +1273,70 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
-    "groupTitle": "Auth"
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/register-customer"
+      }
+    ]
   },
   {
-    "type": "get",
-    "url": "/api/v1/foods/:fooId",
-    "title": "Get food by foodId",
-    "name": "Get_food_by_foodId",
-    "group": "Food",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>The token can be generated from your user profile.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header-Example",
-          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
-          "type": "Header"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p><code> 200 </code></p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p><code>get food by id successfully</code> if everything went fine.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "food",
-            "description": "<p><code> List food per page <code></p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
-    "groupTitle": "Food"
-  },
-  {
-    "type": "get",
-    "url": "/api/v1/foods/:fooId",
-    "title": "Get food by foodId",
-    "name": "Get_food_by_foodId",
+    "type": "post",
+    "url": "/api/v1/foods",
+    "title": "Create new food",
+    "name": "Create_new_food",
     "group": "Food",
     "parameter": {
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "int",
+            "type": "file",
             "optional": false,
-            "field": "typeId",
-            "description": "<p>type of food</p>"
+            "field": "image",
+            "description": "<p>food's image</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
+            "optional": false,
+            "field": "typeId",
+            "description": "<p>foodType 1-food, 2-drink</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
             "optional": false,
             "field": "name",
-            "description": "<p>name of food</p>"
+            "description": "<p>food's name</p>"
           },
           {
             "group": "Parameter",
             "type": "int",
             "optional": false,
             "field": "unitPrice",
-            "description": "<p>price of food</p>"
+            "description": "<p>food's unitPricemust be greater than 0</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "discountOff",
+            "description": "<p>food's discountOff. Not required and value between 0-100 (curentcy = %)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "discountMaximum",
+            "description": "<p>food's discountMaximum. Not required</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>food's description. Not required</p>"
           }
         ]
       }
@@ -1323,7 +1348,149 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 201 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>create food successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n{\n    status: 201,\n    msg: \"Create food successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/foods/:foodId",
+    "title": "Delete food by foodId",
+    "name": "Delete_food_by_foodId",
+    "group": "Food",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Delete food successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"Delete food successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/:foodId"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/foods/:foodId",
+    "title": "Get food by foodId",
+    "name": "Get_food_by_foodId",
+    "group": "Food",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -1355,17 +1522,52 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "ObjecId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>food's id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "typeId",
+            "description": "<p>food's typeId</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>food's name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "unitPrice",
+            "description": "<p>food's unitPrice</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "numOfStars",
+            "description": "<p>rate of food</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "object",
             "optional": false,
-            "field": "food",
-            "description": "<p><code> List food per page <code></p>"
+            "field": "feedbacks",
+            "description": "<p><code> List feedbacks <code></p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
+          "content": "  HTTP/1.1 200 OK\n  {\n      status: 201,\n      msg: \"get food successfully!\",\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"numOfStars\": 3,\n      \"numOfFeedback\": 1,\n       \"feedbacks\": [\n         {\n           \"_id\": \"607bb68228b9b81957c0aa3c\",\n           \"foodId\": \"6076c317ebb733360805137a\",\n           \"userId\": \"607bb6af8bdfa84b56021b57\",\n           \"numOfStars\": 3,\n           \"content\": \"\"\n         }\n]\n  }",
           "type": "json"
         }
       ]
@@ -1381,7 +1583,90 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
-    "groupTitle": "Food"
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/:foodId"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/foods/:foodType/?page=",
+    "title": "Get food by foodType",
+    "name": "Get_food_by_foodType",
+    "group": "Food",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get list food per page successfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "foods",
+            "description": "<p><code> List food per page <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"get list food successfully!\",\n    foods:[\n     {\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"numOfStars\": 3,\n      \"numOfFeedback\": 1,\n      \"__v\": 0\n     }\n     ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/:foodType/?page="
+      }
+    ]
   },
   {
     "type": "get",
@@ -1396,7 +1681,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -1454,7 +1739,131 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
-    "groupTitle": "Food"
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/?page="
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/foods/:foodId",
+    "title": "Update food by foodId",
+    "name": "Update_food_by_foodId",
+    "group": "Food",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "typeId",
+            "description": "<p>foodType 1-food, 2-drink</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>food's name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "unitPrice",
+            "description": "<p>food's unitPricemust be greater than 0</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "discountOff",
+            "description": "<p>food's discountOff. Not required and value between 0-100 (curentcy = %)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "discountMaximum",
+            "description": "<p>food's discountMaximum. Not required</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>food's description. Not required</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update food successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"Update food successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/:foodId"
+      }
+    ]
   },
   {
     "type": "get",
@@ -1469,7 +1878,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -1532,7 +1941,7 @@ define({ "api": [
             "type": "Date",
             "optional": false,
             "field": "birthday",
-            "description": "<p>birthday's user</p>"
+            "description": "<p>birthday's</p>"
           }
         ]
       },
@@ -1555,7 +1964,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/profileController.js",
-    "groupTitle": "Profile"
+    "groupTitle": "Profile",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/profile/userId"
+      }
+    ]
   },
   {
     "type": "put",
@@ -1604,7 +2018,7 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "token",
+            "field": "Authorization",
             "description": "<p>The token can be generated from your user profile.</p>"
           }
         ]
@@ -1655,6 +2069,11 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/profileController.js",
-    "groupTitle": "Profile"
+    "groupTitle": "Profile",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/profile/userId"
+      }
+    ]
   }
 ] });

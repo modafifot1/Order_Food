@@ -1,4 +1,3 @@
-import { number } from "joi";
 import { Schema, model } from "mongoose";
 const feedbackSchema = new Schema({
   foodId: {
@@ -10,7 +9,7 @@ const feedbackSchema = new Schema({
     required: true,
   },
   numOfStars: {
-    type: number,
+    type: Number,
   },
   content: {
     type: String,

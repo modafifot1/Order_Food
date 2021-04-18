@@ -21,7 +21,7 @@ const {
  * @api {get} /api/v1/admin/employees Get list employees
  * @apiName Get list employees
  * @apiGroup Admin
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -79,7 +79,7 @@ const getListEmployees = async (req, res, next) => {
  * @apiParam {String} fullName name's employee
  * @apiParam {String} phoneNumber phone's employee
  * @apiParam {Date} birthday birthday's employee
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 201 </code>
@@ -144,7 +144,7 @@ const createNewEmployee = async (req, res, next) => {
  * @api {get} /api/v1/admin/employees/:employeeId Get an employee by id
  * @apiName Get an employee
  * @apiGroup Admin
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -221,7 +221,7 @@ const getEmpployeeById = async (req, res, next) => {
  * @apiParam {String} fullName name's employee
  * @apiParam {String} phoneNumber phone's employee
  * @apiParam {Date} birthday birthday's employee
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 201 </code>
@@ -280,7 +280,7 @@ const updateEmployeeById = async (req, res, next) => {
  * @apiName Delete an employee
  * @apiGroup Admin
  * @apiParam {String} employeeId id's employee
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -322,7 +322,7 @@ const deleteEmployeeById = async (req, res, next) => {
  * @api {get} /api/v1/admin/roles Get all role of system
  * @apiName Get all role
  * @apiGroup Admin
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -371,7 +371,7 @@ const getAllRoles = async (req, res, next) => {
  * @apiName Get permissions
  * @apiGroup Admin
  * @apiParam {number} roleId id's role
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -444,7 +444,7 @@ const getPermissionsByRoleId = async (req, res, next) => {
  * @apiGroup Admin
  * @apiParam {number} roleId id's role
  * @apiParam {Array} permissions an array of permissionId which is checked
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -503,7 +503,7 @@ const updatePermissionsByRoleId = async (req, res, next) => {
  * @api {get} /api/v1/admin/users Get all users
  * @apiName Get all user
  * @apiGroup Admin
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -579,7 +579,7 @@ const getAllUsers = async (req, res, next) => {
  * @apiName Get permission by userId
  * @apiGroup Admin
  * @apiParam {string} userId id of user
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -671,7 +671,7 @@ const getPermissionsByUserId = async (req, res, next) => {
  * @apiGroup Admin
  * @apiParam {string} userId id of user
  * @apiParam {array} permissions this is permissions is checked
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>

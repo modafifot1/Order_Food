@@ -5,7 +5,7 @@ import { User, UserDetail } from "../models";
  * @api {get} /api/v1/profile/userId get profile by userId
  * @apiName get profile by userId
  * @apiGroup Profile
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
@@ -14,7 +14,7 @@ import { User, UserDetail } from "../models";
  * @apiSuccess {String} fullName fullName's user
  * @apiSuccess {String} phoneNumber phoneNumber's user
  * @apiSuccess {String} address  address's user
- * @apiSuccess {Date} birthday birthday's user
+ * @apiSuccess {Date} birthday birthday's
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *     {
@@ -87,7 +87,7 @@ const getProfile = async (req, res, next) => {
  * @apiParam {String} phoneNumber phone's customer
  * @apiParam {Date} birthday birthday's customer
  * @apiParam {String} address address's customer
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>

@@ -144,7 +144,7 @@ const login = async (req, res, next) => {
  * @api {post} /api/v1/auth/logout Logout for all user
  * @apiName Logout for all user
  * @apiGroup Auth
- * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>

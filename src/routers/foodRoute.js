@@ -10,6 +10,7 @@ const { checkPermission } = validatePermission;
 const {
   getFoodById,
   getListFoodPerPage,
+  getFoodByFoodType,
   createNewFood,
   updateFoodById,
   deleteFoodById,
@@ -21,6 +22,9 @@ foodRoute.use(`${baseUrl}`, jwtMiddleware);
 foodRoute
   .route(`${baseUrl}/?`)
   .get(checkPermission("FOODS", "View"), getListFoodPerPage);
+foodRoute
+  .route(`${baseUrl}/:foodType/?`)
+  .get(checkPermission("FOODS", "View"), getFoodByFoodType);
 foodRoute
   .route(`${baseUrl}`)
   .post(
