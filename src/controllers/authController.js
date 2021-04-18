@@ -163,6 +163,7 @@ const login = async (req, res, next) => {
  */
 const logout = async (req, res, next) => {
   try {
+    console.log("token: ", req.headers.authorization);
     if (
       !req.headers.authorization ||
       !req.headers.authorization.startsWith("Bearer")
