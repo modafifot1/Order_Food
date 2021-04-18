@@ -13,6 +13,10 @@ profileRoute
   .route(`${baseUrl}/:userId`)
   .get(checkPermission("USER_PROFILE", "View"), getProfile);
 profileRoute
-  .route(checkPermission("USER_PROFILE", "Edit"), `${baseUrl}/:userId`)
-  .put(validateProfileData, updateProfile);
+  .route(`${baseUrl}/:userId`)
+  .put(
+    checkPermission("USER_PROFILE", "Edit"),
+    validateProfileData,
+    updateProfile
+  );
 profileRoute.route(`${baseUrl}/avatar/:userId`).put();

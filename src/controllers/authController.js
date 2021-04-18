@@ -13,6 +13,7 @@ const { initPermissions } = modifyPermissionsEffected;
  * @apiParam {String} fullName name's customer
  * @apiParam {String} phoneNumber phone's customer
  * @apiParam {Date} birthday birthday's customer
+ * @apiParam {String} address address's customer
  * @apiSuccess {String} msg <code>Regitser success</code> if everything went fine.
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK

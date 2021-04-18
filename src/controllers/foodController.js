@@ -4,7 +4,7 @@ import { uploadSingle } from "../configs";
 import createHttpError from "http-errors";
 const { perPage } = envVariables;
 /**
- * @api {get} /api/v1/foods/:page Get food per page
+ * @api {get} /api/v1/foods/?page= Get food per page
  * @apiName Get food per page
  * @apiGroup Food
  * @apiHeader {String} token The token can be generated from your user profile.
@@ -17,7 +17,7 @@ const { perPage } = envVariables;
  *     HTTP/1.1 201 OK
  *     {
  *         status: 201,
- *         msg: "Create an employee successfully!",
+ *         msg: "get list food successfully!",
  *         foods:[
  *       {
  *           "_id": "6076c317ebb733360805137a",
@@ -45,7 +45,7 @@ const getListFoodPerPage = async (req, res, next) => {
     const foods = await Food.find({}).skip(start).limit(perPage);
     res.status(200).json({
       status: 200,
-      msg: "Get food successfully!",
+      msg: "Get foods successfully!",
       foods,
     });
   } catch (error) {
@@ -53,11 +53,42 @@ const getListFoodPerPage = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/foods/:fooId Get food by foodId
+ * @apiName Get food by foodId
+ * @apiGroup Food
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 201 </code>
+ * @apiSuccess {String} msg <code>Regitser success</code> if everything went fine.
+ * @apiSuccess {object} food <code> List food per page <code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 201 OK
+ *     {
+ *         status: 201,
+ *         msg: "get food successfully!",
+ *         food:
+ *           "_id": "6076c317ebb733360805137a",
+ *           "typeId": 1,
+ *           "name": "Orange juice",
+ *           "unitPrice": 40000,
+ *           "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png",
+ *           "createAt": "2021-04-14T10:25:27.376Z",
+ *           "__v": 0
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const getFoodById = async (req, res, next) => {
   try {
-    console.log("sdksjdjshd");
     const foodId = req.params.foodId;
-    const food = Food.findById({ foodId });
+    console.log("FoodId :", foodId);
+    const food = await Food.findById(foodId);
     res.status(200).json({
       status: 200,
       msg: "Get food successfully!",

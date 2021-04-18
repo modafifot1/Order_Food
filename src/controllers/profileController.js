@@ -48,9 +48,35 @@ const getProfile = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {put} /api/v1/profile/:userId update profile by userId
+ * @apiName update profile by userId
+ * @apiGroup Profile
+ * @apiParam {String} fullName name's customer
+ * @apiParam {String} phoneNumber phone's customer
+ * @apiParam {Date} birthday birthday's customer
+ * @apiParam {String} address address's customer
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Update profile success</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 201 OK
+ *     {
+ *         status: 200,
+ *         msg: "update profile successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const updateProfile = async (req, res, next) => {
   try {
-    const { fullName, phoneNumber, birthday } = req.body;
+    const { fullName, phoneNumber, birthday, address } = req.body;
     const userId = req.params.userId;
     const user = await User.findOne({ _id: userId });
     if (!user) {
@@ -62,6 +88,7 @@ const updateProfile = async (req, res, next) => {
         phoneNumber,
         fullName,
         birthday,
+        address,
       }
     );
     res.status(200).json({

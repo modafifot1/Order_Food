@@ -1166,6 +1166,13 @@ define({ "api": [
             "optional": false,
             "field": "birthday",
             "description": "<p>birthday's customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>address's customer</p>"
           }
         ]
       }
@@ -1202,5 +1209,251 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
     "groupTitle": "Auth"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/foods/:fooId",
+    "title": "Get food by foodId",
+    "name": "Get_food_by_foodId",
+    "group": "Food",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 201 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Regitser success</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "food",
+            "description": "<p><code> List food per page <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/foods/?page=",
+    "title": "Get food per page",
+    "name": "Get_food_per_page",
+    "group": "Food",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 201 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Regitser success</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "foods",
+            "description": "<p><code> List food per page <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "   HTTP/1.1 201 OK\n   {\n       status: 201,\n       msg: \"get list food successfully!\",\n       foods:[\n     {\n         \"_id\": \"6076c317ebb733360805137a\",\n         \"typeId\": 1,\n         \"name\": \"Orange juice\",\n         \"unitPrice\": 40000,\n         \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n         \"createAt\": \"2021-04-14T10:25:27.376Z\",\n         \"__v\": 0\n     }\n]\n   }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/profile/:userId",
+    "title": "update profile by userId",
+    "name": "update_profile_by_userId",
+    "group": "Profile",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "fullName",
+            "description": "<p>name's customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phoneNumber",
+            "description": "<p>phone's customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>birthday's customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>address's customer</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update profile success</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n{\n    status: 200,\n    msg: \"update profile successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/profileController.js",
+    "groupTitle": "Profile"
   }
 ] });
