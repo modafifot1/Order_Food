@@ -65,10 +65,12 @@ const validateEmployeeData = async (req, res, next) => {
 };
 const validateProfileData = async (req, res, next) => {
   try {
+    console.log(req.body);
     const profileSchema = joi.object({
       fullName: joi.string().required(),
       phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
       birthday: joi.date().required(),
+      address: joi.string().min(0).max(255),
     });
     validateRequest(req, profileSchema, next);
   } catch (error) {
