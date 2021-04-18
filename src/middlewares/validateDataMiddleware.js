@@ -3,6 +3,7 @@ import { FoodType, Role } from "../models";
 import { validateRequest } from "../utils";
 const validateRegisterData = async (req, res, next) => {
   try {
+    console.log(req.body);
     const role = await Role.findOne({ roleName: "customer" });
     const registerSchema = joi.object({
       email: joi.string().email().required(),
