@@ -10,7 +10,7 @@ const { getProfile, updateProfile } = profileController;
 export const profileRoute = Router();
 profileRoute.use(`${baseUrl}`, jwtMiddleware);
 profileRoute
-  .route(`${baseUrl}/:userId`)
+  .route(`${baseUrl}/userId`)
   .get(checkPermission("USER_PROFILE", "View"), getProfile);
 profileRoute
   .route(`${baseUrl}/userId`)

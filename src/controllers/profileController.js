@@ -3,7 +3,7 @@ import Schema from "mongoose";
 import { User, UserDetail } from "../models";
 const getProfile = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user._id;
     console.log("userId: " + userId);
     const user = await User.aggregate([
       {
@@ -49,7 +49,7 @@ const getProfile = async (req, res, next) => {
   }
 };
 /**
- * @api {put} /api/v1/profile/:userId update profile by userId
+ * @api {put} /api/v1/profile/userId update profile by userId
  * @apiName update profile by userId
  * @apiGroup Profile
  * @apiParam {String} fullName name's customer

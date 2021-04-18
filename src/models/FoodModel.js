@@ -1,3 +1,4 @@
+import { number } from "joi";
 import { Schema, model } from "mongoose";
 const foodSchema = Schema({
   typeId: {
@@ -31,6 +32,12 @@ const foodSchema = Schema({
   },
   updateAt: {
     type: Date,
+  },
+  numOfStars: {
+    type: Number,
+  },
+  numOfFeedback: {
+    type: Number,
   },
 });
 export const Food = model("Food", foodSchema, "Food");

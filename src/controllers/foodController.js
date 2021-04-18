@@ -26,6 +26,8 @@ const { perPage } = envVariables;
  *           "unitPrice": 40000,
  *           "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png",
  *           "createAt": "2021-04-14T10:25:27.376Z",
+ *           "numOfStars": 3,
+ *           "numOfFeedback": 1,
  *           "__v": 0
  *       }
  *  ]
@@ -39,7 +41,7 @@ const { perPage } = envVariables;
  */
 const getListFoodPerPage = async (req, res, next) => {
   try {
-    const page = req.query.page;
+    const page = req.query.page || 1;
     console.log(page);
     const start = (page - 1) * perPage;
     const foods = await Food.find({}).skip(start).limit(perPage);
@@ -106,7 +108,6 @@ const getFoodById = async (req, res, next) => {
  * @apiParam {int} typeId type of food
  * @apiParam {String} name name of food
  * @apiParam {int} unitPrice price of food
- * @apiParam {}
  * @apiHeader {String} token The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"

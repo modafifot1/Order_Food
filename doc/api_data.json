@@ -1285,6 +1285,106 @@
   },
   {
     "type": "get",
+    "url": "/api/v1/foods/:fooId",
+    "title": "Get food by foodId",
+    "name": "Get_food_by_foodId",
+    "group": "Food",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "typeId",
+            "description": "<p>type of food</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>name of food</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "unitPrice",
+            "description": "<p>price of food</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get food by id successfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "food",
+            "description": "<p><code> List food per page <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"get food successfully!\",\n    food:\n      \"_id\": \"6076c317ebb733360805137a\",\n      \"typeId\": 1,\n      \"name\": \"Orange juice\",\n      \"unitPrice\": 40000,\n      \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n      \"createAt\": \"2021-04-14T10:25:27.376Z\",\n      \"__v\": 0\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food"
+  },
+  {
+    "type": "get",
     "url": "/api/v1/foods/?page=",
     "title": "Get food per page",
     "name": "Get_food_per_page",
@@ -1338,7 +1438,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "   HTTP/1.1 200 OK\n   {\n       status: 200,\n       msg: \"get list food successfully!\",\n       foods:[\n     {\n         \"_id\": \"6076c317ebb733360805137a\",\n         \"typeId\": 1,\n         \"name\": \"Orange juice\",\n         \"unitPrice\": 40000,\n         \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n         \"createAt\": \"2021-04-14T10:25:27.376Z\",\n         \"__v\": 0\n     }\n]\n   }",
+          "content": "   HTTP/1.1 200 OK\n   {\n       status: 200,\n       msg: \"get list food successfully!\",\n       foods:[\n     {\n         \"_id\": \"6076c317ebb733360805137a\",\n         \"typeId\": 1,\n         \"name\": \"Orange juice\",\n         \"unitPrice\": 40000,\n         \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n         \"createAt\": \"2021-04-14T10:25:27.376Z\",\n         \"numOfStars\": 3,\n         \"numOfFeedback\": 1,\n         \"__v\": 0\n     }\n]\n   }",
           "type": "json"
         }
       ]
