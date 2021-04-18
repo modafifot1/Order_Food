@@ -17,8 +17,9 @@ const {
 const baseUrl = "/api/v1/foods";
 
 export const foodRoute = Router();
+foodRoute.use(`${baseUrl}`, jwtMiddleware);
 foodRoute
-  .route(`${baseUrl}/:page`)
+  .route(`${baseUrl}/?`)
   .get(checkPermission("FOODS", "View"), getListFoodPerPage);
 foodRoute
   .route(`${baseUrl}`)

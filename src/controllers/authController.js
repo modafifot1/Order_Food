@@ -9,7 +9,7 @@ const { initPermissions } = modifyPermissionsEffected;
  * @apiGroup Auth
  * @apiParam {String} email email's customer account
  * @apiParam {String} password password's customer account
- * @apiParam {Int} role role's customer require "customer"
+ * @apiParam {Int} roleID role's customer require "customer"
  * @apiParam {String} fullName name's customer
  * @apiParam {String} phoneNumber phone's customer
  * @apiParam {Date} birthday birthday's customer
@@ -169,7 +169,8 @@ const logout = async (req, res, next) => {
     ) {
       throw createHttpError(401, "No token, authorization denied!");
     }
-    const userId = req.params.userId;
+
+    const userId = req.user._id;
     await destroyToken(userId);
     res.status(200).json({
       status: 200,

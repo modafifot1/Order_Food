@@ -75,7 +75,7 @@ const getListEmployees = async (req, res, next) => {
  * @apiGroup Admin
  * @apiParam {String} email email's employee account
  * @apiParam {String} password password's employee account
- * @apiParam {Int} role role's employee required value = 2
+ * @apiParam {Int} roleId role's employee required value = 2
  * @apiParam {String} fullName name's employee
  * @apiParam {String} phoneNumber phone's employee
  * @apiParam {Date} birthday birthday's employee

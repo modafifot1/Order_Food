@@ -26,7 +26,7 @@
             "group": "Parameter",
             "type": "Int",
             "optional": false,
-            "field": "role",
+            "field": "roleId",
             "description": "<p>role's employee required value = 2</p>"
           },
           {
@@ -393,7 +393,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n    employee: {\n         _id: \"6020bd895d7a6b07b0b0eef9\",\n         email: \"nqp260699@gmail.com\",\n         password: \"sds54545602sdsd0bd8sds95d7a6b07b0b0eef9\",\n         roleId: 1,\n         \"userDetail\": [\n             {\n                 \"_id\": \"6062d14bf3541b39146c0206\",\n                  \"userId\": \"6062d14bf3541b39146c0205\",\n                 \"fullName\": \"Nguyen van A\",\n                 \"phoneNumber\": \"0325656596\",\n                  \"birthday\": \"1999-02-04T17:00:00.000Z\",\n                  \"__v\": 0\n              }\n          ]\n    }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get an employee successfully!\",\n    employee: {\n         _id: \"6020bd895d7a6b07b0b0eef9\",\n         email: \"nqp260699@gmail.com\",\n         roleId: 1,\n         \"fullName\": \"Nguyen van A\",\n         \"phoneNumber\": \"0325656596\",\n         \"birthday\": \"1999-02-04T17:00:00.000Z\",\n    }\n}",
           "type": "json"
         }
       ]
@@ -552,7 +552,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by userId successfully!\",\n    listPermissions: [\n      {\n          \"_id\": \"60632c5b72d5dd3d60e65e6f\",\n          \"roleId\": 1,\n          \"permissionId\": \"606318bbae23812268265f03\",\n          \"__v\": 0,\n          \"permissionDetail\": [\n              {\n                  \"_id\": \"606318bbae23812268265f03\",\n                  \"name\": \"USER_PROFILE\",\n                  \"action\": \"Edit\",\n                  \"__v\": 0\n              }\n          ],\n          \"license\": 0 //0- is not allowed\n      },\n      {\n          \"_id\": \"60632c5b72d5dd3d60e65e71\",\n          \"roleId\": 1,\n          \"permissionId\": \"606318bbae23812268265f05\",\n          \"__v\": 0,\n          \"permissionDetail\": [\n              {\n                  \"_id\": \"606318bbae23812268265f05\",\n                  \"name\": \"CHANGE_PASSWORD\",\n                  \"action\": \"Edit\",\n                  \"__v\": 0\n              }\n          ],\n          \"license\": 1 //1- is allowed\n      },\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by userId successfully!\",\n    listPermissions: [\n     {\n          \"roleId\": 2,\n          \"permissionId\": \"606318bbae23812268265f03\",\n          \"name\": \"USER_PROFILE\",\n          \"action\": \"Edit\",\n          \"license\": 0\n      },\n      {\n          \"roleId\": 2,\n          \"permissionId\": \"606318bbae23812268265f04\",\n          \"name\": \"USER_PROFILE\",\n          \"action\": \"View\",\n          \"license\": 0\n      },\n    ]\n}",
           "type": "json"
         }
       ]
@@ -1032,7 +1032,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Login is success\",\n    roleId: [1],\n    token: \"xxx.xxx.xxx\",\n    userId:\"605a06776c02022ab46cc160\",\n    imageUrl:\"211d2s12c3fsf3s2df\",\n    fullNamr: \"Nguyen Quang Phieu\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Login is success\",\n    roleId: [1],\n    token: \"xxx.xxx.xxx\",\n    userId:\"605a06776c02022ab46cc160\",\n    imageUrl:\"211d2s12c3fsf3s2df\",\n    fullName: \"Nguyen Quang Phieu\"\n}",
           "type": "json"
         }
       ]
@@ -1143,7 +1143,7 @@
             "group": "Parameter",
             "type": "Int",
             "optional": false,
-            "field": "role",
+            "field": "roleID",
             "description": "<p>role's customer require &quot;customer&quot;</p>"
           },
           {

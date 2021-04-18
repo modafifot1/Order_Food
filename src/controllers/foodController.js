@@ -3,9 +3,44 @@ import { Food } from "../models/FoodModel";
 import { uploadSingle } from "../configs";
 import createHttpError from "http-errors";
 const { perPage } = envVariables;
+/**
+ * @api {get} /api/v1/foods/:page Get food per page
+ * @apiName Get food per page
+ * @apiGroup Food
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 201 </code>
+ * @apiSuccess {String} msg <code>Regitser success</code> if everything went fine.
+ * @apiSuccess {Array} foods <code> List food per page <code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 201 OK
+ *     {
+ *         status: 201,
+ *         msg: "Create an employee successfully!",
+ *         foods:[
+ *       {
+ *           "_id": "6076c317ebb733360805137a",
+ *           "typeId": 1,
+ *           "name": "Orange juice",
+ *           "unitPrice": 40000,
+ *           "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png",
+ *           "createAt": "2021-04-14T10:25:27.376Z",
+ *           "__v": 0
+ *       }
+ *  ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const getListFoodPerPage = async (req, res, next) => {
   try {
-    const page = req.params.page;
+    const page = req.query.page;
+    console.log(page);
     const start = (page - 1) * perPage;
     const foods = await Food.find({}).skip(start).limit(perPage);
     res.status(200).json({
@@ -20,6 +55,7 @@ const getListFoodPerPage = async (req, res, next) => {
 };
 const getFoodById = async (req, res, next) => {
   try {
+    console.log("sdksjdjshd");
     const foodId = req.params.foodId;
     const food = Food.findById({ foodId });
     res.status(200).json({
