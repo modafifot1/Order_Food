@@ -1,6 +1,35 @@
 import createHttpError from "http-errors";
 import Schema from "mongoose";
 import { User, UserDetail } from "../models";
+/**
+ * @api {get} /api/v1/profile/userId get profile by userId
+ * @apiName get profile by userId
+ * @apiGroup Profile
+ * @apiHeader {String} token The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>get profile success</code> if everything went fine.
+ * @apiSuccess {object}
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 201 OK
+ *     {
+ *         status: 200,
+ *         msg: "update profile successfully!",
+ *         "email": "teo@gmail.com",
+ *         "userId": "607b99348f2d3500151f091d",
+ *         "fullName": "Nguyen Van B",
+ *         "phoneNumber": "03566382356",
+ *         "birthday": "1999-04-27T17:00:00.000Z",
+ *         "address": null
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const getProfile = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -38,10 +67,8 @@ const getProfile = async (req, res, next) => {
     res.status(200).json({
       status: 200,
       msg: "Get user profile successfully!",
-      user: {
-        email: user[0].email,
-        ...user[0].userDetail[0],
-      },
+      email: user[0].email,
+      ...user[0].userDetail[0],
     });
   } catch (error) {
     console.log(error);
