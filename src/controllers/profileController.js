@@ -10,7 +10,11 @@ import { User, UserDetail } from "../models";
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
  * @apiSuccess {String} msg <code>get profile success</code> if everything went fine.
- * @apiSuccess {object}
+ * @apiSuccess {String} email email's user
+ * @apiSuccess {String} fullName fullName's user
+ * @apiSuccess {String} phoneNumber phoneNumber's user
+ * @apiSuccess {String} address  address's user
+ * @apiSuccess {Date} birthday birthday's user
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *     {

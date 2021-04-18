@@ -2,6 +2,7 @@ import { envVariables } from "../configs";
 import { Food } from "../models/FoodModel";
 import { uploadSingle } from "../configs";
 import createHttpError from "http-errors";
+import Mongoose from "mongoose";
 const { perPage } = envVariables;
 /**
  * @api {get} /api/v1/foods/?page= Get food per page
@@ -90,11 +91,27 @@ const getFoodById = async (req, res, next) => {
   try {
     const foodId = req.params.foodId;
     console.log("FoodId :", foodId);
-    const food = await Food.findById(foodId);
+    // const food = await Food.findById(foodId);
+    const food = await Food.aggregate([
+      {
+        $lookup: {
+          from: "Feedback",
+          localField: "_id",
+          foreignField: "foodId",
+          as: "feedbacks",
+        },
+      },
+      {
+        $match: {
+          _id: Mongoose.Types.ObjectId(foodId),
+        },
+      },
+    ]);
+    console.log("food: ", food);
     res.status(200).json({
       status: 200,
       msg: "Get food successfully!",
-      food,
+      ...food[0],
     });
   } catch (error) {
     console.log(error);
