@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Permission } from "../models";
+import { Permission, RolePermission } from "../models";
 export const dbConnection = async (uri) => {
   try {
     console.log(uri);

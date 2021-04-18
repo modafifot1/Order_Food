@@ -7,7 +7,7 @@ const initPermissions = async (roleId, userId) => {
     const userPermissions = permissions.map((x) => {
       return {
         userId,
-        permissionId: x,
+        permissionId: x.permissionId,
       };
     });
     await UserPermission.insertMany(userPermissions);

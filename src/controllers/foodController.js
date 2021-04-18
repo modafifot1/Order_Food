@@ -34,7 +34,14 @@ const getFoodById = async (req, res, next) => {
 };
 const createNewFood = async (req, res, next) => {
   try {
-    const { typeId, name, unitPrice } = req.body;
+    const {
+      typeId,
+      name,
+      unitPrice,
+      discountOff,
+      description,
+      discountMaximum,
+    } = req.body;
     console.log(req.files[0].path);
     const image = await uploadSingle(req.files[0].path);
     const newFood = await Food.create({
@@ -42,6 +49,9 @@ const createNewFood = async (req, res, next) => {
       name,
       unitPrice,
       imageUrl: image.url,
+      discountOff,
+      description,
+      discountMaximum,
     });
     console.log(image.url);
     res.status(200).json({
@@ -56,7 +66,14 @@ const createNewFood = async (req, res, next) => {
 };
 const updateFoodById = async (req, res, next) => {
   try {
-    const { name, unitPrice, typeId } = req.body;
+    const {
+      name,
+      unitPrice,
+      typeId,
+      discountOff,
+      description,
+      discountMaximum,
+    } = req.body;
     console.log(req.body);
     const foodId = req.params.foodId;
     const existedFood = await Food.findById(foodId);
@@ -67,6 +84,9 @@ const updateFoodById = async (req, res, next) => {
       name,
       unitPrice,
       typeId,
+      discountOff,
+      description,
+      discountMaximum,
     });
     res.status(200).json({
       status: 200,

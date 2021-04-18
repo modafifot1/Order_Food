@@ -1,5 +1,5 @@
 import { authRoute } from "./authRoute";
 import { adminRoute } from "./adminRoute";
-import { profileRote } from "./profileRoute";
+import { profileRoute } from "./profileRoute";
 import { foodRoute } from "./foodRoute";
-export { authRoute, adminRoute, profileRote, foodRoute };
+export { authRoute, adminRoute, profileRoute, foodRoute };

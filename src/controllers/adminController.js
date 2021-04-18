@@ -591,35 +591,19 @@ const getAllUsers = async (req, res, next) => {
  *         status: 200,
  *         msg: "Get permissions by userId successfully!",
  *         listPermissions: [
- *           {
- *               "_id": "60632c5b72d5dd3d60e65e6f",
- *               "roleId": 1,
+ *          {
+ *               "roleId": 2,
  *               "permissionId": "606318bbae23812268265f03",
- *               "__v": 0,
- *               "permissionDetail": [
- *                   {
- *                       "_id": "606318bbae23812268265f03",
- *                       "name": "USER_PROFILE",
- *                       "action": "Edit",
- *                       "__v": 0
- *                   }
- *               ],
- *               "license": 0 //0- is not allowed
+ *               "name": "USER_PROFILE",
+ *               "action": "Edit",
+ *               "license": 0
  *           },
  *           {
- *               "_id": "60632c5b72d5dd3d60e65e71",
- *               "roleId": 1,
- *               "permissionId": "606318bbae23812268265f05",
- *               "__v": 0,
- *               "permissionDetail": [
- *                   {
- *                       "_id": "606318bbae23812268265f05",
- *                       "name": "CHANGE_PASSWORD",
- *                       "action": "Edit",
- *                       "__v": 0
- *                   }
- *               ],
- *               "license": 1 //1- is allowed
+ *               "roleId": 2,
+ *               "permissionId": "606318bbae23812268265f04",
+ *               "name": "USER_PROFILE",
+ *               "action": "View",
+ *               "license": 0
  *           },
  *         ]
  *     }
@@ -638,7 +622,7 @@ const getPermissionsByUserId = async (req, res, next) => {
       throw createHttpError(404, "User is not existed!");
     }
     const roleId = user.roleId;
-    let permissionsByRoleId = await  RolePermission.aggregate([
+    let permissionsByRoleId = await RolePermission.aggregate([
       {
         $lookup: {
           from: "Permission",
@@ -657,13 +641,17 @@ const getPermissionsByUserId = async (req, res, next) => {
     permissionsByUserId = permissionsByUserId.map((x) =>
       String(x.permissionId)
     );
+    console.log(permissionsByUserId);
     permissionsByRoleId = permissionsByRoleId.map((x) => {
       let license = 0;
       if (permissionsByUserId.includes(String(x.permissionId))) {
         license = 1;
       }
       return {
-        ...x,
+        roleId: x.roleId,
+        permissionId: x.permissionId,
+        name: x.permissionDetail[0].name,
+        action: x.permissionDetail[0].action,
         license,
       };
     });

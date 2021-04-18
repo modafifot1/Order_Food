@@ -16,6 +16,7 @@ const validateRegisterData = async (req, res, next) => {
       fullName: joi.string().required(),
       phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
       birthday: joi.date().required(),
+      address: joi.string(),
     });
     validateRequest(req, registerSchema, next);
   } catch (error) {
@@ -54,6 +55,7 @@ const validateEmployeeData = async (req, res, next) => {
       fullName: joi.string().required(),
       phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
       birthday: joi.date().required(),
+      address: joi.string(),
     });
     validateRequest(req, employeeSchema, next);
   } catch (error) {
@@ -85,6 +87,9 @@ const validateNewFoodData = async (req, res, next) => {
         .valid(...foodType),
       name: joi.string().max(256).min(1).required(),
       unitPrice: joi.number().integer().min(1000).required(),
+      discountOff: joi.number().min(0).max(1),
+      description: joi.string().max(1024),
+      discountMaximum: joi.number().min(0).max(joi.ref("unitPrice")),
     });
     validateRequest(req, foodSchema, next);
   } catch (error) {

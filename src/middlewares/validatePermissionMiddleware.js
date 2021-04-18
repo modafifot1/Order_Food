@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { UserPermission, RolePermission, Role } from "../models";
+import { UserPermission, RolePermission, Role, Permission } from "../models";
 const isAdminRole = async (req, res, next) => {
   const user = req.user;
   try {
@@ -13,6 +13,32 @@ const isAdminRole = async (req, res, next) => {
     next(error);
   }
 };
+const checkPermission = (perName, perAction) => async (req, res, next) => {
+  try {
+    const user = req.user;
+    const permission = await Permission.findOne({
+      name: perName,
+      action: perAction,
+    });
+    const isExisted = await UserPermission.findOne({
+      userId: user._id,
+      permissionId: permission._id,
+    });
+    console.log("permission: ", permission);
+    console.log("userId: ", user._id);
+    if (!isExisted) {
+      throw createHttpError(
+        401,
+        "You have not thiss permission or permission is banned!"
+      );
+    }
+    next();
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const validatePermission = {
   isAdminRole,
+  checkPermission,
 };
