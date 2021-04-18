@@ -158,18 +158,10 @@ const createNewEmployee = async (req, res, next) => {
  *         employee: {
  *              _id: "6020bd895d7a6b07b0b0eef9",
  *              email: "nqp260699@gmail.com",
- *              password: "sds54545602sdsd0bd8sds95d7a6b07b0b0eef9",
  *              roleId: 1,
- *              "userDetail": [
- *                  {
- *                      "_id": "6062d14bf3541b39146c0206",
- *                       "userId": "6062d14bf3541b39146c0205",
- *                      "fullName": "Nguyen van A",
- *                      "phoneNumber": "0325656596",
- *                       "birthday": "1999-02-04T17:00:00.000Z",
- *                       "__v": 0
- *                   }
- *               ]
+ *              "fullName": "Nguyen van A",
+ *              "phoneNumber": "0325656596",
+ *              "birthday": "1999-02-04T17:00:00.000Z",
  *         }
  *     }
  * @apiErrorExample Response (example):
@@ -203,7 +195,15 @@ const getEmpployeeById = async (req, res, next) => {
     res.status(200).json({
       status: 200,
       msg: "Get an employee successfully!",
-      employee: employee[0],
+      employee: {
+        _id: employee[0]._id,
+        email: employee[0].email,
+        role: employee[0].role,
+        createAt: employee[0].createAt,
+        phoneNumber: employee[0].userDetail[0].phoneNumber,
+        fullName: employee[0].userDetail[0].fullName,
+        birthday: employee[0].userDetail[0].birthday,
+      },
     });
   } catch (error) {
     console.log(error);

@@ -38,6 +38,7 @@ const registerCustomer = async (req, res, next) => {
     address,
   } = req.body;
   try {
+    console.log(req.body);
     const userExisted = await User.findOne({ email });
     if (userExisted) {
       throw createHttpError(400, "This email is used by others!");
