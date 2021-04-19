@@ -8,6 +8,10 @@ import { CodeReset } from "./CodeResetModel";
 import { Token } from "./TokenModel";
 import { Food } from "./FoodModel";
 import { FoodType } from "./FoodTypeModel";
+import { CartItem } from "./CartItemModel";
+import { OrderItem } from "./OrderItemModel";
+import { Order } from "./OrderModel";
+import { OrderStatus } from "./OrderStatusModel";
 export {
   User,
   UserDetail,
@@ -19,4 +23,8 @@ export {
   Token,
   Food,
   FoodType,
+  CartItem,
+  Order,
+  OrderItem,
+  OrderStatus,
 };

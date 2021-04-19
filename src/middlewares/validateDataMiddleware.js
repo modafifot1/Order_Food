@@ -80,6 +80,7 @@ const validateProfileData = async (req, res, next) => {
 };
 const validateNewFoodData = async (req, res, next) => {
   try {
+    console.log(req.body);
     let foodType = await FoodType.find({});
     foodType = foodType.map((x) => x.id);
     const foodSchema = joi.object({

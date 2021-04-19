@@ -24,7 +24,8 @@
     "jwt-redis": "^6.0.0",
     "mongoose": "^5.11.18",
     "multer": "^1.4.2",
-    "redis": "^3.1.0"
+    "redis": "^3.1.0",
+    "socket.io": "^4.0.1"
   },
   "devDependencies": {
     "apidoc": "^0.27.1",
@@ -33,12 +34,12 @@
   },
   "repository": "https://github.com/modafifot1/Order_Food",
   "author": "Phieu Nguyen <nqp260699@gmail.com>",
-  "apidoc":{
+  "apidoc": {
     "name": "SFood",
     "version": "0.1.0",
     "description": "apiDoc SFood",
     "title": "apiDoc SFood",
-    "url" : "http://127.0.0.1:3000",
+    "url": "http://127.0.0.1:3000",
     "useHostUrlAsSampleUrl": true,
     "sampleUrl": "http://127.0.0.1:3000"
   }

@@ -1,25 +1,25 @@
 import { Schema, model } from "mongoose";
-const feedbackSchema = new Schema({
-  foodId: {
+const orderSchema = new Schema({
+  customerId: {
     type: Schema.Types.ObjectId,
     required: true,
   },
-  userId: {
+  employeesId: {
     type: Schema.Types.ObjectId,
     required: true,
   },
-  numOfStars: {
-    type: Number,
-  },
-  content: {
+  address: {
     type: String,
+    required: true,
+  },
+  total: {
+    type: Number,
+    required: true,
   },
   createAt: {
     type: Date,
+    required: true,
     default: Date.now,
   },
-  updateAt: {
-    type: Date,
-  },
 });
-export const Feedback = model("Feedback", feedbackSchema, "Feedback");
+export const Order = model("Order", orderSchema, "Order");
