@@ -6,7 +6,7 @@ import Mongoose from "mongoose";
 import { Feedback } from "../models/FeedbackModel";
 const { perPage } = envVariables;
 /**
- * @api {get} /api/v1/foods/?page= Get food per page
+ * @api {get} /api/v1/food?page= Get food per page
  * @apiName Get food per page
  * @apiGroup Food
  * @apiHeader {String} Authorization The token can be generated from your user profile.
