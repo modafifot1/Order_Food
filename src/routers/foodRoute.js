@@ -23,7 +23,7 @@ foodRoute
   .route(`${baseUrl}/?`)
   .get(checkPermission("FOODS", "View"), getListFoodPerPage);
 foodRoute
-  .route(`${baseUrl}/:foodType/?`)
+  .route(`${baseUrl}/:foodType?`)
   .get(checkPermission("FOODS", "View"), getFoodByFoodType);
 foodRoute
   .route(`${baseUrl}`)
