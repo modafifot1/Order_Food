@@ -44,7 +44,7 @@ const { perPage } = envVariables;
 const getListFoodPerPage = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
-    console.log(page);
+    console.log("page: ", page);
     const start = (page - 1) * perPage;
     const foods = await Food.find({}).skip(start).limit(perPage);
     res.status(200).json({
