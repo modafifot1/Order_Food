@@ -1,7 +1,39 @@
 import createHttpError from "http-errors";
 import Mongoose from "mongoose";
 import { CartItem } from "../models";
-
+/**
+ * @api {get} /api/v1/carts Get cart item
+ * @apiName Get cart item
+ * @apiGroup Cart
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>get list cart item successfully</code> if everything went fine.
+ * @apiSuccess {Array} cartItems <code> List cart item page <code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "get list cart item successfully!",
+ *         "cartItems": [
+ *            {
+ *            "_id": "607d3e2a8ce6ab317096a869",
+ *            "foodId": "6076c317ebb733360805137a",
+ *            "quantity": 4,
+ *            "name": "Orange juice",
+ *            "unitPrice": 40000,
+ *            "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png"
+ *            }
+ *          ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const getListCartItem = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -46,6 +78,30 @@ const getListCartItem = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/carts Add cart item
+ * @apiName Add cart item
+ * @apiGroup Cart
+ * @apiParam {ObjectId} foodId food's Id
+ * @apiParam {int} quantity quantity food
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Add cart item successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Add cart item successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const createNewCartItem = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -64,6 +120,29 @@ const createNewCartItem = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {put} /api/v1/carts/:itemId Update cart item by id
+ * @apiName Update cart item by Id
+ * @apiGroup Cart
+ * @apiParam {int} quantity quantity food
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Update cart item successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Update cart item successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const updateCartItem = async (req, res, next) => {
   try {
     const itemId = req.params.itemId;
@@ -84,6 +163,28 @@ const updateCartItem = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {delete} /api/v1/carts/:itemId Delete cart item
+ * @apiName Delete cart item
+ * @apiGroup Cart
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Delete cart item successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Delete cart item successfully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const deleteCartItem = async (req, res, next) => {
   try {
     const itemId = req.params.itemId;

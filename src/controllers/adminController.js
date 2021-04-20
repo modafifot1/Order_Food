@@ -26,13 +26,22 @@ const {
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
  * @apiSuccess {String} msg <code>Regitser success</code> if everything went fine.
- * @apiSuccess {Array} listEmployees <code> An array list of employees </code>
+ * @apiSuccess {Array} listEmployees <code> List of eployees</code>
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *     {
  *         status: 200,
  *         msg: "Get list employee successfully!",
- *         listEmployees: [object1, object2, ...]
+ *         listEmployees: [
+ *          {
+ *          "_id": "6076c201228fe14534c3ca4a",
+ *           "email": "employees1@gmail.com",
+ *           "roleId": 2,
+ *           "fullName": "Nguyen Van B",
+ *           "phoneNumber": "03566382356",
+ *           "birthday": "1999-04-27T17:00:00.000Z"
+ *          }
+ *        ]
  *     }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -44,7 +53,7 @@ const {
 const getListEmployees = async (req, res, next) => {
   try {
     const employeeRole = await Role.findOne({ roleName: "employee" });
-    const listEmployees = await User.aggregate([
+    let listEmployees = await User.aggregate([
       {
         $lookup: {
           from: "UserDetail",
@@ -59,6 +68,17 @@ const getListEmployees = async (req, res, next) => {
         },
       },
     ]);
+    listEmployees = listEmployees.map((x) => {
+      return {
+        _id: x._id,
+        email: x.email,
+        roleId: x.roleId,
+        fullName: x.userDetail[0].fullName,
+        phoneNumber: x.userDetail[0].phoneNumber,
+        birthday: x.userDetail[0].birthday,
+        address: x.userDetail[0].address,
+      };
+    });
     res.status(200).json({
       status: 200,
       msg: "Get list employee successfully!",
