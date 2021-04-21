@@ -1377,6 +1377,26 @@ define({ "api": [
     "title": "Delete cart item",
     "name": "Delete_cart_item",
     "group": "Cart",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "cartItems",
+            "description": "<p>list id of cart item</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "param example",
+          "content": "{\n   \"cartItems\" :[\n       \"607faeb5d35ea403f0328a38\"\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
     "header": {
       "fields": {
         "Header": [
@@ -1531,13 +1551,20 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "int",
+            "type": "Array",
             "optional": false,
-            "field": "quantity",
-            "description": "<p>quantity food</p>"
+            "field": "cartItems",
+            "description": "<p>array of object. each object consist of _id and quantity</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Param example",
+          "content": "{\n     cartItems: [\n       {\n         \"_id\": \"607faeb5d35ea403f0328a38\",\n         \"quantity\": 3\n       }\n     ]\n}",
+          "type": "json"
+        }
+      ]
     },
     "header": {
       "fields": {
@@ -2281,7 +2308,7 @@ define({ "api": [
             "type": "Array",
             "optional": false,
             "field": "cartItems",
-            "description": "<p>list id of cart items in oreder</p>"
+            "description": "<p>list id of cart items in order</p>"
           }
         ]
       }
@@ -2546,6 +2573,90 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/orders/:orderId"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/orders/:orderId/statuses",
+    "title": "Update order Status",
+    "name": "Update_order_status",
+    "group": "Order",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>must require when customer paid order.</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": " HTTP/1.1 200 OK when confirm order\n    {\n       \"status\": 200,\n       \"msg\": \"Confirm successfully!\",\n   }\nHTTP/1.1 200 OK when ship order\n    {\n        \"status\": 200,\n        \"msg\": \"Tranfer to ship purchase successfully!\"\n    }\nHTTP/1.1 200 OK when paid order\n    {\n        \"status\": 200,\n        \"msg\": \"Pay for order successfully!\"\n    }\nHTTP/1.1 200 OK when Comfirm paid order\n    {\n        \"status\": 200,\n        \"msg\": \"Confirm paid order successfully!\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n     \"msg\": \"You can only cancel the order if don't over 5 minutes from ordering\",\n     \"status\": 400\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/orderController.js",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/orders/:orderId/statuses"
       }
     ]
   },

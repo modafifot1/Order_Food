@@ -135,7 +135,17 @@ const createNewCartItem = async (req, res, next) => {
  * @api {put} /api/v1/carts/:itemId Update cart item by id
  * @apiName Update cart item by Id
  * @apiGroup Cart
- * @apiParam {int} quantity quantity food
+ * @apiParam {Array} cartItems array of object. each object consist of _id and quantity
+ * @apiParamExample {json} Param example
+ * {
+ *      cartItems: [
+ *        {
+ *          "_id": "607faeb5d35ea403f0328a38",
+ *          "quantity": 3
+ *        }
+ *      ]
+ * }
+ *
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -156,12 +166,15 @@ const createNewCartItem = async (req, res, next) => {
  */
 const updateCartItem = async (req, res, next) => {
   try {
-    const itemId = req.params.itemId;
-    const { quantity } = req.body;
-    console.log(quantity);
-    const cartItem = await CartItem.findByIdAndUpdate(itemId, {
-      quantity,
-    });
+    const { cartItems } = req.body;
+    const cartItem = await Promise.all(
+      cartItems.map((x) => {
+        console.log("_id: ", x._id);
+        return CartItem.findByIdAndUpdate(x._id, {
+          quantity: x.quantity,
+        });
+      })
+    );
     if (!cartItem) {
       throw createHttpError(404, "Not found item");
     }
@@ -178,6 +191,13 @@ const updateCartItem = async (req, res, next) => {
  * @api {delete} /api/v1/carts/:itemId Delete cart item
  * @apiName Delete cart item
  * @apiGroup Cart
+ * @apiParam {array} cartItems list id of cart item
+ * @apiParamExample {json} param example
+ * {
+ *    "cartItems" :[
+ *        "607faeb5d35ea403f0328a38"
+ *    ]
+ * }
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -198,8 +218,13 @@ const updateCartItem = async (req, res, next) => {
  */
 const deleteCartItem = async (req, res, next) => {
   try {
-    const itemId = req.params.itemId;
-    const cartItem = await CartItem.findOneAndDelete({ _id: itemId });
+    const { cartItems } = req.body;
+    console.log(cartItems);
+    const cartItem = await CartItem.deleteMany({
+      _id: {
+        $in: cartItems,
+      },
+    });
     if (!cartItem) {
       throw createHttpError(404, "Not found item");
     }

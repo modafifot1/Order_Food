@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 const codeSchema = Schema({
   code: {
-    type: Number,
+    type: String,
     required: true,
   },
   userId: {
@@ -11,6 +11,7 @@ const codeSchema = Schema({
   updateAt: {
     type: Date,
     required: true,
+    default: Date.now,
   },
 });
 export const Code = model("Code", codeSchema, "Code");

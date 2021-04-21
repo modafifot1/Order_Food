@@ -1,7 +1,7 @@
 import { validateRequest } from "./joiValidate";
 import { encodeToken, verifyToken, destroyToken } from "./token";
 import { modifyPermissionsEffected } from "./modifyPermissionsEffected";
-import { getCodeVerify } from "./GenerateCodeVerify";
+import { getCodeVerify, confirmCode } from "./codeConfirm";
 // import { uploadMultiData } from "./uploadMultiData";
 export {
   validateRequest,
@@ -10,5 +10,6 @@ export {
   destroyToken,
   modifyPermissionsEffected,
   getCodeVerify,
+  confirmCode,
   // uploadMultiData,
 };

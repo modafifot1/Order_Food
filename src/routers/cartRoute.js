@@ -19,14 +19,14 @@ cartRoute
   .route(`${baseUrl}`)
   .post(checkPermission("CART_ITEM", "Create"), createNewCartItem);
 cartRoute
-  .route(`${baseUrl}/:itemId`)
+  .route(`${baseUrl}`)
   .put(checkPermission("CART_ITEM", "Edit"), updateCartItem);
 cartRoute
-  .route(`${baseUrl}/:itemId`)
-  .delete(checkPermission("CART_ITEM"), deleteCartItem);
-cartRoute
   .route(`${baseUrl}`)
-  .delete(checkPermission("CART_ITEM", "Delete"), deleteAllCartItem);
+  .delete(checkPermission("CART_ITEM", "Delete"), deleteCartItem);
+// cartRoute
+//   .route(`${baseUrl}`)
+//   .delete(checkPermission("CART_ITEM", "Delete"), deleteAllCartItem);
 // cartRoute
 //   .route(`${baseUrl}/:itemId`)
 //   .get(checkPermission("CART_ITEM", "View"), getCartItemById);

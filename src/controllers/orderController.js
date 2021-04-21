@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
 import Mongoose from "mongoose";
-import { getCodeVerify } from "../utils";
-import { CartItem, Food, Order, OrderItem, OrderStatus } from "../models";
+import { getCodeVerify, confirmCode } from "../utils";
+import { CartItem, Code, Food, Order, OrderItem, OrderStatus } from "../models";
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -324,14 +324,70 @@ const cancelOrderById = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {put} /api/v1/orders/:orderId/statuses Update order Status
+ * @apiName Update order status
+ * @apiGroup Order
+ * @apiParam  {String} code must require when customer paid order.
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK when confirm order
+ *        {
+ *           "status": 200,
+ *           "msg": "Confirm successfully!",
+ *       }
+ *    HTTP/1.1 200 OK when ship order
+ *        {
+ *            "status": 200,
+ *            "msg": "Tranfer to ship purchase successfully!"
+ *        }
+ *    HTTP/1.1 200 OK when paid order
+ *        {
+ *            "status": 200,
+ *            "msg": "Pay for order successfully!"
+ *        }
+ *    HTTP/1.1 200 OK when Comfirm paid order
+ *        {
+ *            "status": 200,
+ *            "msg": "Confirm paid order successfully!"
+ *        }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *          "msg": "You can only cancel the order if don't over 5 minutes from ordering",
+ *          "status": 400
+ *       }
+ */
 const updateStatus = async (req, res, next) => {
   try {
     const user = req.user;
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId);
+    const { code } = req.body;
     switch (order.statusId) {
       case 0:
-        verifyOrder(order, res, next);
+        if (user.roleId != 2)
+          throw createHttpError(400, "You are not employee");
+        await confirmOrderStatus(order, res, next);
+        break;
+      case 1:
+        if (user.roleId != 2)
+          throw createHttpError(400, "You are not employee");
+        await shipOrderStatus(order, res, next);
+        break;
+      case 2:
+        if (user.roleId != 1)
+          throw createHttpError(400, "You are not customer!");
+        await paidOrderStatus(order, code, res, next);
+        break;
+      case 3:
+        if (user.roleId != 2)
+          throw createHttpError(400, "You are not employee!");
+        await confirmPaidOrderStatus(order, res, next);
         break;
       default:
         break;
@@ -341,17 +397,62 @@ const updateStatus = async (req, res, next) => {
     next(error);
   }
 };
-const verifyOrder = async (order, res, next) => {
+const confirmOrderStatus = async (order, res, next) => {
   try {
-    const code = await getCodeVerify(next);
-    const updateOrder = await Order.findOneAndUpdate(
-      { _id: order._id },
-      {
-        code,
-        statusId: 1,
-      }
-    );
-    console.log(updateOrder);
+    await Order.findByIdAndUpdate(order._id, {
+      statusId: 1,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Confirm successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const shipOrderStatus = async (order, res, next) => {
+  try {
+    const code = await getCodeVerify(order.customerId, next);
+    await Order.findByIdAndUpdate(order._id, {
+      code,
+      statusId: 2,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Tranfer to ship purchase successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const paidOrderStatus = async (order, code, res, next) => {
+  try {
+    if (!confirmCode(code, order, next)) {
+      throw createHttpError(400, "Payment code is not valid!");
+    }
+    await Order.findByIdAndUpdate(order._id, {
+      statusId: 3,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Pay for order successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const confirmPaidOrderStatus = async (order, res, next) => {
+  try {
+    await Order.findByIdAndUpdate(order._id, {
+      statusId: 4,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Confirm paid order successfully!",
+    });
   } catch (error) {
     console.log(error);
     next(error);
