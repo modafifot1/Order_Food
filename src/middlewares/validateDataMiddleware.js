@@ -42,6 +42,7 @@ const validateLoginData = (req, res, next) => {
 };
 const validateEmployeeData = async (req, res, next) => {
   try {
+    console.log("employeesdata: ", req.body);
     const role = await Role.findOne({ roleName: "employee" });
     console.log(JSON.stringify(role));
     const employeeSchema = joi.object({

@@ -1,5 +1,6 @@
 import createHttpError from "http-errors";
 import Mongoose from "mongoose";
+import { getCodeVerify } from "../utils";
 import { CartItem, Food, Order, OrderItem, OrderStatus } from "../models";
 /**
  * @api {get} /api/v1/orders Get list order by userId
@@ -323,9 +324,43 @@ const cancelOrderById = async (req, res, next) => {
     next(error);
   }
 };
+const updateStatus = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId);
+    switch (order.statusId) {
+      case 0:
+        verifyOrder(order, res, next);
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const verifyOrder = async (order, res, next) => {
+  try {
+    const code = await getCodeVerify(next);
+    const updateOrder = await Order.findOneAndUpdate(
+      { _id: order._id },
+      {
+        code,
+        statusId: 1,
+      }
+    );
+    console.log(updateOrder);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const orderController = {
   getListOrder,
   getOrderById,
   createNewOrder,
   cancelOrderById,
+  updateStatus,
 };

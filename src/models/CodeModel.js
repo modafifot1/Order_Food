@@ -13,4 +13,4 @@ const codeSchema = Schema({
     required: true,
   },
 });
-export const CodeReset = model("CodeReset", codeSchema, "CodeReset");
+export const Code = model("Code", codeSchema, "Code");

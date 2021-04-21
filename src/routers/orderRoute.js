@@ -7,6 +7,7 @@ const {
   getOrderById,
   createNewOrder,
   cancelOrderById,
+  updateStatus,
 } = orderController;
 const baseUrl = "/api/v1/orders";
 export const orderRoute = Router();
@@ -23,3 +24,6 @@ orderRoute
 orderRoute
   .route(`${baseUrl}/:orderId`)
   .delete(checkPermission("ORDER", "Delete"), cancelOrderById);
+orderRoute
+  .route(`${baseUrl}/:orderId/statuses`)
+  .put(checkPermission("ORDER", "Edit"), updateStatus);
