@@ -2190,6 +2190,366 @@ define({ "api": [
     ]
   },
   {
+    "type": "delete",
+    "url": "/api/v1/orders/:orderId",
+    "title": "Cancel order",
+    "name": "Cancel_order",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Cancel order successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Cancel order successfully!\",\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n     \"msg\": \"You can only cancel the order if don't over 5 minutes from ordering\",\n     \"status\": 400\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/orderController.js",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/orders/:orderId"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/orders",
+    "title": "Create new order",
+    "name": "Create_new_order",
+    "group": "Order",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>customer's address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "cartItems",
+            "description": "<p>list id of cart items in oreder</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 201 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Create new order successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Create new order successfully!\",\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/orderController.js",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/orders"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/orders",
+    "title": "Get list order by userId",
+    "name": "Get_list_order",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get list orders sucessfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "cartItems",
+            "description": "<p><code> List the orders <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list order sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"607ee38c5061c506d4604111\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"62/07 Đồng Kè, Liên Chiểu, Đà Năng\",\n              \"total\": 278000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-20T14:22:04.994Z\",\n              \"__v\": 0\n          },\n          {\n              \"_id\": \"607f895a5e06da3054bacbc3\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"Hue\",\n              \"total\": 128000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-21T02:09:30.509Z\",\n              \"__v\": 0\n          }\n      ]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/orderController.js",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/orders"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/orders/:orderId",
+    "title": "Get order by orderId",
+    "name": "Get_order_by_orderId",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get list orders sucessfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>order's id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>customer's address</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "total",
+            "description": "<p>order's total price</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "orderStatus",
+            "description": "<p>order's status</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createAt",
+            "description": "<p>purchase date</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "orderItems",
+            "description": "<p>List object of order items</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "cartItems",
+            "description": "<p><code> List the orders <code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "{\n    \"status\": 200,\n    \"msg\": \"Get order successfully!\",\n    \"_id\": \"607ee38c5061c506d4604111\",\n    \"address\": \"62/07 Đồng Kè, Liên Chiểu, Đà Năng\",\n    \"total\": 278000,\n    \"orderStatus\": \"Chờ xác nhận\",\n    \"createAt\": \"2021-04-20T14:22:04.994Z\",\n    \"orderItems\": [\n        {\n            \"_id\": \"607ee38d5061c506d4604112\",\n            \"quantity\": 4,\n            \"foodId\": \"6076c317ebb733360805137a\",\n            \"name\": \"Orange juice\",\n            \"unitPrice\": 40000,\n            \"discountOff\": 20\n        },\n        {\n            \"_id\": \"607ee38d5061c506d4604113\",\n            \"quantity\": 3,\n            \"foodId\": \"607d81b6e141e742289e2ecf\",\n            \"name\": \"Gà sốt me\",\n            \"unitPrice\": 50000\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/orderController.js",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/orders/:orderId"
+      }
+    ]
+  },
+  {
     "type": "get",
     "url": "/api/v1/profile/userId",
     "title": "get profile by userId",

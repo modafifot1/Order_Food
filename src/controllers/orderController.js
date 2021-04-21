@@ -1,3 +1,4 @@
+import createHttpError from "http-errors";
 import Mongoose from "mongoose";
 import { CartItem, Food, Order, OrderItem, OrderStatus } from "../models";
 /**
@@ -186,7 +187,7 @@ const getOrderById = async (req, res, next) => {
  * @apiName Create new order
  * @apiGroup Order
  * @apiParam {String} address customer's address
- * @apiParam {Array} cartItems list id of cart items in oreder
+ * @apiParam {Array} cartItems list id of cart items in order
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -283,37 +284,40 @@ const calculatePrice = (unitPrice, quantity, discountOff, discountMaximum) => {
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
- * @apiSuccess {Number} status <code> 201 </code>
- * @apiSuccess {String} msg <code>Create new order successfully</code> if everything went fine.
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Cancel order successfully</code> if everything went fine.
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *        {
  *           "status": 200,
- *           "msg": "Create new order successfully!",
+ *           "msg": "Cancel order successfully!",
  *       }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
  *     {
- *       "status" : 400,
- *       "msg": "Role is invalid"
- *     }
+ *          "msg": "You can only cancel the order if don't over 5 minutes from ordering",
+ *          "status": 400
+ *       }
  */
 const cancelOrderById = async (req, res, next) => {
   try {
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId);
-    console.log(new Date(order.createAt).getMilliseconds());
-    console.log(Date.now());
-    const duration = Date.now() - new Date(order.createAt).getMilliseconds();
+    console.log(new Date(order.createAt));
+    console.log(new Date(Date.now()));
+    const duration = Date.now() - new Date(order.createAt).getTime();
     console.log("duration: ", duration);
-    // if(duration > 5*60*1000){
-    //     throw createHttpError(400, "You can cancel the order if don't over 5 minutes from ordering");
-    // }
-    // await Order.findByIdAndRemove(orderId);
-    // res.status(200).json({
-    //     status: 200,
-    //     msg: "Cancel order successfully!"
-    // });
+    if (duration > 5 * 60 * 1000) {
+      throw createHttpError(
+        400,
+        "You can only cancel the order if don't over 5 minutes from ordering"
+      );
+    }
+    await Order.findByIdAndRemove(orderId);
+    res.status(200).json({
+      status: 200,
+      msg: "Cancel order successfully!",
+    });
   } catch (error) {
     console.log(error);
     next(error);
