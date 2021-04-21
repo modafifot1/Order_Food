@@ -6,7 +6,6 @@ const orderSchema = new Schema({
   },
   employeesId: {
     type: Schema.Types.ObjectId,
-    required: true,
   },
   address: {
     type: String,
@@ -20,6 +19,9 @@ const orderSchema = new Schema({
     type: Date,
     required: true,
     default: Date.now,
+  },
+  statusId: {
+    type: Number,
   },
 });
 export const Order = model("Order", orderSchema, "Order");

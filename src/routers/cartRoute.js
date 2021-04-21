@@ -7,6 +7,7 @@ const {
   createNewCartItem,
   updateCartItem,
   deleteCartItem,
+  deleteAllCartItem,
 } = cartController;
 const baseUrl = "/api/v1/carts";
 export const cartRoute = Router();
@@ -23,6 +24,9 @@ cartRoute
 cartRoute
   .route(`${baseUrl}/:itemId`)
   .delete(checkPermission("CART_ITEM"), deleteCartItem);
+cartRoute
+  .route(`${baseUrl}`)
+  .delete(checkPermission("CART_ITEM", "Delete"), deleteAllCartItem);
 // cartRoute
 //   .route(`${baseUrl}/:itemId`)
 //   .get(checkPermission("CART_ITEM", "View"), getCartItemById);

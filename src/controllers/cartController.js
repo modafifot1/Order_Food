@@ -106,14 +106,25 @@ const createNewCartItem = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { foodId, quantity } = req.body;
-    await CartItem.create({
+    const existedCartItem = await CartItem.findOne({
       customerId: userId,
       foodId,
-      quantity,
     });
+    console.log("exist: ", existedCartItem);
+    if (existedCartItem) {
+      await CartItem.findByIdAndUpdate(existedCartItem._id, {
+        quantity: existedCartItem.quantity + quantity,
+      });
+    } else {
+      await CartItem.create({
+        customerId: userId,
+        foodId,
+        quantity,
+      });
+    }
     res.status(200).json({
       status: 201,
-      msg: "Create new cart item successfully!",
+      msg: "Add cart item successfully!",
     });
   } catch (error) {
     console.log(error);
@@ -201,10 +212,23 @@ const deleteCartItem = async (req, res, next) => {
     next(error);
   }
 };
-
+const deleteAllCartItem = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    await CartItem.remove({ customerId: userId });
+    res.status(200).json({
+      status: 200,
+      msg: "Delete all cart items successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const cartController = {
   getListCartItem,
   createNewCartItem,
   deleteCartItem,
   updateCartItem,
+  deleteAllCartItem,
 };
