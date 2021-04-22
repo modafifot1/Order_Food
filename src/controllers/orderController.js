@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
 import Mongoose from "mongoose";
-import { getCodeVerify, confirmCode } from "../utils";
-import { CartItem, Code, Food, Order, OrderItem, OrderStatus } from "../models";
+import { getPaymentCode, confirmPaymentCode } from "../utils";
+import { CartItem, Order, OrderItem, OrderStatus } from "../models";
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -413,9 +413,8 @@ const confirmOrderStatus = async (order, res, next) => {
 };
 const shipOrderStatus = async (order, res, next) => {
   try {
-    const code = await getCodeVerify(order.customerId, next);
+    await getPaymentCode(order._id, next);
     await Order.findByIdAndUpdate(order._id, {
-      code,
       statusId: 2,
     });
     res.status(200).json({
@@ -429,7 +428,7 @@ const shipOrderStatus = async (order, res, next) => {
 };
 const paidOrderStatus = async (order, code, res, next) => {
   try {
-    if (!confirmCode(code, order, next)) {
+    if (!(await confirmPaymentCode(code, order, next))) {
       throw createHttpError(400, "Payment code is not valid!");
     }
     await Order.findByIdAndUpdate(order._id, {

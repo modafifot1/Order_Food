@@ -1,6 +1,77 @@
 [
   {
     "type": "post",
+    "url": "/api/v1/admin/foods/:foodId",
+    "title": "Confirm food when create new one",
+    "name": "Confirm_food_when_create_new_one",
+    "group": "Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code> Confirm successully</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Confirm successully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/foods/:foodId"
+      }
+    ]
+  },
+  {
+    "type": "post",
     "url": "/api/v1/admin/employees",
     "title": "Create a new employee",
     "name": "Create_a_new_eployees",
@@ -516,6 +587,84 @@
   },
   {
     "type": "get",
+    "url": "/api/v1/admin/foods",
+    "title": "Get list of food to confirm",
+    "name": "Get_list_of_food_to_confirm",
+    "group": "Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get list food successfully</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "foods",
+            "description": "<p><code> Array foods which need confirming </code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get list food successfully!\",\n    \"foods\": [\n        {\n            \"confirmed\": false,\n            \"_id\": \"607d81b6e141e742289e2ecf\",\n            \"typeId\": 1,\n            \"name\": \"Gà sốt me\",\n            \"unitPrice\": 50000,\n            \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg\",\n            \"createAt\": \"2021-04-19T13:12:22.475Z\",\n            \"__v\": 0\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/adminController.js",
+    "groupTitle": "Admin",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/admin/foods"
+      }
+    ]
+  },
+  {
+    "type": "get",
     "url": "/api/v1/admin/users/:userId/permissions",
     "title": "Get permissions by userId",
     "name": "Get_permission_by_userId",
@@ -823,7 +972,7 @@
     ]
   },
   {
-    "type": "pat",
+    "type": "put",
     "url": "/api/v1/admin/users/:userId/permissions",
     "title": "Update permissions by userId",
     "name": "Update_permission_by_userId",
@@ -1277,6 +1426,226 @@
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/auth/register-customer"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/auth/new-password",
+    "title": "Reset password when forgot",
+    "name": "Reset_password_when_forgot",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>email's user account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "newPassword",
+            "description": "<p>New password for account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confirmPassword",
+            "description": "<p>Confirm password is required matching with new password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "email",
+            "optional": false,
+            "field": "code",
+            "description": "<p>The code for reseting password. Check in email box.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Reset password successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Reset password successfully\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\":  Reset code is invalid!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/new-password"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/auth/send-reset-code",
+    "title": "Send code to reset passsword",
+    "name": "Send_code_to_reset_passsword",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>email's customer account</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Send reset code successfully!. Please check your email.</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Send reset code successfully!. Please check your email.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": email is invalid!\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/send-reset-code"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/auth/change-password",
+    "title": "Change password",
+    "name": "change_password",
+    "group": "Auth",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "oldPassword",
+            "description": "<p>current password of account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "newPassword",
+            "description": "<p>New password for changing passsword</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confirmPassword",
+            "description": "<p>Required matching with new password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Change password successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Change password successfully\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\":  \"Old password is incorrect!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/change-password"
       }
     ]
   },
@@ -2098,6 +2467,97 @@
     ]
   },
   {
+    "type": "post",
+    "url": "/api/v1/foods/search",
+    "title": "Search food by name",
+    "name": "Search_food_by_name",
+    "group": "Food",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "searchText",
+            "description": "<p>search string</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Seacrh food successfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "foods",
+            "description": "<p><code> List of food found</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    \"status\": 201,\n    \"msg\": \"Search food successfully!\",\n      \"foods\": [\n          {\n              \"confirmed\": false,\n              \"_id\": \"607d81b6e141e742289e2ecf\",\n              \"typeId\": 1,\n              \"name\": \"Gà sốt me\",\n              \"unitPrice\": 50000,\n              \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg\",\n              \"createAt\": \"2021-04-19T13:12:22.475Z\",\n              \"__v\": 0,\n              \"score\": 1.5\n          },\n          {\n              \"confirmed\": true,\n              \"_id\": \"607d8194e141e742289e2ece\",\n              \"typeId\": 1,\n              \"name\": \"Gà sốt phô mai\",\n              \"unitPrice\": 65000,\n              \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837909/inb8toi2piizugdinrzp.png\",\n              \"createAt\": \"2021-04-19T13:11:48.964Z\",\n              \"__v\": 0,\n              \"score\": 1.25\n          },\n          {\n              \"confirmed\": true,\n              \"_id\": \"607d8172e141e742289e2ecd\",\n              \"typeId\": 1,\n              \"name\": \"Đùi gà\",\n              \"unitPrice\": 60000,\n              \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837875/yddc5hcfzu0i5iqimvbf.jpg\",\n              \"createAt\": \"2021-04-19T13:11:14.894Z\",\n              \"__v\": 0,\n              \"score\": 0.75\n          }\n     ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/search"
+      }
+    ]
+  },
+  {
     "type": "put",
     "url": "/api/v1/foods/:foodId",
     "title": "Update food by foodId",
@@ -2657,6 +3117,97 @@
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/orders/:orderId/statuses"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/profile/avatar/:userId",
+    "title": "Update avatar by userId",
+    "name": "Update_avatar_by_userId",
+    "group": "Profile",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "avatar",
+            "description": "<p>file avatar of user</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update profile success</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "imageUrl",
+            "description": "<p>The image url of avatar</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n{\n    status: 200,\n    msg: \"update profile successfully!\",\n    imageUrl: \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1619077426/wyfrh0tmxlydidvfyujn.jpg\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/profileController.js",
+    "groupTitle": "Profile",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/profile/avatar/:userId"
       }
     ]
   },

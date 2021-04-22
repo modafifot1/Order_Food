@@ -46,7 +46,9 @@ const getListFoodPerPage = async (req, res, next) => {
     const page = req.query.page || 1;
     console.log("page: ", page);
     const start = (page - 1) * perPage;
-    const foods = await Food.find({}).skip(start).limit(perPage);
+    const foods = await Food.find({ confirmed: true })
+      .skip(start)
+      .limit(perPage);
     res.status(200).json({
       status: 200,
       msg: "Get foods successfully!",
@@ -166,7 +168,7 @@ const getFoodByFoodType = async (req, res, next) => {
     const foodType = req.params.foodType;
     const page = req.query.page;
     const start = (page - 1) * perPage;
-    const foods = await Food.find({ typeId: foodType })
+    const foods = await Food.find({ typeId: foodType, confirmed: true })
       .skip(start)
       .limit(perPage);
     res.status(200).json({
@@ -341,6 +343,89 @@ const deleteFoodById = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/foods/search Search food by name
+ * @apiName Search food by name
+ * @apiGroup Food
+ * @apiParam {String} searchText search string
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Seacrh food successfully</code> if everything went fine.
+ * @apiSuccess {Array} foods <code> List of food found</code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "status": 201,
+ *         "msg": "Search food successfully!",
+ *           "foods": [
+ *               {
+ *                   "confirmed": false,
+ *                   "_id": "607d81b6e141e742289e2ecf",
+ *                   "typeId": 1,
+ *                   "name": "Gà sốt me",
+ *                   "unitPrice": 50000,
+ *                   "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg",
+ *                   "createAt": "2021-04-19T13:12:22.475Z",
+ *                   "__v": 0,
+ *                   "score": 1.5
+ *               },
+ *               {
+ *                   "confirmed": true,
+ *                   "_id": "607d8194e141e742289e2ece",
+ *                   "typeId": 1,
+ *                   "name": "Gà sốt phô mai",
+ *                   "unitPrice": 65000,
+ *                   "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837909/inb8toi2piizugdinrzp.png",
+ *                   "createAt": "2021-04-19T13:11:48.964Z",
+ *                   "__v": 0,
+ *                   "score": 1.25
+ *               },
+ *               {
+ *                   "confirmed": true,
+ *                   "_id": "607d8172e141e742289e2ecd",
+ *                   "typeId": 1,
+ *                   "name": "Đùi gà",
+ *                   "unitPrice": 60000,
+ *                   "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837875/yddc5hcfzu0i5iqimvbf.jpg",
+ *                   "createAt": "2021-04-19T13:11:14.894Z",
+ *                   "__v": 0,
+ *                   "score": 0.75
+ *               }
+ *          ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
+const searchFoods = async (req, res, next) => {
+  try {
+    const { searchText } = req.body;
+    const page = req.query.page || 1;
+    const start = (page - 1) * perPage;
+    const foods = await Food.find(
+      { $text: { $search: searchText } },
+      {
+        score: { $meta: "textScore" },
+      }
+    )
+      .skip(start)
+      .limit(perPage)
+      .sort({ score: { $meta: "textScore" } });
+    res.status(200).json({
+      status: 200,
+      msg: "Get foods successfully!",
+      foods,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const foodController = {
   getListFoodPerPage,
   getFoodById,
@@ -348,4 +433,5 @@ export const foodController = {
   updateFoodById,
   deleteFoodById,
   getFoodByFoodType,
+  searchFoods,
 };

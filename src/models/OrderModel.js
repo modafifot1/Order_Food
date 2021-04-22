@@ -23,8 +23,5 @@ const orderSchema = new Schema({
   statusId: {
     type: Number,
   },
-  code: {
-    type: String,
-  },
 });
 export const Order = model("Order", orderSchema, "Order");

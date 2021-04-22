@@ -4,7 +4,7 @@ import { Role } from "./RoleModel";
 import { Permission } from "./PermissionModel";
 import { RolePermission } from "./RolePermissionModel";
 import { UserPermission } from "./UserPermissionModel";
-import { Code } from "./CodeModel";
+import { PaymentCode } from "./PaymentCodeModel";
 import { Token } from "./TokenModel";
 import { Food } from "./FoodModel";
 import { FoodType } from "./FoodTypeModel";
@@ -12,6 +12,7 @@ import { CartItem } from "./CartItemModel";
 import { OrderItem } from "./OrderItemModel";
 import { Order } from "./OrderModel";
 import { OrderStatus } from "./OrderStatusModel";
+import { ResetCode } from "./ResetCodeModel";
 export {
   User,
   UserDetail,
@@ -19,7 +20,7 @@ export {
   Permission,
   RolePermission,
   UserPermission,
-  Code,
+  PaymentCode,
   Token,
   Food,
   FoodType,
@@ -27,4 +28,5 @@ export {
   Order,
   OrderItem,
   OrderStatus,
+  ResetCode,
 };

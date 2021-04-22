@@ -7,6 +7,7 @@ import {
   RolePermission,
   UserDetail,
   UserPermission,
+  Food,
 } from "../models";
 import Mongoose from "mongoose";
 import { modifyPermissionsEffected } from "../utils";
@@ -686,7 +687,7 @@ const getPermissionsByUserId = async (req, res, next) => {
   }
 };
 /**
- * @api {pat} /api/v1/admin/users/:userId/permissions Update permissions by userId
+ * @api {put} /api/v1/admin/users/:userId/permissions Update permissions by userId
  * @apiName Update permission by userId
  * @apiGroup Admin
  * @apiParam {string} userId id of user
@@ -768,6 +769,92 @@ const validatePermissionInRole = async (roleId, listPermissions) => {
     console.log(error);
   }
 };
+/**
+ * @api {get} /api/v1/admin/foods Get list of food to confirm
+ * @apiName Get list of food to confirm
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Get list food successfully</code>
+ * @apiSuccess {Array} foods <code> Array foods which need confirming </code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Get list food successfully!",
+ *         "foods": [
+ *             {
+ *                 "confirmed": false,
+ *                 "_id": "607d81b6e141e742289e2ecf",
+ *                 "typeId": 1,
+ *                 "name": "Gà sốt me",
+ *                 "unitPrice": 50000,
+ *                 "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg",
+ *                 "createAt": "2021-04-19T13:12:22.475Z",
+ *                 "__v": 0
+ *             }
+ *         ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getListFoodConfirm = async (req, res, next) => {
+  try {
+    const foods = await Food.find({ confirmed: false });
+    res.status(200).json({
+      status: 200,
+      msg: "Get list confirm food successfullY!",
+      foods,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {post} /api/v1/admin/foods/:foodId Confirm food when create new one
+ * @apiName Confirm food when create new one
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code> Confirm successully</code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Confirm successully!",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const confirmFood = async (req, res, next) => {
+  try {
+    const foodId = req.params.foodId;
+    const food = await Food.findByIdAndUpdate(foodId, {
+      confirmed: true,
+    });
+    if (!food) throw createHttpError(400, "Not found food by foodId!");
+    res.status(200).json({
+      status: 200,
+      msg: "Confirm food successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const adminController = {
   createNewEmployee,
   getListEmployees,
@@ -780,4 +867,6 @@ export const adminController = {
   getAllUsers,
   getPermissionsByUserId,
   updatePermissionsByUserId,
+  getListFoodConfirm,
+  confirmFood,
 };

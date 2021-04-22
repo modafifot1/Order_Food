@@ -4,7 +4,7 @@ const codeSchema = Schema({
     type: String,
     required: true,
   },
-  userId: {
+  orderId: {
     type: Schema.Types.ObjectId,
     required: true,
   },
@@ -13,5 +13,10 @@ const codeSchema = Schema({
     required: true,
     default: Date.now,
   },
+  expired: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
-export const Code = model("Code", codeSchema, "Code");
+export const PaymentCode = model("PaymentCode", codeSchema, "PaymentCode");

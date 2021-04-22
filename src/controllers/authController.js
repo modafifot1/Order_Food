@@ -2,6 +2,7 @@ import { Role, User, UserDetail } from "../models";
 import bcrypt from "bcryptjs";
 import createHttpError from "http-errors";
 import { encodeToken, destroyToken, modifyPermissionsEffected } from "../utils";
+import { getResetCode, confirmResetCode, sendEmail } from "../utils";
 const { initPermissions } = modifyPermissionsEffected;
 /**
  * @api {post} /api/v1/auth/register-customer register for customer
@@ -176,8 +177,144 @@ const logout = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/auth/send-reset-code Send code to reset passsword
+ * @apiName Send code to reset passsword
+ * @apiGroup Auth
+ * @apiParam {String} email email's customer account
+ * @apiSuccess {String} msg <code>Send reset code successfully!. Please check your email.</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Send reset code successfully!. Please check your email."
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": email is invalid!
+ *     }
+ */
+const sendResetCode = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw createHttpError(400, "email is invalid!");
+    }
+    const code = await getResetCode(user._id, next);
+    const message = "Your code for reseting password is: " + code;
+    await sendEmail(email, "Reset Code for change password", message, "", next);
+    res.status(200).json({
+      status: 200,
+      msg: "Send reset code successfully!. Please check your email.",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {post} /api/v1/auth/new-password Reset password when forgot
+ * @apiName Reset password when forgot
+ * @apiGroup Auth
+ * @apiParam {String} email email's user account
+ * @apiParam {String} newPassword New password for account
+ * @apiParam {String} confirmPassword Confirm password is required matching with new password
+ * @apiParam {email} code The code for reseting password. Check in email box.
+ * @apiSuccess {Int} status <code> 200</code>
+ * @apiSuccess {String} msg <code>Reset password successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Reset password successfully",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg":  Reset code is invalid!"
+ *     }
+ */
+const resetPassword = async (req, res, next) => {
+  try {
+    const { code, email, newPassword, confirmPassword } = req.body;
+    const user = await User.findOne({ email });
+    const confirmed = await confirmResetCode(code, user._id, next);
+    if (!confirmed) {
+      throw createHttpError(400, "Reset code is invalid!");
+    }
+    if (newPassword != confirmPassword)
+      throw createHttpError(
+        400,
+        "New password and confirm password are not matched!"
+      );
+    const hashPassword = await bcrypt.hash(newPassword, 12);
+    await User.findByIdAndUpdate(user._id, {
+      password: hashPassword,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Reset password successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {post} /api/v1/auth/change-password Change password
+ * @apiName change password
+ * @apiGroup Auth
+ * @apiParam {String} oldPassword current password of account
+ * @apiParam {String} newPassword  New password for changing passsword
+ * @apiParam {String} confirmPassword  Required matching with new password
+ * @apiSuccess {Int} status <code> 200</code>
+ * @apiSuccess {String} msg <code>Change password successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Change password successfully",
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg":  "Old password is incorrect!"
+ *     }
+ */
+const changePassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    const match = await bcrypt.compare(oldPassword, user.password);
+    if (!match) throw createHttpError(400, "Old password is incorrect!");
+    if (newPassword != confirmPassword)
+      throw createHttpError(
+        400,
+        "New password and confirm password is not match!"
+      );
+    const hashPassword = await bcrypt.hash(newPassword, 12);
+    await User.findByIdAndUpdate(user._id, {
+      password: hashPassword,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Change password successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const authController = {
   registerCustomer,
   login,
   logout,
+  sendResetCode,
+  resetPassword,
+  changePassword,
 };

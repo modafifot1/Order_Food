@@ -5,7 +5,7 @@ import { validateRequestBody, validatePermission } from "../middlewares";
 const { validateProfileData } = validateRequestBody;
 const { checkPermission } = validatePermission;
 const baseUrl = "/api/v1/profile";
-const { getProfile, updateProfile } = profileController;
+const { getProfile, updateProfile, updateAvatar } = profileController;
 
 export const profileRoute = Router();
 profileRoute.use(`${baseUrl}`, jwtMiddleware);
@@ -19,4 +19,6 @@ profileRoute
     validateProfileData,
     updateProfile
   );
-profileRoute.route(`${baseUrl}/avatar/:userId`).put();
+profileRoute
+  .route(`${baseUrl}/avatar/:userId`)
+  .put(checkPermission("USER_PROFILE", "Edit"), updateAvatar);

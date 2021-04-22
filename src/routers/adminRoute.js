@@ -18,6 +18,8 @@ const {
   getAllUsers,
   getPermissionsByUserId,
   updatePermissionsByUserId,
+  confirmFood,
+  getListFoodConfirm,
 } = adminController;
 const { validateEmployeeData } = validateRequestBody;
 const { isAdminRole } = validatePermission;
@@ -59,3 +61,6 @@ adminRoute.route(`${baseUrl}/revenues/days`).get();
 adminRoute.route(`${baseUrl}/revenues/months`).get();
 adminRoute.route(`${baseUrl}/revenues/quaters`).get();
 adminRoute.route(`${baseUrl}/revenues/years`).get();
+//--------------------Confirm food---------------------------------------//
+adminRoute.route(`${baseUrl}/foods/:foodId`).post(isAdminRole, confirmFood);
+adminRoute.route(`${baseUrl}/foods`).get(isAdminRole, getListFoodConfirm);

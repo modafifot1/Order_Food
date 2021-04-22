@@ -1,6 +1,6 @@
 import { number } from "joi";
 import { Schema, model } from "mongoose";
-const foodSchema = Schema({
+const foodSchema = new Schema({
   typeId: {
     type: Number,
     ref: "FoodType",
@@ -39,5 +39,11 @@ const foodSchema = Schema({
   numOfFeedback: {
     type: Number,
   },
+  confirmed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
+foodSchema.index({ name: "text" });
 export const Food = model("Food", foodSchema, "Food");

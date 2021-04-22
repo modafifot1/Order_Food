@@ -16,4 +16,6 @@ export const envVariables = {
   api_secret_cloud:
     process.env.API_SECRET_CLOUD || "bfBoZeZCJVFov7NhKJIqsP9W8M0",
   nodeEnv: process.env.NODE_ENV || "development",
+  nodemailerEmail: process.env.nodemailerEmail || "dacnpm17n2@gmmail.com",
+  nodemailerPassword: process.env.nodemailerPassword || "qweQWE!@#",
 };

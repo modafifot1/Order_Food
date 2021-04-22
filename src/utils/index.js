@@ -1,7 +1,13 @@
 import { validateRequest } from "./joiValidate";
 import { encodeToken, verifyToken, destroyToken } from "./token";
 import { modifyPermissionsEffected } from "./modifyPermissionsEffected";
-import { getCodeVerify, confirmCode } from "./codeConfirm";
+import {
+  getPaymentCode,
+  confirmPaymentCode,
+  getResetCode,
+  confirmResetCode,
+} from "./codeConfirm";
+import { sendEmail } from "./sendMail";
 // import { uploadMultiData } from "./uploadMultiData";
 export {
   validateRequest,
@@ -9,7 +15,10 @@ export {
   verifyToken,
   destroyToken,
   modifyPermissionsEffected,
-  getCodeVerify,
-  confirmCode,
+  getPaymentCode,
+  confirmPaymentCode,
+  getResetCode,
+  confirmResetCode,
+  sendEmail,
   // uploadMultiData,
 };

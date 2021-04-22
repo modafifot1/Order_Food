@@ -1,5 +1,7 @@
 import cloud from "cloudinary";
+import createHttpError from "http-errors";
 import multer from "multer";
+import { nextTick } from "process";
 import { envVariables } from "../configs";
 const { cloud_name, api_key_cloud, api_secret_cloud } = envVariables;
 cloud.v2.config({
@@ -27,4 +29,12 @@ export const uploadSingle = async (file) => {
         }
       });
   });
+};
+export const deleteImage = async (asset_id) => {
+  try {
+    await cloud.v2.uploader.destroy(asset_id);
+  } catch (error) {
+    console.log(error);
+    throw createHttpError(400, error);
+  }
 };

@@ -14,6 +14,7 @@ const {
   createNewFood,
   updateFoodById,
   deleteFoodById,
+  searchFoods,
 } = foodController;
 const baseUrl = "/api/v1/foods";
 
@@ -27,26 +28,19 @@ foodRoute
   .get(checkPermission("FOODS", "View"), getFoodByFoodType);
 foodRoute
   .route(`${baseUrl}`)
-  .post(
-    jwtMiddleware,
-    checkPermission("FOOD", "Create"),
-    validateNewFoodData,
-    createNewFood
-  );
+  .post(checkPermission("FOOD", "Create"), validateNewFoodData, createNewFood);
 foodRoute
   .route(`${baseUrl}/:foodId`)
   .get(checkPermission("FOOD", "View"), getFoodById);
 foodRoute
   .route(`${baseUrl}/:foodId`)
-  .put(
-    jwtMiddleware,
-    checkPermission("FOOD", "Edit"),
-    validateNewFoodData,
-    updateFoodById
-  );
+  .put(checkPermission("FOOD", "Edit"), validateNewFoodData, updateFoodById);
 foodRoute
   .route(`${baseUrl}/:foodId`)
-  .delete(jwtMiddleware, checkPermission("FOOD", "Delete"), deleteFoodById);
+  .delete(checkPermission("FOOD", "Delete"), deleteFoodById);
+foodRoute
+  .route(`${baseUrl}/search/?`)
+  .post(checkPermission("SEARCH_FOOD", "View"), searchFoods);
 // //----------------------------Voucher-------------------------//
 // foodRoute.route(`${baseUrl}/:foodId/vouchers`).get();
 // foodRoute.route(`${baseUrl}/:foodId/vouchers`).post();
