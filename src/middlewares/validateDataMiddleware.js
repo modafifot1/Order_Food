@@ -47,12 +47,6 @@ const validateEmployeeData = async (req, res, next) => {
     console.log(JSON.stringify(role));
     const employeeSchema = joi.object({
       email: joi.string().email().required(),
-      password: joi
-        .string()
-        .required()
-        .min(6)
-        .max(50)
-        .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{6,})/),
       roleId: joi.number().integer().required().valid(role.id),
       fullName: joi.string().required(),
       phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
