@@ -46,7 +46,7 @@ const validateEmployeeData = async (req, res, next) => {
     const role = await Role.findOne({ roleName: "employee" });
     const employeeSchema = joi.object({
       email: joi.string().email().required(),
-      newPassword: joi
+      password: joi
         .string()
         .required()
         .min(6)
