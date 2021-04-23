@@ -21,7 +21,10 @@ const {
   confirmFood,
   getListFoodConfirm,
 } = adminController;
-const { validateEmployeeData } = validateRequestBody;
+const {
+  validateEmployeeData,
+  validateUpdateEmployeeData,
+} = validateRequestBody;
 const { isAdminRole } = validatePermission;
 
 export const adminRoute = Router();
@@ -35,7 +38,7 @@ adminRoute
   .post(validateEmployeeData, createNewEmployee);
 adminRoute
   .route(`${baseUrl}/employees/:employeeId`)
-  .put(validateEmployeeData, updateEmployeeById);
+  .put(validateUpdateEmployeeData, updateEmployeeById);
 adminRoute.route(`${baseUrl}/employees/:employeeId`).delete(deleteEmployeeById);
 
 //---------------------Assigning permissions of role--------------------------//

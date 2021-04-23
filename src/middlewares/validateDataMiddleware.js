@@ -44,7 +44,29 @@ const validateEmployeeData = async (req, res, next) => {
   try {
     console.log("employeesdata: ", req.body);
     const role = await Role.findOne({ roleName: "employee" });
-    console.log(JSON.stringify(role));
+    const employeeSchema = joi.object({
+      email: joi.string().email().required(),
+      newPassword: joi
+        .string()
+        .required()
+        .min(6)
+        .max(50)
+        .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{6,})/),
+      roleId: joi.number().integer().required().valid(role.id),
+      fullName: joi.string().required(),
+      phoneNumber: joi.string().min(10).max(11).pattern(/[0-9]/),
+      birthday: joi.date().required(),
+      address: joi.string(),
+    });
+    validateRequest(req, employeeSchema, next);
+  } catch (error) {
+    next(error);
+  }
+};
+const validateUpdateEmployeeData = async (req, res, next) => {
+  try {
+    console.log("employeesdata: ", req.body);
+    const role = await Role.findOne({ roleName: "employee" });
     const employeeSchema = joi.object({
       email: joi.string().email().required(),
       roleId: joi.number().integer().required().valid(role.id),
@@ -142,6 +164,7 @@ export const validateRequestBody = {
   validateRegisterData,
   validateLoginData,
   validateEmployeeData,
+  validateUpdateEmployeeData,
   validateProfileData,
   validateNewFoodData,
   validateChangePasswordData,
