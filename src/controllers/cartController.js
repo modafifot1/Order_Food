@@ -173,7 +173,7 @@ const updateCartItem = async (req, res, next) => {
   try {
     const { cartItems } = req.body;
     const keys = Object.keys(cartItems);
-    console.log(keys, cartItems);
+    console.log(keys[0], typeof cartItems);
     const cartItem = await Promise.all(
       keys.map((x) => {
         console.log("_id: ", x);
