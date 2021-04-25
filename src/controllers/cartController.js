@@ -165,12 +165,13 @@ const createNewCartItem = async (req, res, next) => {
  */
 const updateCartItem = async (req, res, next) => {
   try {
-    const { cartItems } = req.body;
+    const cartItems = req.body;
+    const keys = Object.keys(cartItems);
     const cartItem = await Promise.all(
-      cartItems.map((x) => {
-        console.log("_id: ", x._id);
-        return CartItem.findByIdAndUpdate(x._id, {
-          quantity: x.quantity,
+      keys.map((x) => {
+        console.log("_id: ", x);
+        return CartItem.findByIdAndUpdate(x, {
+          quantity: cartItems[x],
         });
       })
     );

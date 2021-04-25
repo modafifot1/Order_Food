@@ -263,9 +263,8 @@ const getEmpployeeById = async (req, res, next) => {
 const updateEmployeeById = async (req, res, next) => {
   try {
     const employeeId = req.params.employeeId;
-    const { email, roleId, fullName, phoneNumber, birthday } = req.body;
+    const { roleId, fullName, phoneNumber, birthday } = req.body;
     const employee = await User.findByIdAndUpdate(employeeId, {
-      email,
       roleId,
     });
     if (!employee) {
