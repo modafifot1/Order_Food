@@ -15,11 +15,11 @@ const isAdminRole = async (req, res, next) => {
 };
 const checkPermission = (perName, perAction) => async (req, res, next) => {
   try {
+    const user = req.user;
     if (user.roleId == 0) {
       next();
       return;
     }
-    const user = req.user;
     const permission = await Permission.findOne({
       name: perName,
       action: perAction,
