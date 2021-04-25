@@ -105,15 +105,17 @@ const getListCartItem = async (req, res, next) => {
 const createNewCartItem = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const { foodId, quantity } = req.body;
+    let { foodId, quantity } = req.body;
     const existedCartItem = await CartItem.findOne({
       customerId: userId,
       foodId,
     });
+    quantity = Number(quantity);
     console.log(
       "exist: ",
       existedCartItem.quantity,
-      typeof existedCartItem.quantity
+      typeof existedCartItem.quantity,
+      typeof quantity
     );
     if (existedCartItem) {
       await CartItem.findByIdAndUpdate(existedCartItem._id, {
