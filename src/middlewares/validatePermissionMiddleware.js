@@ -15,6 +15,10 @@ const isAdminRole = async (req, res, next) => {
 };
 const checkPermission = (perName, perAction) => async (req, res, next) => {
   try {
+    if (user.roleId == 0) {
+      next();
+      return;
+    }
     const user = req.user;
     const permission = await Permission.findOne({
       name: perName,

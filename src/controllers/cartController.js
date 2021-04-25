@@ -138,12 +138,11 @@ const createNewCartItem = async (req, res, next) => {
  * @apiParam {Array} cartItems array of object. each object consist of _id and quantity
  * @apiParamExample {json} Param example
  * {
- *      cartItems: [
+ *      cartItems:
  *        {
- *          "_id": "607faeb5d35ea403f0328a38",
- *          "quantity": 3
+ *          "607faeb5d35ea403f0328a38": 3,
  *        }
- *      ]
+ *
  * }
  *
  * @apiHeader {String} Authorization The token can be generated from your user profile.
