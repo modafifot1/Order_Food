@@ -110,7 +110,11 @@ const createNewCartItem = async (req, res, next) => {
       customerId: userId,
       foodId,
     });
-    console.log("exist: ", existedCartItem);
+    console.log(
+      "exist: ",
+      existedCartItem.quantity,
+      typeof existedCartItem.quantity
+    );
     if (existedCartItem) {
       await CartItem.findByIdAndUpdate(existedCartItem._id, {
         quantity: existedCartItem.quantity + quantity,
@@ -188,7 +192,7 @@ const updateCartItem = async (req, res, next) => {
   }
 };
 /**
- * @api {delete} /api/v1/carts/:itemId Delete cart item
+ * @api {delete} /api/v1/carts Delete cart item
  * @apiName Delete cart item
  * @apiGroup Cart
  * @apiParam {array} cartItems list id of cart item
