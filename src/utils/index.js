@@ -8,6 +8,7 @@ import {
   confirmResetCode,
 } from "./codeConfirm";
 import { sendEmail } from "./sendMail";
+import { distanceBetween2Points, getShipmentFee } from "./shipment";
 // import { uploadMultiData } from "./uploadMultiData";
 export {
   validateRequest,
@@ -20,5 +21,7 @@ export {
   getResetCode,
   confirmResetCode,
   sendEmail,
+  getShipmentFee,
+  distanceBetween2Points,
   // uploadMultiData,
 };

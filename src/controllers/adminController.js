@@ -556,7 +556,7 @@ const updatePermissionsByRoleId = async (req, res, next) => {
  **/
 const getAllUsers = async (req, res, next) => {
   try {
-    const listUsers = await User.aggregate([
+    let listUsers = await User.aggregate([
       {
         $lookup: {
           from: "UserDetail",
@@ -576,6 +576,17 @@ const getAllUsers = async (req, res, next) => {
         $project: { __v: 0, createAt: 0, updateAt: 0 },
       },
     ]);
+    listUsers = listUsers.map((x) => {
+      return {
+        _id: x._id,
+        email: x.email,
+        roleId: x.roleId,
+        fullName: x.userDetail[0].fullName,
+        phoneNumber: x.userDetail[0].phoneNumber,
+        birthday: x.userDetail[0].birthday,
+        address: x.userDetail[0].address,
+      };
+    });
     res.status(200).json({
       status: 200,
       msg: "Get List users successfully",

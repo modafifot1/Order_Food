@@ -1,7 +1,15 @@
 import createHttpError from "http-errors";
 import Mongoose from "mongoose";
-import { getPaymentCode, confirmPaymentCode } from "../utils";
+import {
+  getPaymentCode,
+  confirmPaymentCode,
+  distanceBetween2Points,
+  getShipmentFee,
+} from "../utils";
 import { CartItem, Order, OrderItem, OrderStatus } from "../models";
+import { envVariables, geocoder } from "../configs";
+import { response } from "express";
+const { my_address } = envVariables;
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -207,10 +215,18 @@ const getOrderById = async (req, res, next) => {
  *       "msg": "Role is invalid"
  *     }
  */
-const createNewOrder = async (req, res, next) => {
+const order = async (req, res, next) => {
   try {
-    const customerId = req.user._id;
-    let { address, cartItems } = req.body;
+    let { address, cartItems, paymentMethod } = req.body;
+    const customerCoordinate = await geocoder.geocode(address);
+    const myCoordinate = await geocoder.geocode(my_address);
+    const distance = distanceBetween2Points(
+      customerCoordinate[0].latitude,
+      customerCoordinate[0].longitude,
+      myCoordinate[0].latitude,
+      myCoordinate[0].longitude
+    );
+    const shipmentFee = getShipmentFee(distance);
     cartItems = cartItems.map((x) => {
       return Mongoose.Types.ObjectId(x);
     });
@@ -231,9 +247,7 @@ const createNewOrder = async (req, res, next) => {
         },
       },
     ]);
-    await CartItem.deleteMany({ _id: { $in: cartItems } });
-
-    let total = foods.reduce((init, cur) => {
+    let merchandiseSubtotal = foods.reduce((init, cur) => {
       return (
         init +
         calculatePrice(
@@ -244,12 +258,58 @@ const createNewOrder = async (req, res, next) => {
         )
       );
     }, 0);
+    res.status(200).json({
+      status: 200,
+      msg: "Order successfully!",
+      shipmentFee,
+      merchandiseSubtotal,
+      paymentMethod,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const purchase = async (req, res, next) => {
+  try {
+    const customerId = req.user._id;
+    let {
+      address,
+      cartItems,
+      paymentMethod,
+      merchandiseSubtotal,
+      shipmentFee,
+    } = req.body;
+    cartItems = cartItems.map((x) => {
+      return Mongoose.Types.ObjectId(x);
+    });
     const newOrder = await Order.create({
       customerId,
       address,
-      total,
+      total: merchandiseSubtotal + shipmentFee,
       statusId: 0,
+      paymentMethod,
+      merchandiseSubtotal,
+      shipmentFee,
     });
+    let foods = await CartItem.aggregate([
+      {
+        $lookup: {
+          from: "Food",
+          localField: "foodId",
+          foreignField: "_id",
+          as: "detail",
+        },
+      },
+      {
+        $match: {
+          _id: {
+            $in: cartItems,
+          },
+        },
+      },
+    ]);
+    await CartItem.deleteMany({ _id: { $in: cartItems } });
     let orderItems = foods.map((x) => {
       return {
         foodId: x.foodId,
@@ -261,7 +321,7 @@ const createNewOrder = async (req, res, next) => {
     await OrderItem.insertMany(orderItems);
     res.status(201).json({
       status: 201,
-      msg: "Create new order successfully!",
+      msg: "Purchase successfully!",
     });
   } catch (error) {
     console.log(error);
@@ -460,7 +520,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
 export const orderController = {
   getListOrder,
   getOrderById,
-  createNewOrder,
+  order,
+  purchase,
   cancelOrderById,
   updateStatus,
 };

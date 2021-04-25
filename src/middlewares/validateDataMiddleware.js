@@ -160,6 +160,40 @@ const validateChangePasswordData = async (req, res, next) => {
     next(error);
   }
 };
+const validateCreateOrder = async (req, res, next) => {
+  try {
+    if (typeof req.body.cartItems != "object") {
+      req.body.cartItems = [req.body.cartItems];
+    }
+    const orderSchema = joi.object({
+      address: joi.string().required(),
+      cartItems: joi.array().min(1).required(),
+      paymentMethod: joi.string().required(),
+    });
+    validateRequest(req, orderSchema, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const validateCreatePurchase = async (req, res, next) => {
+  try {
+    if (typeof req.body.cartItems != "object") {
+      req.body.cartItems = [req.body.cartItems];
+    }
+    const orderSchema = joi.object({
+      address: joi.string().required(),
+      cartItems: joi.array().min(1).required(),
+      paymentMethod: joi.string().required(),
+      merchandiseSubtotal: joi.number().required().min(0),
+      shipmentFee: joi.number().required().min(0),
+    });
+    validateRequest(req, orderSchema, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const validateRequestBody = {
   validateRegisterData,
   validateLoginData,
@@ -169,4 +203,6 @@ export const validateRequestBody = {
   validateNewFoodData,
   validateChangePasswordData,
   validateResetPasswordData,
+  validateCreateOrder,
+  validateCreatePurchase,
 };

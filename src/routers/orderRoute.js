@@ -1,20 +1,29 @@
 import { Router } from "express";
-import { validatePermission, jwtMiddleware } from "../middlewares";
+import {
+  validatePermission,
+  jwtMiddleware,
+  validateRequestBody,
+} from "../middlewares";
 import { orderController } from "../controllers";
 const { checkPermission } = validatePermission;
 const {
   getListOrder,
   getOrderById,
-  createNewOrder,
+  order,
+  purchase,
   cancelOrderById,
   updateStatus,
 } = orderController;
+const { validateCreateOrder, validateCreatePurchase } = validateRequestBody;
 const baseUrl = "/api/v1/orders";
 export const orderRoute = Router();
 orderRoute.use(`${baseUrl}`, jwtMiddleware);
 orderRoute
   .route(`${baseUrl}`)
-  .post(checkPermission("ORDER", "Create"), createNewOrder);
+  .post(validateCreateOrder, checkPermission("ORDER", "Create"), order);
+orderRoute
+  .route(`${baseUrl}/purchase`)
+  .post(validateCreatePurchase, checkPermission("ORDER", "Create"), purchase);
 orderRoute
   .route(`${baseUrl}`)
   .get(checkPermission("ORDER", "View"), getListOrder);

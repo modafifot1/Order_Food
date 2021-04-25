@@ -18,4 +18,7 @@ export const envVariables = {
   nodeEnv: process.env.NODE_ENV || "development",
   nodemailerEmail: process.env.nodemailerEmail || "dacnpm17n2@gmmail.com",
   nodemailerPassword: process.env.nodemailerPassword || "qweQWE!@#",
+  API_GOOGLEMAP_KEY:
+    process.env.api_googlemap_key || "AIzaSyDTlNkVmEcfZ5ICLzfmE48b8TWulg7G5Hs",
+  my_address: "62/07, nguyen luong bang, hoa khanh, lien chieu, da nang",
 };

@@ -1,3 +1,4 @@
+import { string } from "joi";
 import { Schema, model } from "mongoose";
 const orderSchema = new Schema({
   customerId: {
@@ -22,6 +23,18 @@ const orderSchema = new Schema({
   },
   statusId: {
     type: Number,
+  },
+  paymentMethod: {
+    type: String,
+    required: true,
+  },
+  shipmentFee: {
+    type: Number,
+    required: true,
+  },
+  merchandiseSubtotal: {
+    type: Number,
+    required: true,
   },
 });
 export const Order = model("Order", orderSchema, "Order");

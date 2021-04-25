@@ -1742,7 +1742,7 @@
   },
   {
     "type": "delete",
-    "url": "/api/v1/carts/:itemId",
+    "url": "/api/v1/carts",
     "title": "Delete cart item",
     "name": "Delete_cart_item",
     "group": "Cart",
@@ -1754,7 +1754,7 @@
             "type": "array",
             "optional": false,
             "field": "cartItems",
-            "description": "<p>list id of cart item</p>"
+            "description": "<p>list id of cart item id</p>"
           }
         ]
       },
@@ -1827,7 +1827,7 @@
     "groupTitle": "Cart",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/carts/:itemId"
+        "url": "http://127.0.0.1:3000/api/v1/carts"
       }
     ]
   },
@@ -1911,26 +1911,26 @@
   },
   {
     "type": "put",
-    "url": "/api/v1/carts/:itemId",
-    "title": "Update cart item by id",
-    "name": "Update_cart_item_by_Id",
+    "url": "/api/v1/carts",
+    "title": "Update cart item",
+    "name": "Update_cart_item",
     "group": "Cart",
     "parameter": {
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Array",
+            "type": "Object",
             "optional": false,
-            "field": "cartItems",
-            "description": "<p>array of object. each object consist of _id and quantity</p>"
+            "field": "key-_itemId",
+            "description": "<p>, value-quantity</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Param example",
-          "content": "{\n     cartItems: [\n       {\n         \"_id\": \"607faeb5d35ea403f0328a38\",\n         \"quantity\": 3\n       }\n     ]\n}",
+          "content": "{\n     cartItems:\n       {\n         \"607faeb5d35ea403f0328a38\": 3,\n       }\n\n}",
           "type": "json"
         }
       ]
@@ -1996,7 +1996,7 @@
     "groupTitle": "Cart",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/carts/:itemId"
+        "url": "http://127.0.0.1:3000/api/v1/carts"
       }
     ]
   },

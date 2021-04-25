@@ -126,6 +126,7 @@ const login = async (req, res, next) => {
     const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
       "imageUrl",
       "fullName",
+      "address",
     ]);
     res.status(200).json({
       status: 200,
@@ -135,6 +136,7 @@ const login = async (req, res, next) => {
       userId: userExisted._id,
       imageUrl: userDetail.imageUrl,
       fullName: userDetail.fullName,
+      address: userDetail.address,
     });
   } catch (error) {
     console.log(error);

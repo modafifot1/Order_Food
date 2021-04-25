@@ -111,12 +111,6 @@ const createNewCartItem = async (req, res, next) => {
       foodId,
     });
     quantity = Number(quantity);
-    console.log(
-      "exist: ",
-      existedCartItem.quantity,
-      typeof existedCartItem.quantity,
-      typeof quantity
-    );
     if (existedCartItem) {
       await CartItem.findByIdAndUpdate(existedCartItem._id, {
         quantity: existedCartItem.quantity + quantity,
@@ -138,10 +132,10 @@ const createNewCartItem = async (req, res, next) => {
   }
 };
 /**
- * @api {put} /api/v1/carts/:itemId Update cart item by id
- * @apiName Update cart item by Id
+ * @api {put} /api/v1/carts Update cart item
+ * @apiName Update cart item
  * @apiGroup Cart
- * @apiParam {Array} cartItems array of object. each object consist of _id and quantity
+ * @apiParam {Object} key-_itemId, value-quantity
  * @apiParamExample {json} Param example
  * {
  *      cartItems:
@@ -199,7 +193,7 @@ const updateCartItem = async (req, res, next) => {
  * @api {delete} /api/v1/carts Delete cart item
  * @apiName Delete cart item
  * @apiGroup Cart
- * @apiParam {array} cartItems list id of cart item
+ * @apiParam {array} cartItems list id of cart item id
  * @apiParamExample {json} param example
  * {
  *    "cartItems" :[
