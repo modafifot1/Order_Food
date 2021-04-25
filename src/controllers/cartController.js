@@ -171,7 +171,7 @@ const createNewCartItem = async (req, res, next) => {
  */
 const updateCartItem = async (req, res, next) => {
   try {
-    const cartItems = req.body;
+    const { cartItems } = req.body;
     const keys = Object.keys(cartItems);
     console.log(keys, cartItems);
     const cartItem = await Promise.all(
