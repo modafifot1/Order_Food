@@ -82,8 +82,17 @@ const getListCartItem = async (req, res, next) => {
  * @api {post} /api/v1/carts Add cart item
  * @apiName Add cart item
  * @apiGroup Cart
- * @apiParam {ObjectId} foodId food's Id
- * @apiParam {int} quantity quantity food
+ * @apiParam {ObjectId} foodId food's Id required when add one item
+ * @apiParam {int} quantity quantity food required when add one Item
+ * @apiParam {Object} cartItems key-_itemId, value-quantity
+ * @apiParamExample {json} Param example
+ * {
+ *      cartItems:
+ *        {
+ *          "607faeb5d35ea403f0328a38": 3,
+ *        }
+ *
+ * }
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -105,7 +114,27 @@ const getListCartItem = async (req, res, next) => {
 const createNewCartItem = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    let { foodId, quantity } = req.body;
+    let { foodId, quantity, cartItems } = req.body;
+    if (!cartItems) {
+      await addOneCartItem(userId, foodId, quantity);
+    } else {
+      cartItems = JSON.parse(cartItems);
+      const keys = Object.keys(cartItems);
+      keys.forEach(x => {
+        await addOneCartItem(userId, x, cartItems[x]);
+      })
+    }
+    res.status(200).json({
+      status: 201,
+      msg: "Add cart item successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const addOneCartItem = async (userId, foodId, quantity) => {
+  try {
     const existedCartItem = await CartItem.findOne({
       customerId: userId,
       foodId,
@@ -122,20 +151,15 @@ const createNewCartItem = async (req, res, next) => {
         quantity,
       });
     }
-    res.status(200).json({
-      status: 201,
-      msg: "Add cart item successfully!",
-    });
   } catch (error) {
-    console.log(error);
-    next(error);
+    throw createHttpError(400, error);
   }
 };
 /**
  * @api {put} /api/v1/carts Update cart item
  * @apiName Update cart item
  * @apiGroup Cart
- * @apiParam {Object} key-_itemId, value-quantity
+ * @apiParam {Object} cartItems key-_itemId, value-quantity
  * @apiParamExample {json} Param example
  * {
  *      cartItems:

@@ -1663,17 +1663,31 @@
             "type": "ObjectId",
             "optional": false,
             "field": "foodId",
-            "description": "<p>food's Id</p>"
+            "description": "<p>food's Id required when add one item</p>"
           },
           {
             "group": "Parameter",
             "type": "int",
             "optional": false,
             "field": "quantity",
-            "description": "<p>quantity food</p>"
+            "description": "<p>quantity food required when add one Item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "cartItems",
+            "description": "<p>key-_itemId, value-quantity</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Param example",
+          "content": "{\n     cartItems:\n       {\n         \"607faeb5d35ea403f0328a38\": 3,\n       }\n\n}",
+          "type": "json"
+        }
+      ]
     },
     "header": {
       "fields": {
@@ -1922,8 +1936,8 @@
             "group": "Parameter",
             "type": "Object",
             "optional": false,
-            "field": "key-_itemId",
-            "description": "<p>, value-quantity</p>"
+            "field": "cartItems",
+            "description": "<p>key-_itemId, value-quantity</p>"
           }
         ]
       },
