@@ -201,13 +201,13 @@ const getOrderById = async (req, res, next) => {
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
- * @apiSuccess {Number} status <code> 201 </code>
+ * @apiSuccess {Number} status <code> 200 </code>
  * @apiSuccess {String} msg <code>Create new order successfully</code> if everything went fine.
  * @apiSuccess {Int} shipmentFee the shipment fee of order
  * @apiSuccess {Int} merchandiseSubtotal The total of merchandise
  * @apiSuccess {Int} paymentMethod Th way user can pay for order
  * @apiSuccessExample {json} Success-Example
- *     HTTP/1.1 201 OK
+ *     HTTP/1.1 200 OK
  *        {
  *           "status": 200,
  *           "msg": "Create new order successfully!",
@@ -291,7 +291,7 @@ const order = async (req, res, next) => {
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *        {
- *           "status": 200,
+ *           "status": 201,
  *           "msg": "Purchase successfully!",
  *       }
  * @apiErrorExample Response (example):

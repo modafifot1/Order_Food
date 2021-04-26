@@ -7,6 +7,7 @@ import {
   foodRoute,
   cartRoute,
   orderRoute,
+  feedbackRoute,
 } from "./routers";
 const { port, connectString } = envVariables;
 const main = async () => {
@@ -21,6 +22,7 @@ const main = async () => {
   server.registerRouter(foodRoute);
   server.registerRouter(cartRoute);
   server.registerRouter(orderRoute);
+  server.registerRouter(feedbackRoute);
   server.registerMiddleware(errorHandleMiddleware);
 };
 main();

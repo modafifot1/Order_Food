@@ -4,6 +4,7 @@ import { profileController } from "./profileController";
 import { foodController } from "./foodController";
 import { cartController } from "./cartController";
 import { orderController } from "./orderController";
+import { feedbackController } from "./feedbackController";
 export {
   authController,
   adminController,
@@ -11,4 +12,5 @@ export {
   foodController,
   cartController,
   orderController,
+  feedbackController,
 };

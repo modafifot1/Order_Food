@@ -36,7 +36,7 @@ const foodSchema = new Schema({
   numOfStars: {
     type: Number,
   },
-  numOfFeedback: {
+  numOfFeedbacks: {
     type: Number,
   },
   confirmed: {

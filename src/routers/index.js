@@ -4,6 +4,7 @@ import { profileRoute } from "./profileRoute";
 import { foodRoute } from "./foodRoute";
 import { cartRoute } from "./cartRoute";
 import { orderRoute } from "./orderRoute";
+import { feedbackRoute } from "./feedbackRoute";
 export {
   authRoute,
   adminRoute,
@@ -11,4 +12,5 @@ export {
   foodRoute,
   cartRoute,
   orderRoute,
+  feedbackRoute,
 };

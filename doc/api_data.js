@@ -2808,7 +2808,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p><code> 201 </code></p>"
+            "description": "<p><code> 200 </code></p>"
           },
           {
             "group": "Success 200",
@@ -2843,7 +2843,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Create new order successfully!\",\n  }",
+          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Create new order successfully!\",\n  }",
           "type": "json"
         }
       ]
@@ -3153,7 +3153,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Purchase successfully!\",\n  }",
+          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 201,\n      \"msg\": \"Purchase successfully!\",\n  }",
           "type": "json"
         }
       ]

@@ -1,5 +1,20 @@
 import { Schema, model } from "mongoose";
-const feedbackSchema = new Schema({
+export const replySchema = Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  createAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+});
+const feedbackSchema = Schema({
   foodId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -10,9 +25,11 @@ const feedbackSchema = new Schema({
   },
   numOfStars: {
     type: Number,
+    required: true,
   },
   content: {
     type: String,
+    required: true,
   },
   createAt: {
     type: Date,
@@ -20,6 +37,12 @@ const feedbackSchema = new Schema({
   },
   updateAt: {
     type: Date,
+    default: Date.now,
   },
+  reply: [
+    {
+      type: replySchema,
+    },
+  ],
 });
 export const Feedback = model("Feedback", feedbackSchema, "Feedback");

@@ -13,6 +13,8 @@ import { OrderItem } from "./OrderItemModel";
 import { Order } from "./OrderModel";
 import { OrderStatus } from "./OrderStatusModel";
 import { ResetCode } from "./ResetCodeModel";
+import { Feedback, replySchema } from "./FeedbackModel";
+
 export {
   User,
   UserDetail,
@@ -29,4 +31,6 @@ export {
   OrderItem,
   OrderStatus,
   ResetCode,
+  Feedback,
+  replySchema,
 };
