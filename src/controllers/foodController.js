@@ -112,7 +112,7 @@ const getFoodById = async (req, res, next) => {
     // const food = await Food.findById(foodId);
     const result = await Promise.all([
       Food.findById(foodId),
-      Feedback.find({ foodId: foodId }).limit(5),
+      Feedback.find({ foodId: foodId }).sort({ _id: "desc" }),
     ]);
     const food = result[0];
     const feedbacks = result[1];

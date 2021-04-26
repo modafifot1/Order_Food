@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { Feedback, Food, replySchema } from "../models";
+import { Feedback, Food, Reply } from "../models";
 
 const addFeedback = async (req, res, next) => {
   try {
@@ -35,7 +35,7 @@ const reply = async (req, res, next) => {
   try {
     const user = req.user;
     const { feedbackId, content } = req.body;
-    const newReply = new replySchema({
+    const newReply = Reply({
       userId: user._id,
       content,
     });

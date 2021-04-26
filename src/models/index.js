@@ -13,7 +13,7 @@ import { OrderItem } from "./OrderItemModel";
 import { Order } from "./OrderModel";
 import { OrderStatus } from "./OrderStatusModel";
 import { ResetCode } from "./ResetCodeModel";
-import { Feedback, replySchema } from "./FeedbackModel";
+import { Feedback, Reply } from "./FeedbackModel";
 
 export {
   User,
@@ -32,5 +32,5 @@ export {
   OrderStatus,
   ResetCode,
   Feedback,
-  replySchema,
+  Reply,
 };

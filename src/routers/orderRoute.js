@@ -36,3 +36,4 @@ orderRoute
 orderRoute
   .route(`${baseUrl}/:orderId/statuses`)
   .put(checkPermission("ORDER", "Edit"), updateStatus);
+orderRoute.route(`${baseUrl}?`).get(checkPermission("ORDER", "View"));

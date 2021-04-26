@@ -9,7 +9,7 @@ import {
 import { CartItem, Order, OrderItem, OrderStatus } from "../models";
 import { envVariables, geocoder } from "../configs";
 import { response } from "express";
-const { my_address } = envVariables;
+const { my_address, perPage } = envVariables;
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -205,7 +205,8 @@ const getOrderById = async (req, res, next) => {
  * @apiSuccess {String} msg <code>Create new order successfully</code> if everything went fine.
  * @apiSuccess {Int} shipmentFee the shipment fee of order
  * @apiSuccess {Int} merchandiseSubtotal The total of merchandise
- * @apiSuccess {Int} paymentMethod Th way user can pay for order
+ * @apiSuccess {Int} paymentMethod The way user can pay for order
+ * @apiSuccess {Float} distance The distance between two locations
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *        {
@@ -268,6 +269,7 @@ const order = async (req, res, next) => {
       shipmentFee,
       merchandiseSubtotal,
       paymentMethod,
+      distance,
     });
   } catch (error) {
     console.log(error);
@@ -534,6 +536,7 @@ const paidOrderStatus = async (order, code, res, next) => {
     next(error);
   }
 };
+
 const confirmPaidOrderStatus = async (order, res, next) => {
   try {
     await Order.findByIdAndUpdate(order._id, {
@@ -548,6 +551,75 @@ const confirmPaidOrderStatus = async (order, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/orders?statusId= Get list order by userId and statusId
+ * @apiName Get list order by userId and statusId
+ * @apiGroup Order
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Get list orders by statusId sucessfully</code> if everything went fine.
+ * @apiSuccess {Array} cartItems <code> List the orders <code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *        {
+ *           "status": 200,
+ *           "msg": "Get list orders by statusId sucessfully!",
+ *           "orders": [
+ *               {
+ *                   "_id": "607ee38c5061c506d4604111",
+ *                   "customerId": "607b99348f2d3500151f091d",
+ *                   "address": "62/07 Đồng Kè, Liên Chiểu, Đà Năng",
+ *                   "total": 278000,
+ *                   "statusId": 0,
+ *                   "createAt": "2021-04-20T14:22:04.994Z",
+ *                   "__v": 0
+ *               },
+ *               {
+ *                   "_id": "607f895a5e06da3054bacbc3",
+ *                   "customerId": "607b99348f2d3500151f091d",
+ *                   "address": "Hue",
+ *                   "total": 128000,
+ *                   "statusId": 0,
+ *                   "createAt": "2021-04-21T02:09:30.509Z",
+ *                   "__v": 0
+ *               }
+ *           ]
+ *       }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
+const getListOrderByStatus = async (req, res, next) => {
+  try {
+    const statusId = req.query.statusId || 0;
+    const userId = req.user._id;
+    const orders = await Order.find({
+      customerId: userId,
+      statusId,
+    });
+    orders.map((x) => {
+      return {
+        _id: x._id,
+        createAt: x.createAt,
+        statusId: x.statusId,
+        total: x.total,
+      };
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Get list order by status sucessfully!",
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const orderController = {
   getListOrder,
   getOrderById,
@@ -555,4 +627,5 @@ export const orderController = {
   purchase,
   cancelOrderById,
   updateStatus,
+  getListOrderByStatus,
 };

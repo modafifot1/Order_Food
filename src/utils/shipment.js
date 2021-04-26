@@ -13,12 +13,12 @@ export const distanceBetween2Points = (la1, lo1, la2, lo2) => {
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = 6371 * c;
-  return d;
+  return d.toFixed(2);
 };
 export const getShipmentFee = (distance) => {
   try {
     if (distance < 2) return 0;
-    if (distance < 5) return 10000;
+    if (distance < 6) return 10000;
     if (distance > 8)
       throw createHttpError(
         400,

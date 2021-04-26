@@ -13,3 +13,4 @@ feedbackRoute
 feedbackRoute
   .route(`${baseUrl}/reply`)
   .post(checkPermission("FEEDBACK", "Create"), reply);
+feedbackRoute.route(`${baseUrl}?`).get(checkPermission("FEEDBACK", "View"));

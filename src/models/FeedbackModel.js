@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-export const replySchema = Schema({
+const replySchema = Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -46,3 +46,4 @@ const feedbackSchema = Schema({
   ],
 });
 export const Feedback = model("Feedback", feedbackSchema, "Feedback");
+export const Reply = model("Reply", replySchema);
