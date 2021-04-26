@@ -197,11 +197,15 @@ const getOrderById = async (req, res, next) => {
  * @apiGroup Order
  * @apiParam {String} address customer's address
  * @apiParam {Array} cartItems list id of cart items in order
+ * @apiParam {String} paymentMethod The way user can pay for order
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 201 </code>
  * @apiSuccess {String} msg <code>Create new order successfully</code> if everything went fine.
+ * @apiSuccess {Int} shipmentFee the shipment fee of order
+ * @apiSuccess {Int} merchandiseSubtotal The total of merchandise
+ * @apiSuccess {Int} paymentMethod Th way user can pay for order
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *        {
@@ -270,6 +274,33 @@ const order = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/orders/purchase Purchase order
+ * @apiName Purchase order
+ * @apiGroup Order
+ * @apiParam {String} address customer's address
+ * @apiParam {Array} cartItems list id of cart items in order
+ * @apiParam {String} paymentMethod The way user can pay for order
+ * @apiParam {Int} shipmentFee The shiment fee of order
+ * @apiParam {Int} merchandiseSubtotal the total of merchandise
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 201 </code>
+ * @apiSuccess {String} msg <code>Create Purchase successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 201 OK
+ *        {
+ *           "status": 200,
+ *           "msg": "Purchase successfully!",
+ *       }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
 const purchase = async (req, res, next) => {
   try {
     const customerId = req.user._id;

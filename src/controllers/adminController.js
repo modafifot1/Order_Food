@@ -589,6 +589,7 @@ const getAllUsers = async (req, res, next) => {
     });
     res.status(200).json({
       status: 200,
+
       msg: "Get List users successfully",
       listUsers,
     });
