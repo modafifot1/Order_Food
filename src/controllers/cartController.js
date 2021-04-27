@@ -120,9 +120,12 @@ const createNewCartItem = async (req, res, next) => {
     } else {
       cartItems = JSON.parse(cartItems);
       const keys = Object.keys(cartItems);
-      keys.forEach(x => {
-        await addOneCartItem(userId, x, cartItems[x]);
-      })
+      for (const key of keys) {
+        await addOneCartItem(userId, key, cartItems[x]);
+      }
+      // keys.forEach(x => {
+      //   await addOneCartItem(userId, x, cartItems[x]);
+      // })
     }
     res.status(200).json({
       status: 201,

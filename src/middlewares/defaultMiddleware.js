@@ -10,7 +10,7 @@ export const defaultMiddleware = (app) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(helmet());
-  app.use(cors());
+  app.use(cors({origin: "*"}));
   app.use(express.json());
   app.use(upload.any());
   app.use(express.static("public"));
