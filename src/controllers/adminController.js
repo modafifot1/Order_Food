@@ -394,22 +394,34 @@ const getAllRoles = async (req, res, next) => {
  *     {
  *         status: 200,
  *         msg: "Get permissions by roleId successfully!",
- *         listPermissions: [
- *          {
- *           "_id": "606318bbae23812268265ef0",
- *           "name": "EMPLOYEE",
- *           "action": "Edit",
- *           "__v": 0,
- *           "license": 0 // 0 -is not allowed
- *          },
- *          {
- *           "_id": "606318bbae23812268265f03",
- *           "name": "USER_PROFILE",
- *           "action": "Edit",
- *           "__v": 0,
- *           "license": 1 // 1-is allowed
- *          },
- *         ]
+ *         "listPermissons": {
+ *             "USER_PROFILE": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f03",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 },
+ *                 {
+ *                     "_id": "606318bbae23812268265f04",
+ *                     "action": "View",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *             "CHANGE_PASSWORD": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f05",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *             "FORGOT_PASSWORD": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f06",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *          }
  *     }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -424,7 +436,7 @@ const getPermissionsByRoleId = async (req, res, next) => {
     const allPermissions = await Permission.find({});
     const rolePermissions = await RolePermission.find({ roleId });
     const listPermissionId = rolePermissions.map((x) => String(x.permissionId));
-    const listPermissions = allPermissions.map((x) => {
+    let listPermissions = allPermissions.map((x) => {
       let license = 0;
       if (listPermissionId.includes(String(x._id))) {
         license = 1;
@@ -434,17 +446,24 @@ const getPermissionsByRoleId = async (req, res, next) => {
         license,
       };
     });
+    listPermissions = listPermissions.reduce((init, cur) => {
+      if (!init[cur.name]) {
+        init[cur.name] = [];
+      }
+      init[cur.name].push({
+        _id: cur._id,
+        action: cur.action,
+        license: cur.license,
+      });
+      return init;
+    }, {});
+    // console.log("permissions: ", listPermissions);
     res.status(200).json({
       status: 200,
       msg: "Get list permissions of role successfully!",
+      roleId,
       listPermissions,
     });
-    console.log("all: " + typeof allPermissions[0]._id);
-    console.log(
-      "license: " +
-        typeof listPermissionId[0] +
-        JSON.stringify(listPermissionId)
-    );
   } catch (error) {
     console.log(error);
     next(error);
@@ -614,22 +633,34 @@ const getAllUsers = async (req, res, next) => {
  *     {
  *         status: 200,
  *         msg: "Get permissions by userId successfully!",
- *         listPermissions: [
- *          {
- *               "roleId": 2,
- *               "permissionId": "606318bbae23812268265f03",
- *               "name": "USER_PROFILE",
- *               "action": "Edit",
- *               "license": 0
- *           },
- *           {
- *               "roleId": 2,
- *               "permissionId": "606318bbae23812268265f04",
- *               "name": "USER_PROFILE",
- *               "action": "View",
- *               "license": 0
- *           },
- *         ]
+ *         "listPermissons": {
+ *             "USER_PROFILE": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f03",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 },
+ *                 {
+ *                     "_id": "606318bbae23812268265f04",
+ *                     "action": "View",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *             "CHANGE_PASSWORD": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f05",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *             "FORGOT_PASSWORD": [
+ *                 {
+ *                     "_id": "606318bbae23812268265f06",
+ *                     "action": "Edit",
+ *                     "license": 1
+ *                 }
+ *             ],
+ *          }
  *     }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -665,7 +696,6 @@ const getPermissionsByUserId = async (req, res, next) => {
     permissionsByUserId = permissionsByUserId.map((x) =>
       String(x.permissionId)
     );
-    console.log(permissionsByUserId);
     permissionsByRoleId = permissionsByRoleId.map((x) => {
       let license = 0;
       if (permissionsByUserId.includes(String(x.permissionId))) {
@@ -679,6 +709,17 @@ const getPermissionsByUserId = async (req, res, next) => {
         license,
       };
     });
+    permissionsByRoleId = permissionsByRoleId.reduce((init, cur) => {
+      if (!init[cur.name]) {
+        init[cur.name] = [];
+      }
+      init[cur.name].push({
+        _id: cur.permissionId,
+        action: cur.action,
+        license: cur.license,
+      });
+      return init;
+    }, {});
     res.status(200).json({
       status: 200,
       msg: "Get list permissions by userId successfully!",
@@ -809,7 +850,7 @@ const validatePermissionInRole = async (roleId, listPermissions) => {
  **/
 const getListFoodConfirm = async (req, res, next) => {
   try {
-    const foods = await Food.find({ confirmed: false });
+    const foods = await Food.find({});
     res.status(200).json({
       status: 200,
       msg: "Get list confirm food successfullY!",

@@ -731,7 +731,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by userId successfully!\",\n    listPermissions: [\n     {\n          \"roleId\": 2,\n          \"permissionId\": \"606318bbae23812268265f03\",\n          \"name\": \"USER_PROFILE\",\n          \"action\": \"Edit\",\n          \"license\": 0\n      },\n      {\n          \"roleId\": 2,\n          \"permissionId\": \"606318bbae23812268265f04\",\n          \"name\": \"USER_PROFILE\",\n          \"action\": \"View\",\n          \"license\": 0\n      },\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by userId successfully!\",\n    \"listPermissons\": {\n        \"USER_PROFILE\": [\n            {\n                \"_id\": \"606318bbae23812268265f03\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            },\n            {\n                \"_id\": \"606318bbae23812268265f04\",\n                \"action\": \"View\",\n                \"license\": 1\n            }\n        ],\n        \"CHANGE_PASSWORD\": [\n            {\n                \"_id\": \"606318bbae23812268265f05\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            }\n        ],\n        \"FORGOT_PASSWORD\": [\n            {\n                \"_id\": \"606318bbae23812268265f06\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            }\n        ],\n     }\n}",
           "type": "json"
         }
       ]
@@ -822,7 +822,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by roleId successfully!\",\n    listPermissions: [\n     {\n      \"_id\": \"606318bbae23812268265ef0\",\n      \"name\": \"EMPLOYEE\",\n      \"action\": \"Edit\",\n      \"__v\": 0,\n      \"license\": 0 // 0 -is not allowed\n     },\n     {\n      \"_id\": \"606318bbae23812268265f03\",\n      \"name\": \"USER_PROFILE\",\n      \"action\": \"Edit\",\n      \"__v\": 0,\n      \"license\": 1 // 1-is allowed\n     },\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Get permissions by roleId successfully!\",\n    \"listPermissons\": {\n        \"USER_PROFILE\": [\n            {\n                \"_id\": \"606318bbae23812268265f03\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            },\n            {\n                \"_id\": \"606318bbae23812268265f04\",\n                \"action\": \"View\",\n                \"license\": 1\n            }\n        ],\n        \"CHANGE_PASSWORD\": [\n            {\n                \"_id\": \"606318bbae23812268265f05\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            }\n        ],\n        \"FORGOT_PASSWORD\": [\n            {\n                \"_id\": \"606318bbae23812268265f06\",\n                \"action\": \"Edit\",\n                \"license\": 1\n            }\n        ],\n     }\n}",
           "type": "json"
         }
       ]
