@@ -8,14 +8,16 @@ import {
   UserDetail,
   UserPermission,
   Food,
+  Order,
 } from "../models";
 import Mongoose from "mongoose";
-import { modifyPermissionsEffected } from "../utils";
+import { modifyPermissionsEffected, dateFunction } from "../utils";
 const {
   initPermissions,
   addPermissionsForUserEffected,
   delPermissionsForUserEffected,
 } = modifyPermissionsEffected;
+const { getDaysByMonth, getMonthsByquater } = dateFunction;
 //--------------------Managing employees---------------------------//
 
 /**
@@ -899,6 +901,282 @@ const confirmFood = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/admin/revenues/day?day= Get revenue by day
+ * @apiName Get revenue by day
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code> Get revenue by day successfully!</code>
+ * @apiSuccess {Object} revenues key-hour of day, value-revenue of hour(Only return the hours have revenue > 0 )
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         "msg": "Get revenue by day successfully!",
+ *         "revenues": {
+ *             "17": 245000
+ *         }
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getRevenuesByDate = async (req, res, next) => {
+  try {
+    let date = req.query.day;
+    let startDate, endDate;
+    try {
+      if (!date) throw createHttpError(400, "Day is undefied!");
+      endDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
+      startDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
+    } catch (error) {
+      endDate = new Date(Date.now());
+      startDate = new Date(Date.now());
+      console.log(endDate);
+    }
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+    let orders = await Order.find({
+      updateAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      statusId: 4,
+    });
+    orders = orders.map((x) => {
+      return {
+        hour: new Date(x.updateAt).getHours(),
+        revenue: x.total,
+      };
+    });
+    const revenues = orders.reduce((init, cur) => {
+      if (!init[cur.hour]) {
+        init[cur.hour] = cur.revenue;
+      } else {
+        init[cur.hour] = init[cur.hour] + cur.revenue;
+      }
+      return init;
+    }, {});
+    res.status(200).json({
+      status: 200,
+      msg: "Get revenue by day successfully!",
+      revenues,
+    });
+    console.log(revenues);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {get} /api/v1/admin/revenues/quaters?quater=&&year= Get revenue by quater
+ * @apiName Get revenue by quater
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Get revenue by quater successfully!</code>
+ * @apiSuccess {Object} revenues key-month in quater, value-revenue of month(Only return the months have revenue > 0 )
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         "msg": "Get revenue by quater successfully!",
+ *         "revenues": {
+ *             "4": 245000,
+ *             "5": 70000
+ *         }
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+
+const getRevenuesByQuater = async (req, res, next) => {
+  try {
+    let quater = req.query.quater || 1;
+    let year = req.query.year || new Date(Date.now()).getFullYear();
+    quater = Number(quater);
+    year = Number(year);
+    const months = getMonthsByquater(quater);
+    console.log(months);
+    let startDate = new Date(year, months[0] - 1, 1);
+    let endDate = new Date(year, months[2] - 1, 0);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+    console.log(startDate, endDate);
+    let orders = await Order.find({
+      updateAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      statusId: 4,
+    });
+    orders = orders.map((x) => {
+      return {
+        month: new Date(x.updateAt).getMonth() + 1,
+        revenue: x.total,
+      };
+    });
+    const revenues = orders.reduce((init, cur) => {
+      if (!init[cur.month]) init[cur.month] = cur.revenue;
+      else init[cur.month] = init[cur.month] + cur.revenue;
+      return init;
+    }, {});
+    console.log(revenues);
+    res.status(200).json({
+      status: 200,
+      msg: "Get revenues by quater successfully!",
+      revenues,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {get} /api/v1/admin/revenues/months?month=&&year= Get revenue by month
+ * @apiName Get revenue by month
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code> Get revenue by month successfully!</code>
+ * @apiSuccess {Object} revenues key-day in month, value-revenue of day(Only return the days have revenue > 0 )
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         "msg": "Get revenue by month successfully!",
+ *          "revenues": {
+ *             "27": 245000,
+ *             "28": 70000
+ *         }
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getRevenueByMonth = async (req, res, next) => {
+  try {
+    console.log(req.query);
+    let month = req.query.month || 1;
+    let year = req.query.year || new Date(Date.now()).getFullYear();
+    month = Number(month);
+    year = Number(year);
+    let startDate = new Date(year, month - 1, 1);
+    let endDate = new Date(year, month, 0);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+    console.log(startDate, endDate);
+    let orders = await Order.find({
+      updateAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      statusId: 4,
+    });
+    orders = orders.map((x) => {
+      return {
+        date: new Date(x.updateAt).getDate(),
+        revenue: x.total,
+      };
+    });
+    const revenues = orders.reduce((init, cur) => {
+      if (!init[cur.date]) init[cur.date] = cur.revenue;
+      else init[cur.date] = init[cur.date] + cur.revenue;
+      return init;
+    }, {});
+    console.log(revenues);
+    res.status(200).json({
+      status: 200,
+      msg: "Get revenues by month successfully!",
+      revenues,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+/**
+ * @api {get} /api/v1/admin/revenues/years?year= Get revenue by year
+ * @apiName Get revenue by year
+ * @apiGroup Admin
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code> Get revenue by year successfully!</code>
+ * @apiSuccess {Object} revenues key-month in year, value-revenue of month(Only return the months have revenue > 0 )
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         "msg": "Get revenue by year successfully!",
+ *           "revenues": {
+ *             "4": 315000
+ *         }
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Not found"
+ *     }
+ **/
+const getRevenuesByYear = async (req, res, next) => {
+  try {
+    console.log(req.query);
+    let year = req.query.year || new Date(Date.now()).getFullYear();
+    year = Number(year);
+    let startDate = new Date(year, 0, 1);
+    let endDate = new Date(year, 11, 0);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+    console.log(startDate, endDate);
+    let orders = await Order.find({
+      updateAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      statusId: 4,
+    });
+    orders = orders.map((x) => {
+      return {
+        month: new Date(x.updateAt).getMonth() + 1,
+        revenue: x.total,
+      };
+    });
+    const revenues = orders.reduce((init, cur) => {
+      if (!init[cur.month]) init[cur.month] = cur.revenue;
+      else init[cur.month] = init[cur.month] + cur.revenue;
+      return init;
+    }, {});
+    console.log(revenues);
+    res.status(200).json({
+      status: 200,
+      msg: "Get revenues by year successfully!",
+      revenues,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const adminController = {
   createNewEmployee,
   getListEmployees,
@@ -913,4 +1191,8 @@ export const adminController = {
   updatePermissionsByUserId,
   getListFoodConfirm,
   confirmFood,
+  getRevenuesByDate,
+  getRevenuesByQuater,
+  getRevenueByMonth,
+  getRevenuesByYear,
 };

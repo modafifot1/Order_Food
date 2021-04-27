@@ -20,6 +20,10 @@ const {
   updatePermissionsByUserId,
   confirmFood,
   getListFoodConfirm,
+  getRevenuesByDate,
+  getRevenuesByQuater,
+  getRevenueByMonth,
+  getRevenuesByYear,
 } = adminController;
 const {
   validateEmployeeData,
@@ -60,10 +64,10 @@ adminRoute
   .put(updatePermissionsByUserId);
 
 //---------------------Statisticing revenue-----------------------------------//
-adminRoute.route(`${baseUrl}/revenues/days`).get();
-adminRoute.route(`${baseUrl}/revenues/months`).get();
-adminRoute.route(`${baseUrl}/revenues/quaters`).get();
-adminRoute.route(`${baseUrl}/revenues/years`).get();
+adminRoute.route(`${baseUrl}/revenues/days?`).get(getRevenuesByDate);
+adminRoute.route(`${baseUrl}/revenues/months?`).get(getRevenueByMonth);
+adminRoute.route(`${baseUrl}/revenues/quaters?`).get(getRevenuesByQuater);
+adminRoute.route(`${baseUrl}/revenues/years?`).get(getRevenuesByYear);
 //--------------------Confirm food---------------------------------------//
 adminRoute.route(`${baseUrl}/foods/:foodId`).post(isAdminRole, confirmFood);
 adminRoute.route(`${baseUrl}/foods`).get(isAdminRole, getListFoodConfirm);

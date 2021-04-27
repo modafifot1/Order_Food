@@ -21,6 +21,11 @@ const orderSchema = new Schema({
     required: true,
     default: Date.now,
   },
+  updateAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
   statusId: {
     type: Number,
   },
