@@ -1,4 +1,4 @@
-import { Role, User, UserDetail } from "../models";
+import { Role, User, UserDetail, Wishlist } from "../models";
 import bcrypt from "bcryptjs";
 import createHttpError from "http-errors";
 import { encodeToken, destroyToken, modifyPermissionsEffected } from "../utils";
@@ -65,6 +65,10 @@ const registerCustomer = async (req, res, next) => {
       address,
     });
     await initPermissions(roleId, newUser._id);
+    await Wishlist.create({
+      userId: newUser._id,
+      foodIds: [],
+    });
     res.status(200).json({
       status: 200,
       msg: "Register is success!",

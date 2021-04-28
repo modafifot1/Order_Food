@@ -2500,7 +2500,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 201,\n    msg: \"Delete food successfully!\",\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Delete food successfully!\",\n}",
           "type": "json"
         }
       ]
@@ -2520,6 +2520,97 @@
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/foods/:foodId"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=",
+    "title": "Filter food by unitPrice and numOfStars",
+    "name": "Filter_food_by_unitPrice_and_numOfStars",
+    "group": "Food",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "searchText",
+            "description": "<p>search string</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Filter food successfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "foods",
+            "description": "<p><code> List of food found</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    \"status\": 201,\n    \"msg\": \"Filter food successfully!\",\n      \"foods\": [\n          {\n              \"confirmed\": false,\n              \"_id\": \"607d81b6e141e742289e2ecf\",\n              \"typeId\": 1,\n              \"name\": \"Gà sốt me\",\n              \"unitPrice\": 50000,\n              \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg\",\n              \"createAt\": \"2021-04-19T13:12:22.475Z\",\n              \"__v\": 0,\n              \"score\": 1.5\n          },\n          {\n              \"confirmed\": true,\n              \"_id\": \"607d8194e141e742289e2ece\",\n              \"typeId\": 1,\n              \"name\": \"Gà sốt phô mai\",\n              \"unitPrice\": 65000,\n              \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837909/inb8toi2piizugdinrzp.png\",\n              \"createAt\": \"2021-04-19T13:11:48.964Z\",\n              \"__v\": 0,\n              \"score\": 1.25\n          },\n     ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/foodController.js",
+    "groupTitle": "Food",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars="
       }
     ]
   },
@@ -3970,6 +4061,246 @@
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/profile/userId"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/wishlist/:foodId",
+    "title": "Delete an item of wishlist",
+    "name": "Delete_an_item_of_wishlist",
+    "group": "Wishlist",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Delete an item of wishlist successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n  status: 200,\n  \"msg\": \"Delete an item of wishlist successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/wishlistController.js",
+    "groupTitle": "Wishlist",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/wishlist/:foodId"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/wishlist",
+    "title": "Get wishlist of customer",
+    "name": "Get_wishlist_of_customer",
+    "group": "Wishlist",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get wishlist successfully!</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The Id of wishlist</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "wishlist",
+            "description": "<p>the Array foods of wishlist</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n  status: 200,\n  \"msg\": \"Get wishlist successfully!\",\n  \"_id\": \"6088d77c2b587d62dbc1237b\",\n  \"wishlist\": [\n      {\n          \"_id\": \"6076c317ebb733360805137a\",\n          \"typeId\": 2,\n          \"name\": \"Orange juice\",\n          \"unitPrice\": 40000,\n          \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618395927/syp4cyw7tjzxddyr8xxd.png\",\n          \"createAt\": \"2021-04-14T10:25:27.376Z\",\n          \"numOfStars\": 4,\n          \"numOfFeedbacks\": 2,\n          \"confirmed\": true,\n          \"__v\": 0,\n          \"discountOff\": 20\n      },\n      {\n          \"_id\": \"607d8172e141e742289e2ecd\",\n          \"typeId\": 1,\n          \"name\": \"Đùi gà\",\n          \"unitPrice\": 60000,\n          \"imageUrl\": \"https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837875/yddc5hcfzu0i5iqimvbf.jpg\",\n          \"createAt\": \"2021-04-19T13:11:14.894Z\",\n          \"confirmed\": true,\n          \"__v\": 0\n      }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/wishlistController.js",
+    "groupTitle": "Wishlist",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/wishlist"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/wishlist",
+    "title": "Update wishlist of customer (add or delete item)",
+    "name": "Update_wishlist_of_customer_(add_or_delete_item)",
+    "group": "Wishlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "foodId",
+            "description": "<p>The id of food</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update wishlist successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n  status: 200,\n  \"msg\": \"Update wishlist successfully!\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/wishlistController.js",
+    "groupTitle": "Wishlist",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/wishlist"
       }
     ]
   }

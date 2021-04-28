@@ -5,6 +5,7 @@ import { foodRoute } from "./foodRoute";
 import { cartRoute } from "./cartRoute";
 import { orderRoute } from "./orderRoute";
 import { feedbackRoute } from "./feedbackRoute";
+import { wishlistRoute } from "./wishlistRoute";
 export {
   authRoute,
   adminRoute,
@@ -13,4 +14,5 @@ export {
   cartRoute,
   orderRoute,
   feedbackRoute,
+  wishlistRoute,
 };

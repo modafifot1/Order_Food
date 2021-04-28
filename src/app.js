@@ -8,6 +8,7 @@ import {
   cartRoute,
   orderRoute,
   feedbackRoute,
+  wishlistRoute,
 } from "./routers";
 const { port, connectString } = envVariables;
 const main = async () => {
@@ -23,6 +24,7 @@ const main = async () => {
   server.registerRouter(cartRoute);
   server.registerRouter(orderRoute);
   server.registerRouter(feedbackRoute);
+  server.registerRouter(wishlistRoute);
   server.registerMiddleware(errorHandleMiddleware);
 };
 main();

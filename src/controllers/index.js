@@ -5,6 +5,7 @@ import { foodController } from "./foodController";
 import { cartController } from "./cartController";
 import { orderController } from "./orderController";
 import { feedbackController } from "./feedbackController";
+import { wishlistController } from "./wishlistController";
 export {
   authController,
   adminController,
@@ -13,4 +14,5 @@ export {
   cartController,
   orderController,
   feedbackController,
+  wishlistController,
 };

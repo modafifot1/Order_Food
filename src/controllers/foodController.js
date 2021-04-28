@@ -316,7 +316,7 @@ const updateFoodById = async (req, res, next) => {
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *     {
- *         status: 201,
+ *         status: 200,
  *         msg: "Delete food successfully!",
  *     }
  * @apiErrorExample Response (example):
@@ -408,7 +408,7 @@ const searchFoods = async (req, res, next) => {
     const page = req.query.page || 1;
     const start = (page - 1) * perPage;
     const foods = await Food.find(
-      { $text: { $search: searchText } },
+      { $text: { $search: searchText }, confirmed: true },
       {
         score: { $meta: "textScore" },
       }
@@ -426,6 +426,82 @@ const searchFoods = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars= Filter food by unitPrice and numOfStars
+ * @apiName Filter food by unitPrice and numOfStars
+ * @apiGroup Food
+ * @apiParam {String} searchText search string
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Filter food successfully</code> if everything went fine.
+ * @apiSuccess {Array} foods <code> List of food found</code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "status": 201,
+ *         "msg": "Filter food successfully!",
+ *           "foods": [
+ *               {
+ *                   "confirmed": false,
+ *                   "_id": "607d81b6e141e742289e2ecf",
+ *                   "typeId": 1,
+ *                   "name": "Gà sốt me",
+ *                   "unitPrice": 50000,
+ *                   "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837943/qrqsf3qukvlsnzslfry2.jpg",
+ *                   "createAt": "2021-04-19T13:12:22.475Z",
+ *                   "__v": 0,
+ *                   "score": 1.5
+ *               },
+ *               {
+ *                   "confirmed": true,
+ *                   "_id": "607d8194e141e742289e2ece",
+ *                   "typeId": 1,
+ *                   "name": "Gà sốt phô mai",
+ *                   "unitPrice": 65000,
+ *                   "imageUrl": "https://res.cloudinary.com/dacnpm17n2/image/upload/v1618837909/inb8toi2piizugdinrzp.png",
+ *                   "createAt": "2021-04-19T13:11:48.964Z",
+ *                   "__v": 0,
+ *                   "score": 1.25
+ *               },
+ *          ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
+const filterFood = async (req, res, next) => {
+  try {
+    const { searchText } = req.body || "";
+    const unitPrice = req.query.unitPrice;
+    const numOfStars = req.query.numOfStars;
+    let page = req.params.page || 1;
+    page = page < 0 ? 1 : page;
+    const start = perPage * (page - 1);
+    const foods = await Food.find(
+      { $text: { $search: searchText }, confirmed: true },
+      {
+        score: { $meta: "textScore" },
+      }
+    )
+      .skip(start)
+      .limit(perPage)
+      .sort({ unitPrice, numOfStars, score: { $meta: "textScore" } });
+    console.log(foods);
+    res.status(200).json({
+      status: 200,
+      msg: "Filter food successfully!",
+      foods,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const foodController = {
   getListFoodPerPage,
   getFoodById,
@@ -434,4 +510,5 @@ export const foodController = {
   deleteFoodById,
   getFoodByFoodType,
   searchFoods,
+  filterFood,
 };
