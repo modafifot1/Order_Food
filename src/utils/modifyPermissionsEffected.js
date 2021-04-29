@@ -22,14 +22,13 @@ const addPermissionsForUserEffected = async (permissions, roleId) => {
       return;
     }
     const users = await User.find({ roleId });
-    const userPermissions = users.map(
-      (x) =>
-        permissions.map((y) => {
-          return {
-            userId: x._id,
-            permissionId: y,
-          };
-        })[0]
+    const userPermissions = users.map((x) =>
+      permissions.map((y) => {
+        return {
+          userId: x._id,
+          permissionId: y,
+        };
+      })
     );
     console.log("AddPermission: " + JSON.stringify(userPermissions));
     await UserPermission.insertMany(userPermissions);
