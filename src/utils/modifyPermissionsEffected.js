@@ -31,7 +31,7 @@ const addPermissionsForUserEffected = async (permissions, roleId) => {
       })
     );
     userPermissions = userPermissions.reduce((init, cur) => {
-      return init.push(...x);
+      return init.push(...cur);
     }, []);
     console.log("AddPermission: " + JSON.stringify(userPermissions));
     await UserPermission.insertMany(userPermissions);
