@@ -30,6 +30,8 @@ const addPermissionsForUserEffected = async (permissions, roleId) => {
         };
       })
     );
+    console.log("AddPermission: " + JSON.stringify(userPermissions));
+
     userPermissions = userPermissions.reduce((init, cur) => {
       return init.push(...cur);
     }, []);
