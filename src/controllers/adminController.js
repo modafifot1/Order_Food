@@ -472,7 +472,7 @@ const getPermissionsByRoleId = async (req, res, next) => {
   }
 };
 /**
- * @api {put} /api/v1/admin/permissions/:roleId Update permission by roleId
+ * @api {put} /api/v1/admin/permissions/:roleId?applying= Update permission by roleId
  * @apiName Update permissions
  * @apiGroup Admin
  * @apiParam {number} roleId id's role
@@ -519,7 +519,10 @@ const updatePermissionsByRoleId = async (req, res, next) => {
       permissionId: delPermissions,
     });
     const applying = req.query.applying;
+
     if (applying == 1) {
+      console.log("Applying = true");
+      console.log(addPermissions);
       addPermissionsForUserEffected(addPermissions, roleId);
     }
     delPermissionsForUserEffected(delPermissions, roleId);
