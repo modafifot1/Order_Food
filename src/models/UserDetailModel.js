@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 const userDetailSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    required: true,
   },
   fullName: {
     type: String,

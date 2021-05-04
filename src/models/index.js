@@ -15,6 +15,7 @@ import { OrderStatus } from "./OrderStatusModel";
 import { ResetCode } from "./ResetCodeModel";
 import { Feedback, Reply } from "./FeedbackModel";
 import { Wishlist } from "./WishlistModel";
+import { Shipper } from "./ShipperModel";
 export {
   User,
   UserDetail,
@@ -34,4 +35,5 @@ export {
   Feedback,
   Reply,
   Wishlist,
+  Shipper,
 };

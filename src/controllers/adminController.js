@@ -28,7 +28,7 @@ const { getDaysByMonth, getMonthsByquater } = dateFunction;
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
- * @apiSuccess {String} msg <code>Regitser success</code> if everything went fine.
+ * @apiSuccess {String} msg <code>Get list employee successfully!</code> if everything went fine.
  * @apiSuccess {Array} listEmployees <code> List of eployees</code>
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
@@ -369,7 +369,7 @@ const deleteEmployeeById = async (req, res, next) => {
  */
 const getAllRoles = async (req, res, next) => {
   try {
-    const listRoles = await Role.find({});
+    const listRoles = await Role.find({ id: { $nin: [0] } });
     res.status(200).json({
       status: 200,
       msg: "Get list role successfully!",

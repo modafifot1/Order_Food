@@ -6,6 +6,7 @@ import { cartRoute } from "./cartRoute";
 import { orderRoute } from "./orderRoute";
 import { feedbackRoute } from "./feedbackRoute";
 import { wishlistRoute } from "./wishlistRoute";
+import { shipperRoute } from "./shipperRoute";
 export {
   authRoute,
   adminRoute,
@@ -15,4 +16,5 @@ export {
   orderRoute,
   feedbackRoute,
   wishlistRoute,
+  shipperRoute,
 };

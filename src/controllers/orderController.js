@@ -6,7 +6,7 @@ import {
   distanceBetween2Points,
   getShipmentFee,
 } from "../utils";
-import { CartItem, Order, OrderItem, OrderStatus } from "../models";
+import { CartItem, Order, OrderItem, OrderStatus, Shipper } from "../models";
 import { envVariables, geocoder } from "../configs";
 import { response } from "express";
 const { my_address, perPage } = envVariables;
@@ -421,7 +421,8 @@ const cancelOrderById = async (req, res, next) => {
  * @api {put} /api/v1/orders/:orderId/statuses Update order Status
  * @apiName Update order status
  * @apiGroup Order
- * @apiParam  {String} code must require when customer paid order.
+ * @apiParam  {String} code must be required when customer paid order.
+ * @apiParam {String} shipperId must be required when shipOrerStatus(tranfer from status 1->2)
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -460,7 +461,7 @@ const updateStatus = async (req, res, next) => {
     const user = req.user;
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId);
-    const { code } = req.body;
+    const { code, shipperId } = req.body;
     switch (order.statusId) {
       case 0:
         if (user.roleId != 2)
@@ -470,7 +471,7 @@ const updateStatus = async (req, res, next) => {
       case 1:
         if (user.roleId != 2)
           throw createHttpError(400, "You are not employee");
-        await shipOrderStatus(order, res, next);
+        await shipOrderStatus(order, shipperId, res, next);
         break;
       case 2:
         if (user.roleId != 1)
@@ -504,11 +505,15 @@ const confirmOrderStatus = async (order, res, next) => {
     next(error);
   }
 };
-const shipOrderStatus = async (order, res, next) => {
+const shipOrderStatus = async (order, shipperId, res, next) => {
   try {
     await getPaymentCode(order._id, next);
     await Order.findByIdAndUpdate(order._id, {
       statusId: 2,
+    });
+    await Shipper.findByIdAndUpdate(shipperId, {
+      isIdle: false,
+      orderId: order._id,
     });
     res.status(200).json({
       status: 200,
@@ -542,6 +547,12 @@ const confirmPaidOrderStatus = async (order, res, next) => {
     await Order.findByIdAndUpdate(order._id, {
       statusId: 4,
     });
+    await Shipper.findOneAndUpdate(
+      { orderId: order._id },
+      {
+        isIdle: true,
+      }
+    );
     res.status(200).json({
       status: 200,
       msg: "Confirm paid order successfully!",
@@ -560,7 +571,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
  * @apiSuccess {String} msg <code>Get list orders by statusId sucessfully</code> if everything went fine.
- * @apiSuccess {Array} cartItems <code> List the orders <code>
+ * @apiSuccess {Array} orders <code> List the orders <code>
+ * @apiDuccess {Array} shippers <code> List shippers</code>
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *        {
@@ -585,7 +597,14 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *                   "createAt": "2021-04-21T02:09:30.509Z",
  *                   "__v": 0
  *               }
- *           ]
+ *           ],
+ *        shippers:[
+ *            {
+ *              _id: "",
+ *              fullName: "",
+ *              phoneNumber: "",
+ *            }
+ *        ]
  *       }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -598,13 +617,14 @@ const getListOrderByStatus = async (req, res, next) => {
   try {
     const statusId = req.query.statusId || 0;
     const user = req.user;
-    let orders;
+    let orders, shippers;
     if (user.roleId == 1) {
       orders = await Order.find({
         customerId: userId,
         statusId,
       });
     } else {
+      shippers = await Shipper.find({ isIdle: true });
       orders = await Order.find({
         statusId,
       });
@@ -621,6 +641,7 @@ const getListOrderByStatus = async (req, res, next) => {
       status: 200,
       msg: "Get list order by status sucessfully!",
       orders,
+      shippers,
     });
   } catch (error) {
     console.log(error);

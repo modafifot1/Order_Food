@@ -548,7 +548,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "msg",
-            "description": "<p><code>Regitser success</code> if everything went fine.</p>"
+            "description": "<p><code>Get list employee successfully!</code> if everything went fine.</p>"
           },
           {
             "group": "Success 200",
@@ -3415,7 +3415,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "cartItems",
+            "field": "orders",
             "description": "<p><code> List the orders <code></p>"
           }
         ]
@@ -3423,7 +3423,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"607ee38c5061c506d4604111\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"62/07 Đồng Kè, Liên Chiểu, Đà Năng\",\n              \"total\": 278000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-20T14:22:04.994Z\",\n              \"__v\": 0\n          },\n          {\n              \"_id\": \"607f895a5e06da3054bacbc3\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"Hue\",\n              \"total\": 128000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-21T02:09:30.509Z\",\n              \"__v\": 0\n          }\n      ]\n  }",
+          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"607ee38c5061c506d4604111\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"62/07 Đồng Kè, Liên Chiểu, Đà Năng\",\n              \"total\": 278000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-20T14:22:04.994Z\",\n              \"__v\": 0\n          },\n          {\n              \"_id\": \"607f895a5e06da3054bacbc3\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"Hue\",\n              \"total\": 128000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-21T02:09:30.509Z\",\n              \"__v\": 0\n          }\n      ],\n   shippers:[\n       {\n         _id: \"\",\n         fullName: \"\",\n         phoneNumber: \"\",\n       }\n   ]\n  }",
           "type": "json"
         }
       ]
@@ -3692,7 +3692,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "code",
-            "description": "<p>must require when customer paid order.</p>"
+            "description": "<p>must be required when customer paid order.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "shipperId",
+            "description": "<p>must be required when shipOrerStatus(tranfer from status 1-&gt;2)</p>"
           }
         ]
       }
@@ -4061,6 +4068,365 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:3000/api/v1/profile/userId"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/shippers",
+    "title": "Create a new shipper",
+    "name": "Create_a_new_eployees",
+    "group": "Shipper",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "fullName",
+            "description": "<p>shipper's name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phoneNumber",
+            "description": "<p>shipper's phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>shipper's birthday</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>shipper's address</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 201 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Create an shipper successfully!</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 201 OK\n{\n    status: 201,\n    msg: \"Create an shipper successfully!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/shipperController.js",
+    "groupTitle": "Shipper",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/shippers"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/shippers/:shipperId",
+    "title": "Delete shipper",
+    "name": "Delete_shipper",
+    "group": "Shipper",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Delete shipper successfully!</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Delete shipper successfully!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/shipperController.js",
+    "groupTitle": "Shipper",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/shippers/:shipperId"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/shippers",
+    "title": "Get list shippers",
+    "name": "Get_list_shippers",
+    "group": "Shipper",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get list shippers successfully!</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "shippers",
+            "description": "<p><code> List of shippers</code></p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"get list shippers successfully!\",\n    shippers: [\n     {\n      \"_id\": \"6090c7583b9d9331b4e08bf2\",\n      \"status\": \"Rảnh\",\n      \"fullName\": \"Lê Văn Tùng\",\n      \"phoneNumber\": \"0336646997\",\n      \"address\": \"32 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng\",\n      \"birthday\": \"1998-06-28T17:00:00.000Z\"\n     }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/shipperController.js",
+    "groupTitle": "Shipper",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/shippers"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/shippers/:shipperId",
+    "title": "Update shipper's Information",
+    "name": "Update_shipper's_Information",
+    "group": "Shipper",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "fullName",
+            "description": "<p>shipper's name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phoneNumber",
+            "description": "<p>shipper's phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>shipper's birthday</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>shipper's address</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Update an shipper successfully!</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"Update an shipper successfully!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/shipperController.js",
+    "groupTitle": "Shipper",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/shippers/:shipperId"
       }
     ]
   },
