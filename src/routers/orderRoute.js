@@ -13,6 +13,7 @@ const {
   purchase,
   cancelOrderById,
   updateStatus,
+  getListOrderByStatus,
 } = orderController;
 const { validateCreateOrder, validateCreatePurchase } = validateRequestBody;
 const baseUrl = "/api/v1/orders";
@@ -36,4 +37,6 @@ orderRoute
 orderRoute
   .route(`${baseUrl}/:orderId/statuses`)
   .put(checkPermission("ORDER", "Edit"), updateStatus);
-orderRoute.route(`${baseUrl}?`).get(checkPermission("ORDER", "View"));
+orderRoute
+  .route(`${baseUrl}?`)
+  .get(checkPermission("ORDER", "View"), getListOrderByStatus);

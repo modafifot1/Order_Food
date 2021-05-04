@@ -1376,7 +1376,7 @@
   },
   {
     "type": "put",
-    "url": "/api/v1/admin/permissions/:roleId",
+    "url": "/api/v1/admin/permissions/:roleId?applying=",
     "title": "Update permission by roleId",
     "name": "Update_permissions",
     "group": "Admin",
@@ -1461,7 +1461,7 @@
     "groupTitle": "Admin",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/admin/permissions/:roleId"
+        "url": "http://127.0.0.1:3000/api/v1/admin/permissions/:roleId?applying="
       }
     ]
   },
@@ -3371,8 +3371,8 @@
   {
     "type": "get",
     "url": "/api/v1/orders?statusId=",
-    "title": "Get list order by userId and statusId",
-    "name": "Get_list_order_by_userId_and_statusId",
+    "title": "Get list order by statusId",
+    "name": "Get_list_order_by_statusId",
     "group": "Order",
     "header": {
       "fields": {

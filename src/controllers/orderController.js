@@ -552,8 +552,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/orders?statusId= Get list order by userId and statusId
- * @apiName Get list order by userId and statusId
+ * @api {get} /api/v1/orders?statusId= Get list order by statusId
+ * @apiName Get list order by statusId
  * @apiGroup Order
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
@@ -597,11 +597,18 @@ const confirmPaidOrderStatus = async (order, res, next) => {
 const getListOrderByStatus = async (req, res, next) => {
   try {
     const statusId = req.query.statusId || 0;
-    const userId = req.user._id;
-    const orders = await Order.find({
-      customerId: userId,
-      statusId,
-    });
+    const user = req.user;
+    let orders;
+    if (user.roleId == 1) {
+      orders = await Order.find({
+        customerId: userId,
+        statusId,
+      });
+    } else {
+      orders = await Order.find({
+        statusId,
+      });
+    }
     orders.map((x) => {
       return {
         _id: x._id,
