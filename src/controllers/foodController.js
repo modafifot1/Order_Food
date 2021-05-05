@@ -427,10 +427,9 @@ const searchFoods = async (req, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType= Filter food by unitPrice and numOfStars
+ * @api {get} /api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType=&&searchText= Filter food by unitPrice and numOfStars
  * @apiName Filter food by unitPrice and numOfStars, foodType
  * @apiGroup Food
- * @apiParam {String} searchText search string
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -476,11 +475,7 @@ const searchFoods = async (req, res, next) => {
  */
 const filterFood = async (req, res, next) => {
   try {
-    const { searchText } = req.body || "";
-    const unitPrice = req.query.unitPrice;
-    const numOfStars = req.query.numOfStars;
-    const foodType = req.query.foodType;
-    console.log(foodType);
+    const { searchText, unitPrice, numOfStars, foodType } = req.query;
     let page = req.params.page || 1;
     page = page < 0 ? 1 : page;
     const start = perPage * (page - 1);

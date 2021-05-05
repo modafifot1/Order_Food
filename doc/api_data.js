@@ -2525,23 +2525,10 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType=",
+    "url": "/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType=&&searchText=",
     "title": "Filter food by unitPrice and numOfStars",
     "name": "Filter_food_by_unitPrice_and_numOfStars,_foodType",
     "group": "Food",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "searchText",
-            "description": "<p>search string</p>"
-          }
-        ]
-      }
-    },
     "header": {
       "fields": {
         "Header": [
@@ -2610,7 +2597,7 @@ define({ "api": [
     "groupTitle": "Food",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType="
+        "url": "http://127.0.0.1:3000/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType=&&searchText="
       }
     ]
   },
@@ -3423,7 +3410,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"607ee38c5061c506d4604111\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"62/07 Đồng Kè, Liên Chiểu, Đà Năng\",\n              \"total\": 278000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-20T14:22:04.994Z\",\n              \"__v\": 0\n          },\n          {\n              \"_id\": \"607f895a5e06da3054bacbc3\",\n              \"customerId\": \"607b99348f2d3500151f091d\",\n              \"address\": \"Hue\",\n              \"total\": 128000,\n              \"statusId\": 0,\n              \"createAt\": \"2021-04-21T02:09:30.509Z\",\n              \"__v\": 0\n          }\n      ],\n   shippers:[\n       {\n         _id: \"\",\n         fullName: \"\",\n         phoneNumber: \"\",\n       }\n   ]\n  }",
+          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"6091ff398fe1960015a75a59\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 255000,\n              \"shipmentFee\": 10000,\n              \"total\": 265000,\n              \"createAt\": \"2021-05-05T02:13:13.376Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"609205998fe1960015a75a62\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 445000,\n              \"shipmentFee\": 10000,\n              \"total\": 455000,\n              \"createAt\": \"2021-05-05T02:40:25.818Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"60925fa26e204d001532c997\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 190000,\n              \"shipmentFee\": 10000,\n              \"total\": 200000,\n              \"createAt\": \"2021-05-05T09:04:34.095Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"60925fc46e204d001532c99b\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 120000,\n              \"shipmentFee\": 10000,\n              \"total\": 130000,\n              \"createAt\": \"2021-05-05T09:05:08.835Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          }\n      ],\n   shippers:[\n       {\n         _id: \"\",\n         fullName: \"\",\n         phoneNumber: \"\",\n       }\n   ]\n  }",
           "type": "json"
         }
       ]
