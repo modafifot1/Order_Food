@@ -563,7 +563,7 @@ const confirmPaidOrderStatus = async (order, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/orders?statusId= Get list order by statusId
+ * @api {get} /api/v1/orders/statuses/:statusId Get list order by statusId
  * @apiName Get list order by statusId
  * @apiGroup Order
  * @apiHeader {String} Authorization The token can be generated from your user profile.
@@ -615,7 +615,7 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  */
 const getListOrderByStatus = async (req, res, next) => {
   try {
-    const statusId = req.query.statusId || 0;
+    const statusId = req.params.statusId || 0;
     const user = req.user;
     let orders, shippers;
     if (user.roleId == 1) {

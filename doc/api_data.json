@@ -3370,7 +3370,7 @@
   },
   {
     "type": "get",
-    "url": "/api/v1/orders?statusId=",
+    "url": "/api/v1/orders/statuses/:statusId",
     "title": "Get list order by statusId",
     "name": "Get_list_order_by_statusId",
     "group": "Order",
@@ -3442,7 +3442,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/orders?statusId="
+        "url": "http://127.0.0.1:3000/api/v1/orders/statuses/:statusId"
       }
     ]
   },

@@ -38,5 +38,5 @@ orderRoute
   .route(`${baseUrl}/:orderId/statuses`)
   .put(checkPermission("ORDER", "Edit"), updateStatus);
 orderRoute
-  .route(`${baseUrl}?`)
+  .route(`${baseUrl}/statuses/:statusId`)
   .get(checkPermission("ORDER", "View"), getListOrderByStatus);
