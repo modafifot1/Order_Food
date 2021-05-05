@@ -4,9 +4,7 @@ const { nodemailerEmail, nodemailerPassword } = envVariables;
 export const sendEmail = async (receiver, subject, content, html, next) => {
   try {
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
       auth: {
         user: nodemailerEmail,
         pass: nodemailerPassword,
