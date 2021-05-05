@@ -2525,9 +2525,9 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=",
+    "url": "/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType=",
     "title": "Filter food by unitPrice and numOfStars",
-    "name": "Filter_food_by_unitPrice_and_numOfStars",
+    "name": "Filter_food_by_unitPrice_and_numOfStars,_foodType",
     "group": "Food",
     "parameter": {
       "fields": {
@@ -2610,7 +2610,7 @@ define({ "api": [
     "groupTitle": "Food",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars="
+        "url": "http://127.0.0.1:3000/api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType="
       }
     ]
   },

@@ -53,9 +53,6 @@ const getListCartItem = async (req, res, next) => {
         },
       },
     ]);
-    if (!cartItems[0]) {
-      throw createHttpError(404, "Not Found Item");
-    }
     console.log(cartItems[0]);
     cartItems = cartItems.map((x) => {
       return {

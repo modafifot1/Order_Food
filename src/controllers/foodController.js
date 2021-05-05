@@ -427,8 +427,8 @@ const searchFoods = async (req, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars= Filter food by unitPrice and numOfStars
- * @apiName Filter food by unitPrice and numOfStars
+ * @api {get} /api/v1/foods/search/filter?page=&&unitPrice=&&numOfStars=&&foodType= Filter food by unitPrice and numOfStars
+ * @apiName Filter food by unitPrice and numOfStars, foodType
  * @apiGroup Food
  * @apiParam {String} searchText search string
  * @apiHeader {String} Authorization The token can be generated from your user profile.
@@ -479,18 +479,33 @@ const filterFood = async (req, res, next) => {
     const { searchText } = req.body || "";
     const unitPrice = req.query.unitPrice;
     const numOfStars = req.query.numOfStars;
+    const foodType = req.query.foodType;
+    console.log(foodType);
     let page = req.params.page || 1;
     page = page < 0 ? 1 : page;
     const start = perPage * (page - 1);
-    const foods = await Food.find(
-      { $text: { $search: searchText }, confirmed: true },
-      {
-        score: { $meta: "textScore" },
-      }
-    )
-      .skip(start)
-      .limit(perPage)
-      .sort({ unitPrice, numOfStars, score: { $meta: "textScore" } });
+    let foods;
+    if (foodType) {
+      foods = await Food.find(
+        { $text: { $search: searchText }, confirmed: true, typeId: foodType },
+        {
+          score: { $meta: "textScore" },
+        }
+      )
+        .skip(start)
+        .limit(perPage)
+        .sort({ unitPrice, numOfStars, score: { $meta: "textScore" } });
+    } else {
+      foods = await Food.find(
+        { $text: { $search: searchText }, confirmed: true },
+        {
+          score: { $meta: "textScore" },
+        }
+      )
+        .skip(start)
+        .limit(perPage)
+        .sort({ unitPrice, numOfStars, score: { $meta: "textScore" } });
+    }
     console.log(foods);
     res.status(200).json({
       status: 200,
