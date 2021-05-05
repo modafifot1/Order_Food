@@ -572,7 +572,7 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  * @apiSuccess {Number} status <code> 200 </code>
  * @apiSuccess {String} msg <code>Get list orders by statusId sucessfully</code> if everything went fine.
  * @apiSuccess {Array} orders <code> List the orders <code>
- * @apiDuccess {Array} shippers <code> List shippers</code>
+ * @apiDuccess {Array} shippers <code> List shippers(if statusId != 1, list shipper is [])</code>
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
  *        {
@@ -580,22 +580,52 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *           "msg": "Get list orders by statusId sucessfully!",
  *           "orders": [
  *               {
- *                   "_id": "607ee38c5061c506d4604111",
- *                   "customerId": "607b99348f2d3500151f091d",
- *                   "address": "62/07 Đồng Kè, Liên Chiểu, Đà Năng",
- *                   "total": 278000,
+ *                   "_id": "6091ff398fe1960015a75a59",
+ *                   "address": "472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng",
  *                   "statusId": 0,
- *                   "createAt": "2021-04-20T14:22:04.994Z",
- *                   "__v": 0
+ *                   "paymentMethod": "COD",
+ *                   "merchandiseSubtotal": 255000,
+ *                   "shipmentFee": 10000,
+ *                   "total": 265000,
+ *                   "createAt": "2021-05-05T02:13:13.376Z",
+ *                   "customerName": "Tiến Ngô Văn",
+ *                   "phoneNumber": "0888071782"
  *               },
  *               {
- *                   "_id": "607f895a5e06da3054bacbc3",
- *                   "customerId": "607b99348f2d3500151f091d",
- *                   "address": "Hue",
- *                   "total": 128000,
+ *                   "_id": "609205998fe1960015a75a62",
+ *                   "address": "472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng",
  *                   "statusId": 0,
- *                   "createAt": "2021-04-21T02:09:30.509Z",
- *                   "__v": 0
+ *                   "paymentMethod": "COD",
+ *                   "merchandiseSubtotal": 445000,
+ *                   "shipmentFee": 10000,
+ *                   "total": 455000,
+ *                   "createAt": "2021-05-05T02:40:25.818Z",
+ *                   "customerName": "Tiến Ngô Văn",
+ *                   "phoneNumber": "0888071782"
+ *               },
+ *               {
+ *                   "_id": "60925fa26e204d001532c997",
+ *                   "address": "472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng",
+ *                   "statusId": 0,
+ *                   "paymentMethod": "COD",
+ *                   "merchandiseSubtotal": 190000,
+ *                   "shipmentFee": 10000,
+ *                   "total": 200000,
+ *                   "createAt": "2021-05-05T09:04:34.095Z",
+ *                   "customerName": "Tiến Ngô Văn",
+ *                   "phoneNumber": "0888071782"
+ *               },
+ *               {
+ *                   "_id": "60925fc46e204d001532c99b",
+ *                   "address": "472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng",
+ *                   "statusId": 0,
+ *                   "paymentMethod": "COD",
+ *                   "merchandiseSubtotal": 120000,
+ *                   "shipmentFee": 10000,
+ *                   "total": 130000,
+ *                   "createAt": "2021-05-05T09:05:08.835Z",
+ *                   "customerName": "Tiến Ngô Văn",
+ *                   "phoneNumber": "0888071782"
  *               }
  *           ],
  *        shippers:[
@@ -615,28 +645,61 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  */
 const getListOrderByStatus = async (req, res, next) => {
   try {
-    const statusId = req.params.statusId || 0;
+    const statusId = Number(req.params.statusId) || 0;
+    console.log(typeof statusId, statusId);
     const user = req.user;
-    let orders, shippers;
+    let orders,
+      shippers = [];
     if (user.roleId == 1) {
       orders = await Order.find({
         customerId: userId,
         statusId,
       });
+      orders = orders.map((x) => {
+        return {
+          _id: x._id,
+          address: x.address,
+          statusId: x.statusId,
+          paymentMethod: x.paymentMethod,
+          merchandiseSubtotal: x.merchandiseSubtotal,
+          shipmentFee: x.shipmentFee,
+          total: x.total,
+          createAt: x.createAt,
+        };
+      });
     } else {
-      shippers = await Shipper.find({ isIdle: true });
-      orders = await Order.find({
-        statusId,
+      if (statusId == 1) shippers = await Shipper.find({ isIdle: true });
+      orders = await Order.aggregate([
+        {
+          $lookup: {
+            from: "UserDetail",
+            localField: "customerId",
+            foreignField: "userId",
+            as: "userDetail",
+          },
+        },
+        {
+          $match: {
+            statusId: statusId,
+          },
+        },
+      ]);
+      orders = orders.map((x) => {
+        return {
+          _id: x._id,
+          address: x.address,
+          statusId: x.statusId,
+          paymentMethod: x.paymentMethod,
+          merchandiseSubtotal: x.merchandiseSubtotal,
+          shipmentFee: x.shipmentFee,
+          total: x.total,
+          createAt: x.createAt,
+          customerName: x.userDetail[0].fullName,
+          phoneNumber: x.userDetail[0].phoneNumber,
+        };
       });
     }
-    orders.map((x) => {
-      return {
-        _id: x._id,
-        createAt: x.createAt,
-        statusId: x.statusId,
-        total: x.total,
-      };
-    });
+
     res.status(200).json({
       status: 200,
       msg: "Get list order by status sucessfully!",
