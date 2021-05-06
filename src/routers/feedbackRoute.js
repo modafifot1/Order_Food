@@ -2,7 +2,7 @@ import { Router } from "express";
 import { feedbackController } from "../controllers";
 import { jwtMiddleware, validatePermission } from "../middlewares";
 const { checkPermission } = validatePermission;
-const { addFeedback, reply } = feedbackController;
+const { addFeedback, reply, getAllFeedbacks } = feedbackController;
 export const feedbackRoute = Router();
 const baseUrl = "/api/v1/feedbacks";
 feedbackRoute.use(`${baseUrl}`, jwtMiddleware);
@@ -13,4 +13,6 @@ feedbackRoute
 feedbackRoute
   .route(`${baseUrl}/reply`)
   .post(checkPermission("FEEDBACK", "Create"), reply);
-feedbackRoute.route(`${baseUrl}?`).get(checkPermission("FEEDBACK", "View"));
+feedbackRoute
+  .route(`${baseUrl}?`)
+  .get(checkPermission("FEEDBACK", "View"), getAllFeedbacks);
