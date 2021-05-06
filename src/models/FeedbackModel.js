@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 const replySchema = Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
+  userName: {
+    type: String,
     required: true,
   },
   content: {
