@@ -1962,6 +1962,77 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/api/v1/auth/roleId",
+    "title": "get roleId",
+    "name": "get_roleId",
+    "group": "Auth",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Int",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>get roleId successfully</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"get roleId successfully\",\n     roleId: 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\":  \"token is invalid!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/authController.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/auth/roleId"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/api/v1/carts",
     "title": "Add cart item",

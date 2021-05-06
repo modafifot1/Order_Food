@@ -14,6 +14,7 @@ const {
   cancelOrderById,
   updateStatus,
   getListOrderByStatus,
+  momoPayment,
 } = orderController;
 const { validateCreateOrder, validateCreatePurchase } = validateRequestBody;
 const baseUrl = "/api/v1/orders";
@@ -25,6 +26,8 @@ orderRoute
 orderRoute
   .route(`${baseUrl}/purchase`)
   .post(validateCreatePurchase, checkPermission("ORDER", "Create"), purchase);
+// orderRoute.route(``);
+orderRoute.route(`${baseUrl}/payment`).post(momoPayment);
 orderRoute
   .route(`${baseUrl}`)
   .get(checkPermission("ORDER", "View"), getListOrder);

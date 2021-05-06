@@ -316,6 +316,41 @@ const changePassword = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/auth/roleId get roleId
+ * @apiName get roleId
+ * @apiGroup Auth
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Int} status <code> 200</code>
+ * @apiSuccess {String} msg <code>get roleId successfully</code> if everything went fine.
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "get roleId successfully",
+ *          roleId: 1
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg":  "token is invalid!"
+ *     }
+ */
+const getRoleId = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: 200,
+      msg: "Get roleId successfully!",
+      roleId: req.user.roleId,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const authController = {
   registerCustomer,
   login,
@@ -323,4 +358,5 @@ export const authController = {
   sendResetCode,
   resetPassword,
   changePassword,
+  getRoleId,
 };

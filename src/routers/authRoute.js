@@ -14,6 +14,7 @@ const {
   sendResetCode,
   resetPassword,
   changePassword,
+  getRoleId,
 } = authController;
 const baseUrl = "/api/v1/auth";
 export const authRoute = Router();
@@ -29,3 +30,4 @@ authRoute
 authRoute
   .route(`${baseUrl}/change-password`)
   .post(jwtMiddleware, validateChangePasswordData, changePassword);
+authRoute.route(`${baseUrl}/roleId`).get(jwtMiddleware, getRoleId);

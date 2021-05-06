@@ -711,6 +711,14 @@ const getListOrderByStatus = async (req, res, next) => {
     next(error);
   }
 };
+const momoPayment = async (req, res, next) => {
+  try {
+    console.log("Body: ", req.body);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const orderController = {
   getListOrder,
   getOrderById,
@@ -719,4 +727,5 @@ export const orderController = {
   cancelOrderById,
   updateStatus,
   getListOrderByStatus,
+  momoPayment,
 };
