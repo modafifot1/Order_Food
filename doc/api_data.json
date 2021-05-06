@@ -3060,7 +3060,7 @@
   },
   {
     "type": "get",
-    "url": "/api/v1/foods/:foodType/?page=",
+    "url": "/api/v1/foods/foodType/:foodType/?page=",
     "title": "Get food by foodType",
     "name": "Get_food_by_foodType",
     "group": "Food",
@@ -3132,7 +3132,7 @@
     "groupTitle": "Food",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/foods/:foodType/?page="
+        "url": "http://127.0.0.1:3000/api/v1/foods/foodType/:foodType/?page="
       }
     ]
   },

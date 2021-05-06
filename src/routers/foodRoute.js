@@ -25,7 +25,7 @@ foodRoute
   .route(`${baseUrl}?`)
   .get(checkPermission("FOODS", "View"), getListFoodPerPage);
 foodRoute
-  .route(`${baseUrl}/:foodType/?`)
+  .route(`${baseUrl}/foodType/:foodType/?`)
   .get(checkPermission("FOODS", "View"), getFoodByFoodType);
 foodRoute
   .route(`${baseUrl}`)

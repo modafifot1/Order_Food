@@ -128,7 +128,7 @@ const getFoodById = async (req, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/foods/:foodType/?page= Get food by foodType
+ * @api {get} /api/v1/foods/foodType/:foodType/?page= Get food by foodType
  * @apiName Get food by foodType
  * @apiGroup Food
  * @apiHeader {String} Authorization The token can be generated from your user profile.
