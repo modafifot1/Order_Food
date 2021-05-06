@@ -652,7 +652,7 @@ const getListOrderByStatus = async (req, res, next) => {
       shippers = [];
     if (user.roleId == 1) {
       orders = await Order.find({
-        customerId: userId,
+        customerId: user._id,
         statusId,
       });
       orders = orders.map((x) => {
