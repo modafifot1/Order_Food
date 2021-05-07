@@ -3,8 +3,8 @@ const public_key =
 const a =
   "A7WFmmnpn6TRX42Akh/iC5DdU5hhBT9LR5QSG6rJAl70hfEkkGUx2pTCai8s+M9KMVUcJ7m52iv74yhmeEjjN10TtEJoqITBIYBG2bqcTprhDijyhV4ePU7ytDNuLxzzIvGfTYyvbsEJ2jZTSf556yod12vhYqOJSFL/U2hVuxjUahf5Rnu5R/OLalg8QmlU6nQooEuNdzEXPMd6j9EaxOCiB2oM5/9QiTN0tCNSTIVvPtnlHu5mIbBHChcwfToIL4IAiD1nbrlDuBX//CZcrZj6hFqjvU31yb/DuG02c3aqWxbZKZ8csOwF9bL30m/yGr/0BQUWgunpDPrmCosf9A==";
 console.log(a.length);
-// const NodeRSA = require("node-rsa");
-// const key = new NodeRSA({ b: 344 });
+const NodeRSA = require("node-rsa");
+// const key = new NodeRSA();
 const data = {
   partnerCode: "MOMOIQA420180417",
   partnerRefId: "Merchant123556666",
@@ -12,8 +12,10 @@ const data = {
   amount: 40000,
   description: "Thanh toan momo",
 };
-// const hash = key.encrypt(data, "base64", public_key);
+// const rsa = require("crypto-js");
+
+// // const hash = key.encrypt(data, "base64", public_key);
+// const hash = rsa.DES.encrypt(JSON.stringify(data), public_key);
 // console.log(hash);
-import rsa from "crypto-js";
-const hash = rsa.AES.encrypt(data, public_key);
-console.log(hash);
+const en = require("jsencrypt");
+const jsen = new en();

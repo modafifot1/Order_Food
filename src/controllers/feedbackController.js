@@ -29,7 +29,7 @@ import { Feedback, Food, Reply, User, UserDetail } from "../models";
 const addFeedback = async (req, res, next) => {
   try {
     const user = req.user;
-    const userName = await UserDetail.findOne({ userId: user._id });
+    const userDetail = await UserDetail.findOne({ userId: user._id });
     let { numOfStars, content, foodId } = req.body;
     const food = await Food.findById(foodId);
     if (!food) throw createHttpError(404, "The id of food is invalid!");
@@ -44,7 +44,7 @@ const addFeedback = async (req, res, next) => {
     });
     await Feedback.create({
       foodId,
-      userName,
+      userName: userDetail.fullName,
       content,
       numOfStars,
     });
@@ -166,6 +166,7 @@ const getAllFeedbacks = async (req, res, next) => {
     feedbacks = feedbacks.map((x) => {
       return {
         _id: x._id,
+        userId: req.user._id,
         userName: x.userName,
         content: x.content,
         numOfStars: x.numOfStars,
