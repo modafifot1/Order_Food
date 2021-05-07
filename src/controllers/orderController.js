@@ -6,10 +6,16 @@ import {
   distanceBetween2Points,
   getShipmentFee,
 } from "../utils";
-import { CartItem, Order, OrderItem, OrderStatus, Shipper } from "../models";
+import {
+  CartItem,
+  Order,
+  OrderItem,
+  OrderStatus,
+  PaymentCode,
+  Shipper,
+} from "../models";
 import { envVariables, geocoder } from "../configs";
-import { response } from "express";
-const { my_address, perPage } = envVariables;
+const { my_address, perPage, public_key } = envVariables;
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -290,11 +296,13 @@ const order = async (req, res, next) => {
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 201 </code>
  * @apiSuccess {String} msg <code>Create Purchase successfully</code> if everything went fine.
+ * @apiSuccess {String} orderId id of new order
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 201 OK
  *        {
  *           "status": 201,
  *           "msg": "Purchase successfully!",
+ *           "orderId": "id"
  *       }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
@@ -355,6 +363,7 @@ const purchase = async (req, res, next) => {
     res.status(201).json({
       status: 201,
       msg: "Purchase successfully!",
+      orderId: newOrder._id,
     });
   } catch (error) {
     console.log(error);
@@ -589,7 +598,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *                   "total": 265000,
  *                   "createAt": "2021-05-05T02:13:13.376Z",
  *                   "customerName": "Tiến Ngô Văn",
- *                   "phoneNumber": "0888071782"
+ *                   "phoneNumber": "0888071782",
+ *                   "paymentCode": "n2zi2gTy" // return if statusId = 2
  *               },
  *               {
  *                   "_id": "609205998fe1960015a75a62",
@@ -601,7 +611,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *                   "total": 455000,
  *                   "createAt": "2021-05-05T02:40:25.818Z",
  *                   "customerName": "Tiến Ngô Văn",
- *                   "phoneNumber": "0888071782"
+ *                   "phoneNumber": "0888071782",
+ *                   "paymentCode": "n2zi2gTy" // return if statusId = 2
  *               },
  *               {
  *                   "_id": "60925fa26e204d001532c997",
@@ -613,7 +624,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *                   "total": 200000,
  *                   "createAt": "2021-05-05T09:04:34.095Z",
  *                   "customerName": "Tiến Ngô Văn",
- *                   "phoneNumber": "0888071782"
+ *                   "phoneNumber": "0888071782",
+ *                   "paymentCode": "n2zi2gTy" // return if statusId = 2
  *               },
  *               {
  *                   "_id": "60925fc46e204d001532c99b",
@@ -626,9 +638,10 @@ const confirmPaidOrderStatus = async (order, res, next) => {
  *                   "createAt": "2021-05-05T09:05:08.835Z",
  *                   "customerName": "Tiến Ngô Văn",
  *                   "phoneNumber": "0888071782"
+ *                   "paymentCode": "n2zi2gTy" // return if statusId = 2
  *               }
  *           ],
- *        shippers:[
+ *        shippers:[ // return if status Id =1
  *            {
  *              _id: "",
  *              fullName: "",
@@ -684,7 +697,13 @@ const getListOrderByStatus = async (req, res, next) => {
           },
         },
       ]);
+      const orderIds = orders.map((x) => {
+        return x._id;
+      });
+      const paymentCodes = await PaymentCode.find({ orderId: orderIds });
+      console.log(paymentCodes);
       orders = orders.map((x) => {
+        const index = orderIds.indexOf(x._id);
         return {
           _id: x._id,
           address: x.address,
@@ -696,6 +715,7 @@ const getListOrderByStatus = async (req, res, next) => {
           createAt: x.createAt,
           customerName: x.userDetail[0].fullName,
           phoneNumber: x.userDetail[0].phoneNumber,
+          paymentCode: paymentCodes[index].code,
         };
       });
     }
@@ -714,6 +734,19 @@ const getListOrderByStatus = async (req, res, next) => {
 const momoPayment = async (req, res, next) => {
   try {
     console.log("Body: ", req.body);
+    const {
+      partnerCode,
+      partnerRefId,
+      partnerTransId,
+      amount,
+      customerNumber,
+      appData,
+      version,
+      payType,
+      orderId,
+    } = req.body;
+
+    const hashData = { partnerCode, partnerRefId };
   } catch (error) {
     console.log(error);
     next(error);

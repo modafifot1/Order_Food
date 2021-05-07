@@ -32,9 +32,9 @@ export const confirmPaymentCode = async (code, order, next) => {
     await PaymentCode.findOneAndUpdate(code, {
       expired: true,
     });
-    if (duration > 3 * 60 * 60 * 1000) {
-      throw createHttpError(400, "Code expired");
-    }
+    // if (duration > 3 * 60 * 60 * 1000) {
+    //   throw createHttpError(400, "Code expired");
+    // }
     return true;
   } catch (error) {
     console.log(error);
