@@ -19,8 +19,8 @@ const feedbackSchema = Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  userId: {
-    type: Schema.Types.ObjectId,
+  userName: {
+    type: String,
     required: true,
   },
   numOfStars: {

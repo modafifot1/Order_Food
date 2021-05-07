@@ -14,5 +14,5 @@ feedbackRoute
   .route(`${baseUrl}/reply`)
   .post(checkPermission("FEEDBACK", "Create"), reply);
 feedbackRoute
-  .route(`${baseUrl}?`)
+  .route(`${baseUrl}/:foodId`)
   .get(checkPermission("FEEDBACK", "View"), getAllFeedbacks);

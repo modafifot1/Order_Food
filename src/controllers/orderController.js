@@ -715,7 +715,10 @@ const getListOrderByStatus = async (req, res, next) => {
           createAt: x.createAt,
           customerName: x.userDetail[0].fullName,
           phoneNumber: x.userDetail[0].phoneNumber,
-          paymentCode: paymentCodes[index].code,
+          paymentCode:
+            paymentCodes[index] != undefined
+              ? paymentCodes[index].code
+              : undefined,
         };
       });
     }
