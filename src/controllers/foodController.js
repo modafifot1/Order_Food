@@ -6,7 +6,7 @@ import Mongoose from "mongoose";
 import { Feedback } from "../models/FeedbackModel";
 const { perPage } = envVariables;
 /**
- * @api {get} /api/v1/food?page= Get food per page
+ * @api {get} /api/v1/foods?page= Get food per page
  * @apiName Get food per page
  * @apiGroup Food
  * @apiHeader {String} Authorization The token can be generated from your user profile.
@@ -112,10 +112,11 @@ const getFoodById = async (req, res, next) => {
     // const food = await Food.findById(foodId);
     const result = await Promise.all([
       Food.findById(foodId),
-      Feedback.find({ foodId: foodId }).sort({ _id: "desc" }),
+      Feedback.find({ foodId: foodId }).sort({ _id: "desc" }).limit(1),
     ]);
     const food = result[0];
     const feedbacks = result[1];
+    console.log(food);
     res.status(200).json({
       status: 200,
       msg: "Get food successfully!",

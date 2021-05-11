@@ -28,18 +28,20 @@ import { Feedback, Food, Reply, User, UserDetail } from "../models";
  */
 const addFeedback = async (req, res, next) => {
   try {
+    console.log("body: ", req.body);
     const user = req.user;
     const userDetail = await UserDetail.findOne({ userId: user._id });
     let { numOfStars, content, foodId } = req.body;
+    numOfStars = Number(numOfStars);
     const food = await Food.findById(foodId);
     if (!food) throw createHttpError(404, "The id of food is invalid!");
     let foodNumOfStars = food.numOfStars || 0;
     let numOfFeedbacks = food.numOfFeedbacks || 0;
     foodNumOfStars = foodNumOfStars * numOfFeedbacks;
     numOfFeedbacks++;
-    numOfStars = (numOfStars + foodNumOfStars) / numOfFeedbacks;
+    foodNumOfStars = (numOfStars + foodNumOfStars) / numOfFeedbacks;
     await Food.findByIdAndUpdate(foodId, {
-      numOfStars,
+      numOfStars: foodNumOfStars,
       numOfFeedbacks,
     });
     await Feedback.create({

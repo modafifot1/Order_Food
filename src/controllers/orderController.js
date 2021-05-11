@@ -5,6 +5,8 @@ import {
   confirmPaymentCode,
   distanceBetween2Points,
   getShipmentFee,
+  getHash,
+  getSignatue,
 } from "../utils";
 import {
   CartItem,
@@ -15,7 +17,10 @@ import {
   Shipper,
 } from "../models";
 import { envVariables, geocoder } from "../configs";
+import { contentSecurityPolicy } from "helmet";
 const { my_address, perPage, public_key } = envVariables;
+const axios = require("axios").default;
+const { v1: uuidv1 } = require("uuid");
 /**
  * @api {get} /api/v1/orders Get list order by userId
  * @apiName Get list order
@@ -540,6 +545,7 @@ const paidOrderStatus = async (order, code, res, next) => {
     }
     await Order.findByIdAndUpdate(order._id, {
       statusId: 3,
+      isPaid: true,
     });
     res.status(200).json({
       status: 200,
@@ -662,7 +668,8 @@ const getListOrderByStatus = async (req, res, next) => {
     console.log(typeof statusId, statusId);
     const user = req.user;
     let orders,
-      shippers = [];
+      shippers = [],
+      shipperDetails = [];
     if (user.roleId == 1) {
       orders = await Order.find({
         customerId: user._id,
@@ -701,6 +708,24 @@ const getListOrderByStatus = async (req, res, next) => {
         return x._id;
       });
       const paymentCodes = await PaymentCode.find({ orderId: orderIds });
+      if (statusId == 2)
+        shipperDetails = await Shipper.aggregate([
+          {
+            $lookup: {
+              from: "UserDetail",
+              localField: "userDetailId",
+              foreignField: "_id",
+              as: "shipperDetail",
+            },
+          },
+          {
+            $match: {
+              orderId: {
+                $in: orderIds,
+              },
+            },
+          },
+        ]);
       console.log(paymentCodes);
       orders = orders.map((x) => {
         const index = orderIds.indexOf(x._id);
@@ -718,6 +743,10 @@ const getListOrderByStatus = async (req, res, next) => {
           paymentCode:
             paymentCodes[index] != undefined
               ? paymentCodes[index].code
+              : undefined,
+          shipperName:
+            shipperDetails[index] != undefined
+              ? shipperDetails[index].shipperDetail[0].fullName
               : undefined,
         };
       });
@@ -740,7 +769,6 @@ const momoPayment = async (req, res, next) => {
     const {
       partnerCode,
       partnerRefId,
-      partnerTransId,
       amount,
       customerNumber,
       appData,
@@ -748,8 +776,79 @@ const momoPayment = async (req, res, next) => {
       payType,
       orderId,
     } = req.body;
+    const hashData = { partnerCode, partnerRefId, amount };
+    const hash = getHash(public_key, hashData);
+    const bodyData = {
+      partnerCode,
+      partnerRefId,
+      customerNumber,
+      appData,
+      hash,
+      version,
+      payType,
+    };
+    var { data } = await axios.post(
+      "https://test-payment.momo.vn/pay/app",
+      bodyData
+    );
+    if (data.status != 0) throw createHttpError(400, data.message);
+    await Order.findByIdAndUpdate(orderId, {
+      isPaid: true,
+    });
+    res.status(200).json({
+      status: 200,
+      msg: "Successful transaction!",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const momoPaymentConfirm = async (req, res, next) => {
+  try {
+    const {
+      partnerCode,
+      status,
+      message,
+      partnerRefId,
+      momoTransId,
+      amount,
+    } = req.body;
+    let signatureData = {
+      amount,
+      message,
+      momoTransId,
+      partnerRefId,
+      status,
+    };
+    var secretKey = "um76xDBeRmmj5kVMhXiCeFKixZTTlmZb";
+    let signature = getSignatue(secretKey, signatureData);
+    console.log(signature);
+    res.status(200).json({
+      status,
+      message,
+      partnerRefId,
+      momoTransId,
+      amount,
+      signature,
+    });
 
-    const hashData = { partnerCode, partnerRefId };
+    signatureData = {
+      partnerCode,
+      partnerRefId,
+      requestType: "capture",
+      requestId: uuidv1(),
+      momoTransId,
+    };
+    signature = getSignatue(secretKey, signatureData);
+    const reqData = await axios.post(
+      "https://test-payment.momo.vn/pay/confirm",
+      {
+        ...signatureData,
+        signature,
+      }
+    );
+    console.log(reqData);
   } catch (error) {
     console.log(error);
     next(error);
@@ -764,4 +863,5 @@ export const orderController = {
   updateStatus,
   getListOrderByStatus,
   momoPayment,
+  momoPaymentConfirm,
 };

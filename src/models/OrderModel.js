@@ -5,9 +5,6 @@ const orderSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  employeesId: {
-    type: Schema.Types.ObjectId,
-  },
   address: {
     type: String,
     required: true,
@@ -40,6 +37,11 @@ const orderSchema = new Schema({
   merchandiseSubtotal: {
     type: Number,
     required: true,
+  },
+  isPaid: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
 });
 export const Order = model("Order", orderSchema, "Order");
