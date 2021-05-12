@@ -1,4 +1,4 @@
-import { envVariables } from "../configs";
+import { envVariables, MySocket } from "../configs";
 import { Food } from "../models/FoodModel";
 import { uploadSingle } from "../configs";
 import createHttpError from "http-errors";
@@ -233,6 +233,8 @@ const createNewFood = async (req, res, next) => {
       discountMaximum,
     });
     console.log(image.url);
+    const io = MySocket.prototype.getInstance();
+    await io.emit("ListProduct", "Get list products");
     res.status(201).json({
       status: 201,
       msg: "Create new food successfully!",
