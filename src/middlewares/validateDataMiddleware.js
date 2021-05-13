@@ -194,6 +194,31 @@ const validateCreatePurchase = async (req, res, next) => {
     next(error);
   }
 };
+const validateFeedbackData = async (req, res, next) => {
+  try {
+    const feedbackSchema = joi.object({
+      numOfStars: joi.number().required().min(0).max(5),
+      content: joi.string().required(),
+      foodId: joi.string().required(),
+    });
+    validateRequest(req, feedbackSchema, next);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+const validateReplyData = async (req, res, next) => {
+  try {
+    const replySchema = joi.object({
+      feedbackId: joi.string().required(),
+      content: joi.string().required(),
+    });
+    validateRequest(replySchema);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const validateRequestBody = {
   validateRegisterData,
   validateLoginData,
@@ -205,4 +230,6 @@ export const validateRequestBody = {
   validateResetPasswordData,
   validateCreateOrder,
   validateCreatePurchase,
+  validateFeedbackData,
+  validateReplyData,
 };

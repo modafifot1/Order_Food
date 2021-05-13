@@ -115,6 +115,7 @@ const createNewCartItem = async (req, res, next) => {
     if (!cartItems) {
       await addOneCartItem(userId, foodId, quantity);
     } else {
+      console.log(cartItems);
       cartItems = JSON.parse(cartItems);
       const keys = Object.keys(cartItems);
       for (const key of keys) {

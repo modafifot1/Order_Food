@@ -16,9 +16,10 @@ import {
   PaymentCode,
   Shipper,
 } from "../models";
-import { envVariables, geocoder } from "../configs";
+import { envVariables, geocoder, MySocket } from "../configs";
 import { contentSecurityPolicy } from "helmet";
-const { my_address, perPage, public_key } = envVariables;
+const { my_address, perPage, public_key, secret_key, partner_code } =
+  envVariables;
 const axios = require("axios").default;
 const { v1: uuidv1 } = require("uuid");
 /**
@@ -365,6 +366,8 @@ const purchase = async (req, res, next) => {
     });
 
     await OrderItem.insertMany(orderItems);
+    const io = MySocket.prototype.getInstance();
+    io.emit("NewOrder", "Create new order success!");
     res.status(201).json({
       status: 201,
       msg: "Purchase successfully!",
@@ -473,9 +476,10 @@ const cancelOrderById = async (req, res, next) => {
 const updateStatus = async (req, res, next) => {
   try {
     const user = req.user;
+    console.log("body: ", req.body);
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId);
-    const { code, shipperId } = req.body;
+    const { code, shipperId, statusId } = req.body;
     switch (order.statusId) {
       case 0:
         if (user.roleId != 2)
@@ -485,12 +489,26 @@ const updateStatus = async (req, res, next) => {
       case 1:
         if (user.roleId != 2)
           throw createHttpError(400, "You are not employee");
-        await shipOrderStatus(order, shipperId, res, next);
+        if (order.statusId > statusId) {
+          await shipOrderStatus(order, shipperId, res, next);
+        } else {
+          await Order.findByIdAndUpdate(order._id, {
+            statusId,
+          });
+        }
         break;
       case 2:
-        if (user.roleId != 1)
-          throw createHttpError(400, "You are not customer!");
-        await paidOrderStatus(order, code, res, next);
+        if (!statusId || order.statusId > statusId) {
+          if (user.roleId != 1)
+            throw createHttpError(400, "You are not customer!");
+          await paidOrderStatus(order, code, res, next);
+        } else {
+          if (user.roleId != 2)
+            throw createHttpError(400, "You are not employees!");
+          await Order.findByIdAndUpdate(order._id, {
+            statusId,
+          });
+        }
         break;
       case 3:
         if (user.roleId != 2)
@@ -521,6 +539,7 @@ const confirmOrderStatus = async (order, res, next) => {
 };
 const shipOrderStatus = async (order, shipperId, res, next) => {
   try {
+    if (!shipperId) throw createHttpError(400, "Please select shipper!");
     await getPaymentCode(order._id, next);
     await Order.findByIdAndUpdate(order._id, {
       statusId: 2,
@@ -547,6 +566,8 @@ const paidOrderStatus = async (order, code, res, next) => {
       statusId: 3,
       isPaid: true,
     });
+    const io = MySocket.prototype.getInstance();
+    io.emit("UpdateOrderStatus", 3);
     res.status(200).json({
       status: 200,
       msg: "Pay for order successfully!",
@@ -766,7 +787,7 @@ const getListOrderByStatus = async (req, res, next) => {
 const momoPayment = async (req, res, next) => {
   try {
     console.log("Body: ", req.body);
-    const {
+    let {
       partnerCode,
       partnerRefId,
       amount,
@@ -776,10 +797,15 @@ const momoPayment = async (req, res, next) => {
       payType,
       orderId,
     } = req.body;
+    version = parseFloat(version);
+    payType = parseInt(payType);
+    amount = parseInt(amount);
     const hashData = { partnerCode, partnerRefId, amount };
+    console.log(typeof hashData);
     const hash = getHash(public_key, hashData);
+    console.log(hash);
     const bodyData = {
-      partnerCode,
+      partnerCode: partner_code,
       partnerRefId,
       customerNumber,
       appData,
@@ -787,10 +813,12 @@ const momoPayment = async (req, res, next) => {
       version,
       payType,
     };
+    console.log("Data: ", bodyData);
     var { data } = await axios.post(
       "https://test-payment.momo.vn/pay/app",
       bodyData
     );
+    console.log(data);
     if (data.status != 0) throw createHttpError(400, data.message);
     await Order.findByIdAndUpdate(orderId, {
       isPaid: true,
@@ -806,14 +834,8 @@ const momoPayment = async (req, res, next) => {
 };
 const momoPaymentConfirm = async (req, res, next) => {
   try {
-    const {
-      partnerCode,
-      status,
-      message,
-      partnerRefId,
-      momoTransId,
-      amount,
-    } = req.body;
+    const { partnerCode, status, message, partnerRefId, momoTransId, amount } =
+      req.body;
     let signatureData = {
       amount,
       message,
@@ -821,8 +843,7 @@ const momoPaymentConfirm = async (req, res, next) => {
       partnerRefId,
       status,
     };
-    var secretKey = "um76xDBeRmmj5kVMhXiCeFKixZTTlmZb";
-    let signature = getSignatue(secretKey, signatureData);
+    let signature = getSignatue(secret_key, signatureData);
     console.log(signature);
     res.status(200).json({
       status,
@@ -834,21 +855,21 @@ const momoPaymentConfirm = async (req, res, next) => {
     });
 
     signatureData = {
-      partnerCode,
+      partnerCode: partner_code,
       partnerRefId,
       requestType: "capture",
       requestId: uuidv1(),
       momoTransId,
     };
-    signature = getSignatue(secretKey, signatureData);
-    const reqData = await axios.post(
+    signature = getSignatue(secret_key, signatureData);
+    const { data } = await axios.post(
       "https://test-payment.momo.vn/pay/confirm",
       {
         ...signatureData,
         signature,
       }
     );
-    console.log(reqData);
+    console.log(data);
   } catch (error) {
     console.log(error);
     next(error);

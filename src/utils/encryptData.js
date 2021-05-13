@@ -2,7 +2,7 @@ const crypto = require("crypto-js");
 const NodeRSA = require("node-rsa");
 export const getHash = (publicKey, hashData) => {
   const key = new NodeRSA(publicKey, { encryptionScheme: "pkcs1" });
-  return key.encrypt(JSON.stringify(hashData), "base64");
+  return key.encrypt(JSON.stringify(hashData), "base64").toString();
 };
 export const getSignatue = (secretKey, signatureDatas) => {
   let data = "";

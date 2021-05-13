@@ -116,7 +116,7 @@ const getFoodById = async (req, res, next) => {
     ]);
     const food = result[0];
     const feedbacks = result[1];
-    console.log(food);
+    console.log(food, feedbacks);
     res.status(200).json({
       status: 200,
       msg: "Get food successfully!",
