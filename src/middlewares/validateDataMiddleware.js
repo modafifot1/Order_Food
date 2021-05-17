@@ -108,7 +108,7 @@ const validateNewFoodData = async (req, res, next) => {
         .valid(...foodType),
       name: joi.string().max(256).min(1).required(),
       unitPrice: joi.number().integer().min(1000).required(),
-      discountOff: joi.number().min(0).max(1),
+      discountOff: joi.number().min(0).max(100),
       description: joi.string().max(1024),
       discountMaximum: joi.number().min(0).max(joi.ref("unitPrice")),
     });
