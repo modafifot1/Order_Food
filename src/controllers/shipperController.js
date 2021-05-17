@@ -19,6 +19,7 @@ import { Shipper, User, UserDetail } from "../models";
  *          {
  *           "_id": "6090c7583b9d9331b4e08bf2",
  *           "status": "Rảnh",
+ *           "isIdle": true,
  *           "fullName": "Lê Văn Tùng",
  *           "phoneNumber": "0336646997",
  *           "address": "32 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng",
@@ -49,6 +50,7 @@ const getShippers = async (req, res, next) => {
     shippers = shippers.map((x) => {
       return {
         _id: x._id,
+        isIdle: x.isIdle,
         status: x.isIdle ? "Rảnh" : "Đang giao hàng",
         fullName: x.userDetail[0].fullName,
         phoneNumber: x.userDetail[0].phoneNumber,
