@@ -209,11 +209,12 @@ const validateFeedbackData = async (req, res, next) => {
 };
 const validateReplyData = async (req, res, next) => {
   try {
+    console.log("body: ", req.body);
     const replySchema = joi.object({
       feedbackId: joi.string().required(),
       content: joi.string().required(),
     });
-    validateRequest(replySchema);
+    validateRequest(req, replySchema, next);
   } catch (error) {
     console.log(error);
     next(error);
