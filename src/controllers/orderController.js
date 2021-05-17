@@ -140,6 +140,7 @@ const getListOrder = async (req, res, next) => {
 const getOrderById = async (req, res, next) => {
   try {
     const orderId = req.params.orderId;
+    console.log("orderId: ", orderId);
     const order = await Order.aggregate([
       {
         $lookup: {
@@ -155,6 +156,7 @@ const getOrderById = async (req, res, next) => {
         },
       },
     ]);
+    console.log(await OrderItem.find({ orderId }));
     let orderItems = await OrderItem.aggregate([
       {
         $lookup: {
@@ -184,10 +186,22 @@ const getOrderById = async (req, res, next) => {
         discountOff: x.detail[0].discountOff,
         discountMaximum: x.detail[0].discountMaximum,
         description: x.detail[0].description,
+        imageUrl: x.detail[0].imageUrl,
       };
     });
     let status = await OrderStatus.findOne({ id: order[0].statusId });
     status = status.description;
+    const data = {
+      status: 200,
+      msg: "Get order successfully!",
+      _id: order[0]._id,
+      address: order[0].address,
+      total: order[0].total,
+      orderStatus: status,
+      createAt: order[0].createAt,
+      orderItems,
+    };
+    console.log(data);
     res.status(200).json({
       status: 200,
       msg: "Get order successfully!",
@@ -364,8 +378,9 @@ const purchase = async (req, res, next) => {
         orderId: newOrder._id,
       };
     });
-
+    console.log("orderItem: ", orderItems);
     await OrderItem.insertMany(orderItems);
+
     const io = MySocket.prototype.getInstance();
     io.emit("NewOrder", "Create new order success!");
     res.status(201).json({
