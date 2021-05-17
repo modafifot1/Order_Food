@@ -2497,7 +2497,7 @@
   },
   {
     "type": "get",
-    "url": "/api/v1/feedbacks",
+    "url": "/api/v1/feedbacks/:foodId",
     "title": "Get all feebbacks",
     "name": "Get_all_feebbacks",
     "group": "Feedback",
@@ -2575,7 +2575,7 @@
     "groupTitle": "Feedback",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/feedbacks"
+        "url": "http://127.0.0.1:3000/api/v1/feedbacks/:foodId"
       }
     ]
   },
@@ -3138,7 +3138,7 @@
   },
   {
     "type": "get",
-    "url": "/api/v1/food?page=",
+    "url": "/api/v1/foods?page=",
     "title": "Get food per page",
     "name": "Get_food_per_page",
     "group": "Food",
@@ -3210,7 +3210,7 @@
     "groupTitle": "Food",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:3000/api/v1/food?page="
+        "url": "http://127.0.0.1:3000/api/v1/foods?page="
       }
     ]
   },
@@ -3754,7 +3754,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"6091ff398fe1960015a75a59\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 255000,\n              \"shipmentFee\": 10000,\n              \"total\": 265000,\n              \"createAt\": \"2021-05-05T02:13:13.376Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"609205998fe1960015a75a62\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 445000,\n              \"shipmentFee\": 10000,\n              \"total\": 455000,\n              \"createAt\": \"2021-05-05T02:40:25.818Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"60925fa26e204d001532c997\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 190000,\n              \"shipmentFee\": 10000,\n              \"total\": 200000,\n              \"createAt\": \"2021-05-05T09:04:34.095Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          },\n          {\n              \"_id\": \"60925fc46e204d001532c99b\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 120000,\n              \"shipmentFee\": 10000,\n              \"total\": 130000,\n              \"createAt\": \"2021-05-05T09:05:08.835Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n          }\n      ],\n   shippers:[\n       {\n         _id: \"\",\n         fullName: \"\",\n         phoneNumber: \"\",\n       }\n   ]\n  }",
+          "content": "HTTP/1.1 200 OK\n   {\n      \"status\": 200,\n      \"msg\": \"Get list orders by statusId sucessfully!\",\n      \"orders\": [\n          {\n              \"_id\": \"6091ff398fe1960015a75a59\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 255000,\n              \"shipmentFee\": 10000,\n              \"total\": 265000,\n              \"createAt\": \"2021-05-05T02:13:13.376Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\",\n              \"paymentCode\": \"n2zi2gTy\" // return if statusId = 2\n          },\n          {\n              \"_id\": \"609205998fe1960015a75a62\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 445000,\n              \"shipmentFee\": 10000,\n              \"total\": 455000,\n              \"createAt\": \"2021-05-05T02:40:25.818Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\",\n              \"paymentCode\": \"n2zi2gTy\" // return if statusId = 2\n          },\n          {\n              \"_id\": \"60925fa26e204d001532c997\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 190000,\n              \"shipmentFee\": 10000,\n              \"total\": 200000,\n              \"createAt\": \"2021-05-05T09:04:34.095Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\",\n              \"paymentCode\": \"n2zi2gTy\" // return if statusId = 2\n          },\n          {\n              \"_id\": \"60925fc46e204d001532c99b\",\n              \"address\": \"472 Điện Biên Phủ, Thanh Khê Đông, Thanh Khê, Đà Nẵng\",\n              \"statusId\": 0,\n              \"paymentMethod\": \"COD\",\n              \"merchandiseSubtotal\": 120000,\n              \"shipmentFee\": 10000,\n              \"total\": 130000,\n              \"createAt\": \"2021-05-05T09:05:08.835Z\",\n              \"customerName\": \"Tiến Ngô Văn\",\n              \"phoneNumber\": \"0888071782\"\n              \"paymentCode\": \"n2zi2gTy\" // return if statusId = 2\n          }\n      ],\n   shippers:[ // return if status Id =1\n       {\n         _id: \"\",\n         fullName: \"\",\n         phoneNumber: \"\",\n       }\n   ]\n  }",
           "type": "json"
         }
       ]
@@ -3980,13 +3980,20 @@
             "optional": false,
             "field": "msg",
             "description": "<p><code>Create Purchase successfully</code> if everything went fine.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>id of new order</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 201,\n      \"msg\": \"Purchase successfully!\",\n  }",
+          "content": "HTTP/1.1 201 OK\n   {\n      \"status\": 201,\n      \"msg\": \"Purchase successfully!\",\n      \"orderId\": \"id\"\n  }",
           "type": "json"
         }
       ]
@@ -4692,6 +4699,13 @@
             "optional": false,
             "field": "address",
             "description": "<p>shipper's address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "isIdle",
+            "description": "<p>shipper's status</p>"
           }
         ]
       }

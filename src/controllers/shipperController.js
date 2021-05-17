@@ -121,6 +121,7 @@ const createNewShipper = async (req, res, next) => {
  * @apiParam {String} phoneNumber shipper's phone number
  * @apiParam {Date} birthday shipper's birthday
  * @apiParam {String} address shipper's address
+ * @apiParam {boolean} isIdle shipper's status
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -142,7 +143,7 @@ const createNewShipper = async (req, res, next) => {
 const updateShipper = async (req, res, next) => {
   try {
     const shipperid = req.params.shipperId;
-    const { fullName, phoneNumber, birthday, address } = req.body;
+    const { fullName, phoneNumber, birthday, address, isIdle } = req.body;
     const shipper = await Shipper.findById(shipperid);
     if (!shipper) throw createHttpError(404, "Not found shipper!");
     await UserDetail.findByIdAndUpdate(shipper.userDetailId, {
@@ -150,6 +151,7 @@ const updateShipper = async (req, res, next) => {
       phoneNumber,
       birthday,
       address,
+      isIdle,
     });
     res.status(200).json({
       status: 200,
