@@ -43,12 +43,15 @@ const { perPage } = envVariables;
  */
 const getListFoodPerPage = async (req, res, next) => {
   try {
-    const page = req.query.page || 1;
-    console.log("page: ", page);
-    const start = (page - 1) * perPage;
-    const foods = await Food.find({ confirmed: true })
-      .skip(start)
-      .limit(perPage);
+    let foods;
+    if (req.user.roleId == 1) {
+      const page = req.query.page || 1;
+      console.log("page: ", page);
+      const start = (page - 1) * perPage;
+      foods = await Food.find({ confirmed: true }).skip(start).limit(perPage);
+    } else {
+      foods = await Food.find({});
+    }
     res.status(200).json({
       status: 200,
       msg: "Get foods successfully!",

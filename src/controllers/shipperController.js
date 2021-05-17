@@ -144,6 +144,7 @@ const createNewShipper = async (req, res, next) => {
  */
 const updateShipper = async (req, res, next) => {
   try {
+    console.log(req.body);
     const shipperid = req.params.shipperId;
     const { fullName, phoneNumber, birthday, address, isIdle } = req.body;
     const shipper = await Shipper.findById(shipperid);
@@ -153,7 +154,9 @@ const updateShipper = async (req, res, next) => {
       phoneNumber,
       birthday,
       address,
-      isIdle: isIdle === 0 ? false : true,
+    });
+    await Shipper.findByIdAndUpdate(shipper._id, {
+      isIdle: isIdle == 0 ? false : true,
     });
     res.status(200).json({
       status: 200,
