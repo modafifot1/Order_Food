@@ -19,7 +19,7 @@ import { Shipper, User, UserDetail } from "../models";
  *          {
  *           "_id": "6090c7583b9d9331b4e08bf2",
  *           "status": "Rảnh",
- *           "isIdle": true,
+ *           "isIdle": 1, 1-true 0-false
  *           "fullName": "Lê Văn Tùng",
  *           "phoneNumber": "0336646997",
  *           "address": "32 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng",
@@ -50,7 +50,7 @@ const getShippers = async (req, res, next) => {
     shippers = shippers.map((x) => {
       return {
         _id: x._id,
-        isIdle: x.isIdle,
+        isIdle: x.isIdle === true ? 1 : 0,
         status: x.isIdle ? "Rảnh" : "Đang giao hàng",
         fullName: x.userDetail[0].fullName,
         phoneNumber: x.userDetail[0].phoneNumber,
@@ -123,7 +123,7 @@ const createNewShipper = async (req, res, next) => {
  * @apiParam {String} phoneNumber shipper's phone number
  * @apiParam {Date} birthday shipper's birthday
  * @apiParam {String} address shipper's address
- * @apiParam {boolean} isIdle shipper's status
+ * @apiParam {Int} isIdle shipper's status 1-true 0-false
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
@@ -153,7 +153,7 @@ const updateShipper = async (req, res, next) => {
       phoneNumber,
       birthday,
       address,
-      isIdle,
+      isIdle: isIdle === 0 ? false : true,
     });
     res.status(200).json({
       status: 200,

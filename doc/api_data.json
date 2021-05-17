@@ -4640,7 +4640,7 @@
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"get list shippers successfully!\",\n    shippers: [\n     {\n      \"_id\": \"6090c7583b9d9331b4e08bf2\",\n      \"status\": \"Rảnh\",\n      \"isIdle\": true,\n      \"fullName\": \"Lê Văn Tùng\",\n      \"phoneNumber\": \"0336646997\",\n      \"address\": \"32 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng\",\n      \"birthday\": \"1998-06-28T17:00:00.000Z\"\n     }\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    status: 200,\n    msg: \"get list shippers successfully!\",\n    shippers: [\n     {\n      \"_id\": \"6090c7583b9d9331b4e08bf2\",\n      \"status\": \"Rảnh\",\n      \"isIdle\": 1, 1-true 0-false\n      \"fullName\": \"Lê Văn Tùng\",\n      \"phoneNumber\": \"0336646997\",\n      \"address\": \"32 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng\",\n      \"birthday\": \"1998-06-28T17:00:00.000Z\"\n     }\n   ]\n}",
           "type": "json"
         }
       ]
@@ -4702,10 +4702,10 @@
           },
           {
             "group": "Parameter",
-            "type": "boolean",
+            "type": "Int",
             "optional": false,
             "field": "isIdle",
-            "description": "<p>shipper's status</p>"
+            "description": "<p>shipper's status 1-true 0-false</p>"
           }
         ]
       }
