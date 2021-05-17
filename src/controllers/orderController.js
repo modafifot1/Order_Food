@@ -489,11 +489,15 @@ const updateStatus = async (req, res, next) => {
       case 1:
         if (user.roleId != 2)
           throw createHttpError(400, "You are not employee");
-        if (order.statusId > statusId) {
+        if (order.statusId < statusId) {
           await shipOrderStatus(order, shipperId, res, next);
         } else {
           await Order.findByIdAndUpdate(order._id, {
             statusId,
+          });
+          res.status(200).json({
+            status: 200,
+            msg: "Return back successfully!",
           });
         }
         break;
@@ -507,6 +511,10 @@ const updateStatus = async (req, res, next) => {
             throw createHttpError(400, "You are not employees!");
           await Order.findByIdAndUpdate(order._id, {
             statusId,
+          });
+          res.status(200).json({
+            status: 200,
+            msg: "Return back successfully!",
           });
         }
         break;
@@ -709,7 +717,27 @@ const getListOrderByStatus = async (req, res, next) => {
         };
       });
     } else {
-      if (statusId == 1) shippers = await Shipper.find({ isIdle: true });
+      if (statusId == 1) {
+        shippers = await Shipper.aggregate([
+          {
+            $lookup: {
+              from: "UserDetail",
+              localField: "userDetailId",
+              foreignField: "_id",
+              as: "shipperDetail",
+            },
+          },
+          {
+            $match: {
+              isIdle: true,
+            },
+          },
+        ]);
+        shippers = shippers.map((x) => ({
+          _id: x._id,
+          fullName: x.shipperDetail[0].fullName,
+        }));
+      }
       orders = await Order.aggregate([
         {
           $lookup: {
@@ -772,7 +800,7 @@ const getListOrderByStatus = async (req, res, next) => {
         };
       });
     }
-
+    console.log(shippers);
     res.status(200).json({
       status: 200,
       msg: "Get list order by status sucessfully!",
