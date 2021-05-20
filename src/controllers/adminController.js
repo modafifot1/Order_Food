@@ -17,7 +17,7 @@ const {
   addPermissionsForUserEffected,
   delPermissionsForUserEffected,
 } = modifyPermissionsEffected;
-const { getDaysByMonth, getMonthsByquater } = dateFunction;
+const { getDaysByMonth, getMonthsByquater, getQuaterByMonth } = dateFunction;
 //--------------------Managing employees---------------------------//
 
 /**
@@ -121,15 +121,8 @@ const getListEmployees = async (req, res, next) => {
  *     }
  */
 const createNewEmployee = async (req, res, next) => {
-  const {
-    email,
-    password,
-    roleId,
-    fullName,
-    phoneNumber,
-    birthday,
-    address,
-  } = req.body;
+  const { email, password, roleId, fullName, phoneNumber, birthday, address } =
+    req.body;
   try {
     const userExisted = await User.findOne({ email });
     if (userExisted) {
@@ -1007,8 +1000,10 @@ const getRevenuesByDate = async (req, res, next) => {
 
 const getRevenuesByQuater = async (req, res, next) => {
   try {
-    let quater = req.query.quater || 1;
+    let quater =
+      req.query.quater || getQuaterByMonth(new Date(Date.now()).getMonth()) + 1;
     let year = req.query.year || new Date(Date.now()).getFullYear();
+    console.log("quater: ", quater);
     quater = Number(quater);
     year = Number(year);
     const months = getMonthsByquater(quater);
@@ -1077,7 +1072,7 @@ const getRevenuesByQuater = async (req, res, next) => {
 const getRevenueByMonth = async (req, res, next) => {
   try {
     console.log(req.query);
-    let month = req.query.month || 1;
+    let month = req.query.month || new Date(Date.now()).getMonth() + 1;
     let year = req.query.year || new Date(Date.now()).getFullYear();
     month = Number(month);
     year = Number(year);

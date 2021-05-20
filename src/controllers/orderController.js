@@ -612,6 +612,8 @@ const confirmPaidOrderStatus = async (order, res, next) => {
         isIdle: true,
       }
     );
+    const io = MySocket.prototype.getInstance();
+    io.emit("UpdateStatistical");
     res.status(200).json({
       status: 200,
       msg: "Confirm paid order successfully!",
