@@ -729,6 +729,7 @@ const getListOrderByStatus = async (req, res, next) => {
           shipmentFee: x.shipmentFee,
           total: x.total,
           createAt: x.createAt,
+          isPaid: x.isPaid,
         };
       });
     } else {
@@ -802,6 +803,7 @@ const getListOrderByStatus = async (req, res, next) => {
           shipmentFee: x.shipmentFee,
           total: x.total,
           createAt: x.createAt,
+          isPaid: x.isPaid,
           customerName: x.userDetail[0].fullName,
           phoneNumber: x.userDetail[0].phoneNumber,
           paymentCode:
@@ -866,6 +868,7 @@ const momoPayment = async (req, res, next) => {
     await Order.findByIdAndUpdate(orderId, {
       isPaid: true,
     });
+    console.log("Orders: ", await Order.findById(orderId));
     res.status(200).json({
       status: 200,
       msg: "Successful transaction!",

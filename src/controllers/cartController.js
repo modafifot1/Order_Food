@@ -121,11 +121,8 @@ const createNewCartItem = async (req, res, next) => {
       for (const key of keys) {
         await addOneCartItem(userId, key, cartItems[key]);
       }
-      // keys.forEach(x => {
-      //   await addOneCartItem(userId, x, cartItems[x]);
-      // })
     }
-    res.status(200).json({
+    res.status(201).json({
       status: 201,
       msg: "Add cart item successfully!",
     });
@@ -152,6 +149,7 @@ const addOneCartItem = async (userId, foodId, quantity) => {
         quantity,
       });
     }
+    console.log("cartItem: ", await CartItem.find({ customerId: userId }));
   } catch (error) {
     throw createHttpError(400, error);
   }
