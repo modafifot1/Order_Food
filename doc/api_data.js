@@ -2582,8 +2582,8 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/v1/feedbacks/reply/:feedbackId",
-    "title": "Get all replies",
-    "name": "Get_all_replies",
+    "title": "Get feedback by id",
+    "name": "Get_feedback_by_id",
     "group": "Feedback",
     "parameter": {
       "fields": {
@@ -2633,14 +2633,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "msg",
-            "description": "<p><code>Get list reply successfully!</code> if everything went fine.</p>"
+            "description": "<p><code>Get feedback successfully!</code> if everything went fine.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Example",
-          "content": "HTTP/1.1 200 OK\n{\n    \"status\": 200,\n    \"msg\": \"Get list reply successfully!\",\n    \"replies\": [\n        {\n            \"_id\": \"60863bd9168d1d075cc6226c\",\n            \"userName\": \"Nguyen Van B\",\n            \"content\": \"Đồ ăn rất ngon. Đã mua lần 2\",\n            \"createAt\": \"2021-04-26T04:04:41.143Z\"\n        }\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n  {\n      \"status\": 200,\n      \"msg\": \"Get list reply successfully!\",\n      \"feeback\": {\n          \"_id\": \"6086337c692e3429b8b8a37a\",\n          \"foodId\": \"6076c317ebb733360805137a\",\n          \"userId\": \"607b99348f2d3500151f091d\",\n          \"userName\": \"Nguyen Van B\",\n          \"content\": \"Đồ ăn rất ngon\",\n          \"numOfStars\": 4,\n          \"createAt\": \"2021-04-26T03:29:00.439Z\",\n          \"updateAt\": \"2021-04-26T03:29:00.439Z\",\n          \"reply\": [\n              {\n                  \"_id\": \"60863bd9168d1d075cc6226c\",\n                  \"userName\": \"Nguyen Van B\",\n                  \"content\": \"Đồ ăn rất ngon. Đã mua lần 2\",\n                  \"createAt\": \"2021-04-26T04:04:41.143Z\"\n              }\n          ],\n          \"__v\": 0\n    }\n  }",
           "type": "json"
         }
       ]
