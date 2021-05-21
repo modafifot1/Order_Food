@@ -187,30 +187,41 @@ const getAllFeedbacks = async (req, res, next) => {
   }
 };
 /**
- * @api {get} /api/v1/feedbacks/reply/:feedbackId Get all replies
- * @apiName Get all replies
+ * @api {get} /api/v1/feedbacks/reply/:feedbackId Get feedback by id
+ * @apiName Get feedback by id
  * @apiGroup Feedback
  * @apiParam {String} feedbackId Feddback's id
  * @apiHeader {String} Authorization The token can be generated from your user profile.
  * @apiHeaderExample {Header} Header-Example
  *      "Authorization: Bearer AAA.BBB.CCC"
  * @apiSuccess {Number} status <code> 200 </code>
- * @apiSuccess {String} msg <code>Get list reply successfully!</code> if everything went fine.
- * @apiSussess {Array} replies List of reply
+ * @apiSuccess {String} msg <code>Get feedback successfully!</code> if everything went fine.
+ * @apiSussess {object} feedback
  * @apiSuccessExample {json} Success-Example
  *     HTTP/1.1 200 OK
- *     {
- *         "status": 200,
- *         "msg": "Get list reply successfully!",
- *         "replies": [
- *             {
- *                 "_id": "60863bd9168d1d075cc6226c",
- *                 "userName": "Nguyen Van B",
- *                 "content": "Đồ ăn rất ngon. Đã mua lần 2",
- *                 "createAt": "2021-04-26T04:04:41.143Z"
- *             }
- *         ]
- *     }
+ *       {
+ *           "status": 200,
+ *           "msg": "Get list reply successfully!",
+ *           "feeback": {
+ *               "_id": "6086337c692e3429b8b8a37a",
+ *               "foodId": "6076c317ebb733360805137a",
+ *               "userId": "607b99348f2d3500151f091d",
+ *               "userName": "Nguyen Van B",
+ *               "content": "Đồ ăn rất ngon",
+ *               "numOfStars": 4,
+ *               "createAt": "2021-04-26T03:29:00.439Z",
+ *               "updateAt": "2021-04-26T03:29:00.439Z",
+ *               "reply": [
+ *                   {
+ *                       "_id": "60863bd9168d1d075cc6226c",
+ *                       "userName": "Nguyen Van B",
+ *                       "content": "Đồ ăn rất ngon. Đã mua lần 2",
+ *                       "createAt": "2021-04-26T04:04:41.143Z"
+ *                   }
+ *               ],
+ *               "__v": 0
+ *         }
+ *       }
  * @apiErrorExample Response (example):
  *     HTTP/1.1 400
  *     {
@@ -218,14 +229,14 @@ const getAllFeedbacks = async (req, res, next) => {
  *       "msg": "Role is invalid"
  *     }
  */
-const getAllReplyByFeedbackId = async (req, res, next) => {
+const getFeedbackById = async (req, res, next) => {
   try {
     const feedbackId = req.params.feedbackId;
     const feeback = await Feedback.findById(feedbackId);
     res.status(200).json({
       status: 200,
       msg: "Get list reply successfully!",
-      replies: feeback.reply,
+      feeback,
     });
   } catch (error) {
     console.log(error);
@@ -236,5 +247,5 @@ export const feedbackController = {
   addFeedback,
   reply,
   getAllFeedbacks,
-  getAllReplyByFeedbackId,
+  getFeedbackById,
 };

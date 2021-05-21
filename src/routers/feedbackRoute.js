@@ -6,7 +6,7 @@ import {
   validateRequestBody,
 } from "../middlewares";
 const { checkPermission } = validatePermission;
-const { addFeedback, reply, getAllFeedbacks, getAllReplyByFeedbackId } =
+const { addFeedback, reply, getAllFeedbacks, getFeedbackById } =
   feedbackController;
 const { validateFeedbackData, validateReplyData } = validateRequestBody;
 export const feedbackRoute = Router();
@@ -23,9 +23,7 @@ feedbackRoute
 feedbackRoute
   .route(`${baseUrl}/reply`)
   .post(checkPermission("FEEDBACK", "Create"), validateReplyData, reply);
-feedbackRoute
-  .route(`${baseUrl}/reply/:feedbackId`)
-  .get(getAllReplyByFeedbackId);
+feedbackRoute.route(`${baseUrl}/reply/:feedbackId`).get(getFeedbackById);
 feedbackRoute
   .route(`${baseUrl}/:foodId`)
   .get(checkPermission("FEEDBACK", "View"), getAllFeedbacks);
