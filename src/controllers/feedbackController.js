@@ -186,8 +186,55 @@ const getAllFeedbacks = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {get} /api/v1/feedbacks/reply/:feedbackId Get all replies
+ * @apiName Get all replies
+ * @apiGroup Feedback
+ * @apiParam {String} feedbackId Feddback's id
+ * @apiHeader {String} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ *      "Authorization: Bearer AAA.BBB.CCC"
+ * @apiSuccess {Number} status <code> 200 </code>
+ * @apiSuccess {String} msg <code>Get list reply successfully!</code> if everything went fine.
+ * @apiSussess {Array} replies List of reply
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "status": 200,
+ *         "msg": "Get list reply successfully!",
+ *         "replies": [
+ *             {
+ *                 "_id": "60863bd9168d1d075cc6226c",
+ *                 "userName": "Nguyen Van B",
+ *                 "content": "Đồ ăn rất ngon. Đã mua lần 2",
+ *                 "createAt": "2021-04-26T04:04:41.143Z"
+ *             }
+ *         ]
+ *     }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 400,
+ *       "msg": "Role is invalid"
+ *     }
+ */
+const getAllReplyByFeedbackId = async (req, res, next) => {
+  try {
+    const feedbackId = req.params.feedbackId;
+    const feeback = await Feedback.findById(feedbackId);
+    res.status(200).json({
+      status: 200,
+      msg: "Get list reply successfully!",
+      replies: feeback.reply,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const feedbackController = {
   addFeedback,
   reply,
   getAllFeedbacks,
+  getAllReplyByFeedbackId,
 };

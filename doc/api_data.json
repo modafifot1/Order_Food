@@ -2580,6 +2580,90 @@
     ]
   },
   {
+    "type": "get",
+    "url": "/api/v1/feedbacks/reply/:feedbackId",
+    "title": "Get all replies",
+    "name": "Get_all_replies",
+    "group": "Feedback",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "feedbackId",
+            "description": "<p>Feddback's id</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The token can be generated from your user profile.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example",
+          "content": "\"Authorization: Bearer AAA.BBB.CCC\"",
+          "type": "Header"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p><code> 200 </code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p><code>Get list reply successfully!</code> if everything went fine.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Example",
+          "content": "HTTP/1.1 200 OK\n{\n    \"status\": 200,\n    \"msg\": \"Get list reply successfully!\",\n    \"replies\": [\n        {\n            \"_id\": \"60863bd9168d1d075cc6226c\",\n            \"userName\": \"Nguyen Van B\",\n            \"content\": \"Đồ ăn rất ngon. Đã mua lần 2\",\n            \"createAt\": \"2021-04-26T04:04:41.143Z\"\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 400\n{\n  \"status\" : 400,\n  \"msg\": \"Role is invalid\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "D:/Term2_2020-2021/DA_CNPM/src/backend/src/controllers/feedbackController.js",
+    "groupTitle": "Feedback",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:3000/api/v1/feedbacks/reply/:feedbackId"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/api/v1/feedbacks/reply",
     "title": "Reply feebback",
