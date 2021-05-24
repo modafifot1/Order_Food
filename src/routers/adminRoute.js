@@ -25,10 +25,8 @@ const {
   getRevenueByMonth,
   getRevenuesByYear,
 } = adminController;
-const {
-  validateEmployeeData,
-  validateUpdateEmployeeData,
-} = validateRequestBody;
+const { validateEmployeeData, validateUpdateEmployeeData } =
+  validateRequestBody;
 const { isAdminRole } = validatePermission;
 
 export const adminRoute = Router();
@@ -44,11 +42,9 @@ adminRoute
   .route(`${baseUrl}/employees/:employeeId`)
   .put(validateUpdateEmployeeData, updateEmployeeById);
 adminRoute.route(`${baseUrl}/employees/:employeeId`).delete(deleteEmployeeById);
-
 //---------------------Assigning permissions of role--------------------------//
 adminRoute.route(`${baseUrl}/roles`).get(getAllRoles);
 adminRoute.route(`${baseUrl}/permissions/:roleId`).get(getPermissionsByRoleId);
-// adminRoute.route(`${baseUrl}/permissions/:roleId/?applying`).post();
 adminRoute
   .route(`${baseUrl}/permissions/:roleId/?`)
   .put(updatePermissionsByRoleId);

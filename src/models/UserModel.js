@@ -17,5 +17,9 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isConfirmed: {
+    type: Boolean,
+    default: false,
+  },
 });
 export const User = model("User", userSchema, "User");

@@ -5,7 +5,10 @@ export const envVariables = {
   connectString:
     process.env.CONNSTR ||
     "mongodb+srv://016526585700:016526585700@cluster0.xzigp.mongodb.net/doancnpm?retryWrites=true&w=majority",
-  jwtSecret: process.env.JWTSERCRET || "doanphanmem",
+  tokenSecret: process.env.JWTSERCRET || "doanphanmem",
+  refreshTokenSecret: process.env.REFRESHTOKEN || "doancnpmrefresh",
+  tokenLife: 900,
+  refreshTokenLife: 86400,
   googleClientId:
     process.env.clientId ||
     "40792845616-i0phd247ebg64f68q17f8vo055c9nk9r.apps.googleusercontent.com",

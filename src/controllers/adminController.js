@@ -11,7 +11,13 @@ import {
   Order,
 } from "../models";
 import Mongoose from "mongoose";
-import { modifyPermissionsEffected, dateFunction } from "../utils";
+import {
+  modifyPermissionsEffected,
+  dateFunction,
+  confirmResetCode,
+  getResetCode,
+  sendEmail,
+} from "../utils";
 const {
   initPermissions,
   addPermissionsForUserEffected,
@@ -147,6 +153,13 @@ const createNewEmployee = async (req, res, next) => {
       address,
     });
     await initPermissions(roleId, newUser._id);
+    const code = await getResetCode(newUser._id, next);
+    const link = `https://obscure-inlet-52224.herokuapp.com/api/v1/auth/confirm-email?code=${code}&&userId=${newUser._id}`;
+    await sendEmail(
+      email,
+      "Confirm Email",
+      "Please click link bellow to confirm email!\n" + link
+    );
     res.status(201).json({
       status: 201,
       msg: "Create a new employee successfully!",
@@ -156,6 +169,7 @@ const createNewEmployee = async (req, res, next) => {
     next(error);
   }
 };
+
 /**
  * @api {get} /api/v1/admin/employees/:employeeId Get an employee by id
  * @apiName Get an employee
@@ -312,7 +326,9 @@ const deleteEmployeeById = async (req, res, next) => {
       User.findByIdAndDelete(employeeId),
       UserDetail.findOneAndDelete({ userId: employeeId }),
     ]);
-    console.log(JSON.stringify(employee));
+    let delPermissions = await UserPermission.find({ userId: employeeId });
+    delPermissions = delPermissions.map((x) => x.permissionId);
+    await delPermissionsForUserEffected(delPermissions, 2);
     if (!employee) {
       throw createHttpError(400, "An employee is not exist!");
     }

@@ -1,8 +1,18 @@
-import { Role, User, UserDetail, Wishlist } from "../models";
+import { ResetCode, Role, Token, User, UserDetail, Wishlist } from "../models";
 import bcrypt from "bcryptjs";
 import createHttpError from "http-errors";
-import { encodeToken, destroyToken, modifyPermissionsEffected } from "../utils";
-import { getResetCode, confirmResetCode, sendEmail } from "../utils";
+import {
+  encodeToken,
+  destroyToken,
+  modifyPermissionsEffected,
+  getResetCode,
+  confirmResetCode,
+  sendEmail,
+  verifyToken,
+} from "../utils";
+import { envVariables } from "../configs";
+const { tokenSecret, refreshTokenSecret, tokenLife, refreshTokenLife } =
+  envVariables;
 const { initPermissions } = modifyPermissionsEffected;
 /**
  * @api {post} /api/v1/auth/register-customer register for customer
@@ -30,15 +40,8 @@ const { initPermissions } = modifyPermissionsEffected;
  *     }
  */
 const registerCustomer = async (req, res, next) => {
-  const {
-    email,
-    password,
-    roleId,
-    fullName,
-    phoneNumber,
-    birthday,
-    address,
-  } = req.body;
+  const { email, password, roleId, fullName, phoneNumber, birthday, address } =
+    req.body;
   try {
     console.log(req.body);
     const userExisted = await User.findOne({ email });
@@ -87,6 +90,7 @@ const registerCustomer = async (req, res, next) => {
  * @apiSuccess {Int} status <code> 200</code>
  * @apiSuccess {String} msg <code>Login success</code> if everything went fine.
  * @apiSuccess {String} token <code>Token of user </code>
+ * @apiSuccess {String} refreshToken <code> Refresh token of user </code>
  * @apiSuccess {Array[Int]} roleId <code> An array role of user </code>
  * @apiSuccess {ObjectId} userId
  * @apiSuccess {String} imageUrl
@@ -120,13 +124,23 @@ const login = async (req, res, next) => {
     if (!match) {
       throw createHttpError(400, "Password is incorrect!");
     }
+    if (!userExisted.isConfirmed && userExisted.roleId == 2)
+      throw createHttpError(
+        400,
+        "Email is not confirmed, please check mail box!"
+      );
     const userData = {
       _id: userExisted._id,
       email: userExisted.email,
       roleId: userExisted.roleId,
     };
-
-    const token = await encodeToken(userData);
+    await Token.deleteMany({ userId: userExisted._id });
+    const token = await encodeToken(userData, tokenSecret, tokenLife);
+    const refreshToken = await encodeToken(
+      userData,
+      refreshTokenSecret,
+      refreshTokenLife
+    );
     const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
       "imageUrl",
       "fullName",
@@ -137,6 +151,7 @@ const login = async (req, res, next) => {
       msg: "success!",
       roleId: userExisted.roleId,
       token,
+      refreshToken,
       userId: userExisted._id,
       imageUrl: userDetail.imageUrl,
       fullName: userDetail.fullName,
@@ -351,6 +366,71 @@ const getRoleId = async (req, res, next) => {
     next(error);
   }
 };
+/**
+ * @api {post} /api/v1/auth/token Get new token
+ * @apiName Get new token
+ * @apiGroup Auth
+ * @apiParam {String} refreshToken user's refresh token
+ * @apiSuccess {Int} status <code> 200</code>
+ * @apiSuccess {String} msg <code>Refresh token successfully!</code> if everything went fine.
+ * @apiSuccess {String} token <code>Token of user </code>
+ * @apiSuccessExample {json} Success-Example
+ *     HTTP/1.1 200 OK
+ *     {
+ *         status: 200,
+ *         msg: "Refresh token successfully!",
+ *         token: "xxx.xxx.xxx",
+ *    }
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 400
+ *     {
+ *       "status" : 401,
+ *       "msg":  RefreshToken expired!"
+ *     }
+ */
+const getToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+    console.log("Refresh token: ", refreshToken);
+    if (!refreshToken) throw createHttpError(400, "No refresh token!");
+    const data = await verifyToken(refreshToken, refreshTokenSecret);
+    const { _id, email, roleId } = data;
+    const userData = { _id, email, roleId };
+    const token = await encodeToken(userData, tokenSecret, tokenLife);
+    res.status(200).json({
+      status: 200,
+      msg: "Refresh token successfully!",
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.status == 400) next(error);
+    else {
+      next(createHttpError(error.status, `Refresh ${error.message}`));
+    }
+  }
+};
+const confirmEmail = async (req, res, next) => {
+  try {
+    const { code, userId } = req.query;
+    const confirmed = await confirmResetCode(code, userId, next);
+    await User.findByIdAndUpdate(userId, {
+      isConfirmed: true,
+    });
+    await ResetCode.findOneAndDelete({ code });
+    if (confirmed) {
+      res.send(
+        "<h1>EYour email is been Successfully verified </h1>" +
+          "<a href='https://sfood.netlify.app/auth/login'>Please click here to go to Login page</a>"
+      );
+    } else {
+      res.send("<h1>Bad Request</h1>");
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 export const authController = {
   registerCustomer,
   login,
@@ -359,4 +439,6 @@ export const authController = {
   resetPassword,
   changePassword,
   getRoleId,
+  getToken,
+  confirmEmail,
 };

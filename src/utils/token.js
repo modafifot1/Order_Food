@@ -1,13 +1,10 @@
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
-import { envVariables } from "../configs";
 import { Token } from "../models";
 
-const { jwtSecret } = envVariables;
-
-export const encodeToken = async (data) => {
-  const token = jwt.sign(data, jwtSecret, {
-    // expiresIn: "8640000"
+export const encodeToken = async (data, tokenSecret, tokenLife) => {
+  const token = jwt.sign(data, tokenSecret, {
+    expiresIn: tokenLife,
   });
   const token1 = await Token.create({
     userId: data._id,
@@ -16,9 +13,14 @@ export const encodeToken = async (data) => {
   console.log(token1);
   return token;
 };
-
-export const verifyToken = async (token) => {
-  const data = jwt.verify(token, jwtSecret);
+export const verifyToken = async (token, tokenSecret) => {
+  let data;
+  try {
+    data = jwt.verify(token, tokenSecret);
+  } catch (error) {
+    await Token.findOneAndDelete({ token });
+    throw createHttpError(401, "Token expired");
+  }
   const existedToken = await Token.findOne({ token });
   if (!existedToken) {
     throw createHttpError(400, "Token is not exists!");
