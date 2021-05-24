@@ -11,8 +11,13 @@ import {
   verifyToken,
 } from "../utils";
 import { envVariables } from "../configs";
-const { tokenSecret, refreshTokenSecret, tokenLife, refreshTokenLife } =
-  envVariables;
+const {
+  tokenSecret,
+  refreshTokenSecret,
+  tokenLife,
+  refreshTokenLife,
+  customerTokenLife,
+} = envVariables;
 const { initPermissions } = modifyPermissionsEffected;
 /**
  * @api {post} /api/v1/auth/register-customer register for customer
@@ -135,12 +140,14 @@ const login = async (req, res, next) => {
       roleId: userExisted.roleId,
     };
     await Token.deleteMany({ userId: userExisted._id });
-    const token = await encodeToken(userData, tokenSecret, tokenLife);
-    const refreshToken = await encodeToken(
+    let token = await encodeToken(userData, tokenSecret, tokenLife);
+    let refreshToken = await encodeToken(
       userData,
       refreshTokenSecret,
       refreshTokenLife
     );
+    if (userExisted.roleId == 1)
+      token = encodeToken(userData, tokenSecret, customerTokenLife);
     const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
       "imageUrl",
       "fullName",

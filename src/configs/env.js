@@ -9,6 +9,7 @@ export const envVariables = {
   refreshTokenSecret: process.env.REFRESHTOKEN || "doancnpmrefresh",
   tokenLife: 900,
   refreshTokenLife: 86400,
+  customerTokenLife: "30d",
   googleClientId:
     process.env.clientId ||
     "40792845616-i0phd247ebg64f68q17f8vo055c9nk9r.apps.googleusercontent.com",
