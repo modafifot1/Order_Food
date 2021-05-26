@@ -86,6 +86,7 @@ const getListEmployees = async (req, res, next) => {
         phoneNumber: x.userDetail[0].phoneNumber,
         birthday: x.userDetail[0].birthday,
         address: x.userDetail[0].address,
+        isConfirmed: x.isConfirmed,
       };
     });
     res.status(200).json({
@@ -233,6 +234,7 @@ const getEmpployeeById = async (req, res, next) => {
         phoneNumber: employee[0].userDetail[0].phoneNumber,
         fullName: employee[0].userDetail[0].fullName,
         birthday: employee[0].userDetail[0].birthday,
+        isConfirmed: employee[0].isConfirmed,
       },
     });
   } catch (error) {
