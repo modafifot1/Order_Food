@@ -1,7 +1,6 @@
 import createHttpError from "http-errors";
 import { verifyToken } from "../utils";
 import { envVariables } from "../configs";
-import { token } from "morgan";
 const { tokenSecret } = envVariables;
 export const jwtMiddleware = async (req, res, next) => {
   try {
