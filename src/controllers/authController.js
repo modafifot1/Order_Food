@@ -140,19 +140,23 @@ const login = async (req, res, next) => {
       roleId: userExisted.roleId,
     };
     await Token.deleteMany({ userId: userExisted._id });
-    let token = await encodeToken(userData, tokenSecret, tokenLife);
+    let token;
     let refreshToken = await encodeToken(
       userData,
       refreshTokenSecret,
       refreshTokenLife
     );
     if (userExisted.roleId == 1)
-      token = encodeToken(userData, tokenSecret, customerTokenLife);
+      token = await encodeToken(userData, tokenSecret, customerTokenLife);
+    else {
+      token = await encodeToken(userData, tokenSecret, tokenLife);
+    }
     const userDetail = await UserDetail.findOne({ userId: userExisted._id }, [
       "imageUrl",
       "fullName",
       "address",
     ]);
+    console.log("Token: ", token);
     res.status(200).json({
       status: 200,
       msg: "success!",
