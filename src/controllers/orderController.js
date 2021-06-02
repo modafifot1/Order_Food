@@ -806,8 +806,12 @@ const getListOrderByStatus = async (req, res, next) => {
           total: x.total,
           createAt: x.createAt,
           isPaid: x.isPaid,
-          customerName: x.userDetail[0].fullName,
-          phoneNumber: x.userDetail[0].phoneNumber,
+          customerName:
+            x.userDetail[0] != undefined ? x.userDetail[0].fullName : undefined,
+          phoneNumber:
+            x.userDetail[0] != undefined
+              ? x.userDetail[0].phoneNumber
+              : undefined,
           paymentCode:
             paymentCodes[index] != undefined
               ? paymentCodes[index].code
