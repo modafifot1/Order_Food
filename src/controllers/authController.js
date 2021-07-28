@@ -235,6 +235,7 @@ const sendResetCode = async (req, res, next) => {
     if (!user) {
       throw createHttpError(400, "email is invalid!");
     }
+
     const code = await getResetCode(user._id, next);
     const message = "Your code for reseting password is: " + code;
     await sendEmail(email, "Reset Code for change password", message, "", next);
