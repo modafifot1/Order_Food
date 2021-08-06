@@ -947,16 +947,30 @@ const getRevenuesByDate = async (req, res, next) => {
     let startDate, endDate;
     try {
       if (!date) throw createHttpError(400, "Day is undefied!");
-      endDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
-      startDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
-      console.log("Get revenue by day1: " + startDate + ":" + endDate);
+      // endDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
+      // startDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
+      endDate = new Date(new Date(date).getTime() + 7 * 60 * 60 * 1000);
+      startDate = new Date(new Date(date).getTime() + 7 * 60 * 60 * 1000);
+      console.log("Get revenue by day: " + startDate + ":" + endDate);
     } catch (error) {
+      console.log("Now: " + Date.now);
       var today = new Date(Date.now() + 7 * 60 * 60 * 1000);
       endDate = new Date(
-        new Date(today.getDate()).getTime() - 7 * 60 * 60 * 1000
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate()
+        ).getTime()
       );
-      startDate = new Date(new Date(today.getDate()).getTime());
-      console.log(endDate);
+      startDate = new Date(
+        new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate()
+        ).getTime() -
+          7 * 60 * 60 * 1000
+      );
+      console.log("Get revenue by day1: " + startDate + ":" + endDate);
     }
     startDate.setHours(17, 0, 0, 0);
     endDate.setHours(16, 59, 59, 999);
@@ -969,8 +983,9 @@ const getRevenuesByDate = async (req, res, next) => {
       statusId: 4,
     });
     orders = orders.map((x) => {
+      var mHour = new Date(x.updateAt).getHours() + 7;
       return {
-        hour: new Date(x.updateAt).getHours() + 7,
+        hour: mHour > 24 ? mHour - 24 : mHour,
         revenue: x.total,
       };
     });
