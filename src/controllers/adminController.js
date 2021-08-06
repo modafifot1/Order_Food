@@ -947,18 +947,19 @@ const getRevenuesByDate = async (req, res, next) => {
     let startDate, endDate;
     try {
       if (!date) throw createHttpError(400, "Day is undefied!");
-      // endDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
-      // startDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
-      endDate = new Date(new Date(date).getTime() + 7 * 60 * 60 * 1000);
-      startDate = new Date(new Date(date).getTime() + 7 * 60 * 60 * 1000);
+      endDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
+      startDate = new Date(new Date(date).getTime() - 7 * 60 * 60 * 1000);
       console.log("Get revenue by day1: " + startDate + ":" + endDate);
     } catch (error) {
-      endDate = new Date(Date.now());
-      startDate = new Date(Date.now());
+      var today = new Date(Date.now() + 7 * 60 * 60 * 1000);
+      endDate = new Date(
+        new Date(today.getDate).getTime() - 7 * 60 * 60 * 1000
+      );
+      startDate = new Date(new Date(today.getDate).getTime());
       console.log(endDate);
     }
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 999);
+    startDate.setHours(17, 0, 0, 0);
+    endDate.setHours(16, 59, 59, 999);
     console.log("Get revenue by day2: " + startDate + ":" + endDate);
     let orders = await Order.find({
       updateAt: {
@@ -969,7 +970,7 @@ const getRevenuesByDate = async (req, res, next) => {
     });
     orders = orders.map((x) => {
       return {
-        hour: new Date(x.updateAt).getHours(),
+        hour: new Date(x.updateAt).getHours() + 7,
         revenue: x.total,
       };
     });
