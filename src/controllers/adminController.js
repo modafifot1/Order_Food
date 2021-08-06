@@ -954,10 +954,8 @@ const getRevenuesByDate = async (req, res, next) => {
       startDate = new Date(Date.now());
       console.log(endDate);
     }
-    // startDate.setHours(0, 0, 0, 0);
-    // endDate.setHours(23, 59, 59, 999);
-    startDate.setHours(17, 0, 0, 0);
-    endDate.setHours(16, 59, 59, 999);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
     console.log("Get revenue by day: " + startDate + ":" + endDate);
     let orders = await Order.find({
       updateAt: {
