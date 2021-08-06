@@ -954,8 +954,10 @@ const getRevenuesByDate = async (req, res, next) => {
       startDate = new Date(Date.now());
       console.log(endDate);
     }
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 999);
+    // startDate.setHours(0, 0, 0, 0);
+    // endDate.setHours(23, 59, 59, 999);
+    startDate.setHours(17, 0, 0, 0);
+    endDate.setHours(16, 59, 59, 999);
     let orders = await Order.find({
       updateAt: {
         $gte: startDate,
@@ -965,7 +967,7 @@ const getRevenuesByDate = async (req, res, next) => {
     });
     orders = orders.map((x) => {
       return {
-        hour: new Date(x.updateAt).getHours(),
+        hour: new Date(x.updateAt).getHours() + 7,
         revenue: x.total,
       };
     });
