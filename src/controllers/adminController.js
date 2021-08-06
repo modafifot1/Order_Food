@@ -953,9 +953,9 @@ const getRevenuesByDate = async (req, res, next) => {
     } catch (error) {
       var today = new Date(Date.now() + 7 * 60 * 60 * 1000);
       endDate = new Date(
-        new Date(today.getDate).getTime() - 7 * 60 * 60 * 1000
+        new Date(today.getDate()).getTime() - 7 * 60 * 60 * 1000
       );
-      startDate = new Date(new Date(today.getDate).getTime());
+      startDate = new Date(new Date(today.getDate()).getTime());
       console.log(endDate);
     }
     startDate.setHours(17, 0, 0, 0);
