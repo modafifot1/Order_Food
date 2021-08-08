@@ -3,7 +3,7 @@ import { UserPermission, RolePermission, Role, Permission } from "../models";
 const isAdminRole = async (req, res, next) => {
   const user = req.user;
   try {
-    const clientRoleId = req.headers.RoleId;
+    const clientRoleId = Number(req.headers.roleid);
     console.log("clientRoleId: ", req.headers);
     console.log("serverRoleID: " + user.roleId);
     if (clientRoleId != user.roleId) {
@@ -22,7 +22,7 @@ const isAdminRole = async (req, res, next) => {
 const checkPermission = (perName, perAction) => async (req, res, next) => {
   try {
     const user = req.user;
-    const clientRoleId = req.headers.RoleId;
+    const clientRoleId = Number(req.headers.roleid);
     console.log("clientRoleId: ", req.headers);
     console.log("serverRoleID: " + user.roleId);
 
