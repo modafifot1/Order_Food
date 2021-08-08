@@ -4,6 +4,8 @@ const isAdminRole = async (req, res, next) => {
   const user = req.user;
   try {
     const clientRoleId = req.headers.RoleId;
+    console.log("clientRoleId: " + clientRoleId, "-" + req.headers);
+    console.log("serverRoleID: " + user.roleId);
     if (clientRoleId != user.roleId) {
       throw createHttpError(409, "Conflict roleId");
     }
@@ -21,6 +23,9 @@ const checkPermission = (perName, perAction) => async (req, res, next) => {
   try {
     const user = req.user;
     const clientRoleId = req.headers.RoleId;
+    console.log("clientRoleId: " + clientRoleId, "-" + req.headers);
+    console.log("serverRoleID: " + user.roleId);
+
     if (clientRoleId != user.roleId)
       throw createHttpError(409, "Conflict roleId");
     if (user.roleId == 0) {
