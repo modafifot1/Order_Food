@@ -3,6 +3,10 @@ import { UserPermission, RolePermission, Role, Permission } from "../models";
 const isAdminRole = async (req, res, next) => {
   const user = req.user;
   try {
+    const clientRoleId = req.headers.RoleId;
+    if (clientRoleId != user.roleId) {
+      throw createHttpError(409, "Conflict roleId");
+    }
     const adminRole = await Role.findOne({ roleName: "admin" });
     if (user.roleId != adminRole.id) {
       throw createHttpError(401, "you are not admin account!");
@@ -16,6 +20,9 @@ const isAdminRole = async (req, res, next) => {
 const checkPermission = (perName, perAction) => async (req, res, next) => {
   try {
     const user = req.user;
+    const clientRoleId = req.headers.RoleId;
+    if (clientRoleId != user.roleId)
+      throw createHttpError(409, "Conflict roleId");
     if (user.roleId == 0) {
       next();
       return;
