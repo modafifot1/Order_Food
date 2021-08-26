@@ -806,6 +806,7 @@ const updatePermissionsByUserId = async (req, res, next) => {
       })
     );
     await UserPermission.deleteMany({
+      userId,
       permissionId: listDelPermissions,
     });
     res.status(200).json({
