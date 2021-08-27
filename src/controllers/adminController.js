@@ -603,7 +603,7 @@ const getAllUsers = async (req, res, next) => {
       {
         $match: {
           roleId: {
-            $ne: [0],
+            $ne: 0,
           },
         },
       },
