@@ -7,7 +7,7 @@ export const envVariables = {
     "mongodb+srv://016526585700:016526585700@cluster0.xzigp.mongodb.net/doancnpm?retryWrites=true&w=majority",
   tokenSecret: process.env.JWTSERCRET || "doanphanmem",
   refreshTokenSecret: process.env.REFRESHTOKEN || "doancnpmrefresh",
-  tokenLife: 1200,
+  tokenLife: "30d",
   refreshTokenLife: 86400,
   customerTokenLife: "30d",
   googleClientId:
