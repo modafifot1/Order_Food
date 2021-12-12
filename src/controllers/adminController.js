@@ -878,44 +878,8 @@ const getListFoodConfirm = async (req, res, next) => {
     next(error);
   }
 };
-/**
- * @api {post} /api/v1/admin/foods/:foodId Confirm food when create new one
- * @apiName Confirm food when create new one
- * @apiGroup Admin
- * @apiHeader {String} Authorization The token can be generated from your user profile.
- * @apiHeaderExample {Header} Header-Example
- *      "Authorization: Bearer AAA.BBB.CCC"
- * @apiSuccess {Number} status <code> 200 </code>
- * @apiSuccess {String} msg <code> Confirm successully</code>
- * @apiSuccessExample {json} Success-Example
- *     HTTP/1.1 200 OK
- *     {
- *         status: 200,
- *         msg: "Confirm successully!",
- *     }
- * @apiErrorExample Response (example):
- *     HTTP/1.1 400
- *     {
- *       "status" : 400,
- *       "msg": "Not found"
- *     }
- **/
-const confirmFood = async (req, res, next) => {
-  try {
-    const foodId = req.params.foodId;
-    const food = await Food.findByIdAndUpdate(foodId, {
-      confirmed: true,
-    });
-    if (!food) throw createHttpError(400, "Not found food by foodId!");
-    res.status(200).json({
-      status: 200,
-      msg: "Confirm food successfully!",
-    });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
+
+
 /**
  * @api {get} /api/v1/admin/revenues/day?day= Get revenue by day
  * @apiName Get revenue by day
